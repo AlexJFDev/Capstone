@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt()
+const result = md.render('# markdown-it rulezz!')
+
 </script>
 
 <template>
@@ -14,6 +20,7 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <div v-html="result"></div>
     </div>
   </header>
 

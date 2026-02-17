@@ -10,20 +10,22 @@ const result = md.render('# markdown-it rulezz!')
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <v-app>
+    <header>
+      <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <v-btn color="primary">Vuetify is installed!</v-btn>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-      <div v-html="result"></div>
-    </div>
-  </header>
+      <div class="wrapper">
+        <HelloWorld msg="You did it!" />
+        <v-btn color="primary">Vuetify is installed!</v-btn>
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+        </nav>
+        <div v-html="result"></div>
+      </div>
+    </header>
 
-  <RouterView />
+    <RouterView />
+  </v-app>
 </template>
 
 <style scoped>

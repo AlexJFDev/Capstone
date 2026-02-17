@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+
+import MarkdownIt from 'markdown-it'
+
+const md = new MarkdownIt()
+const result = md.render('# markdown-it rulezz!')
+
 </script>
 
 <template>
@@ -9,11 +15,12 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
+      <v-btn color="primary">Vuetify is installed!</v-btn>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+      <div v-html="result"></div>
     </div>
   </header>
 

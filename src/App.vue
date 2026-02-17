@@ -18,7 +18,6 @@ const result = md.render('# markdown-it rulezz!')
       <v-btn color="primary">Vuetify is installed!</v-btn>
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
       </nav>
       <div v-html="result"></div>
     </div>

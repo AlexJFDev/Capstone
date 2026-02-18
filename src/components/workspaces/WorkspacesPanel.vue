@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { workspaces } from '@/testing/dummy-workspaces'
+import WorkspaceCard from './WorkspaceCard.vue'
+
+const workspaceIds = Object.keys(workspaces)
+
 const model = defineModel<boolean>()
 </script>
 
@@ -7,8 +12,19 @@ const model = defineModel<boolean>()
     v-model="model"
     temporary
   >
-    <div class="workspaces-panel">
-      <p>WorkspacesPanel</p>
+    <!-- HEADER -->
+    <v-toolbar density="compact">
+      <v-btn icon="mdi-close" @click="model = false" />
+      <v-toolbar-title>Workspaces</v-toolbar-title>
+    </v-toolbar>
+
+    <!-- BODY -->
+    <div class="pa-3 d-flex flex-column ga-3">
+      <WorkspaceCard
+        v-for="workspaceId in workspaceIds"
+        :key="workspaceId"
+        :workspace="workspaces[workspaceId]!"
+      />
     </div>
   </v-navigation-drawer>
 </template>

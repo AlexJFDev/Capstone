@@ -7,6 +7,8 @@ const model = defineModel<boolean>()
 const props = defineProps<{
   item: Item
 }>()
+
+const { item } = props
 </script>
 
 <template>
@@ -15,7 +17,7 @@ const props = defineProps<{
     <!-- HEADER -->
     <v-toolbar density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
-      <v-toolbar-title>{{ props.item.name }}</v-toolbar-title>
+      <v-toolbar-title>{{ item.name }}</v-toolbar-title>
     </v-toolbar>
 
     <!-- BODY -->
@@ -25,7 +27,7 @@ const props = defineProps<{
         <v-card-title class="text-subtitle-2">Details</v-card-title>
         <v-divider />
         <v-card-text>
-          <p class="text-body-2">{{ props.item.description }}</p>
+          <p class="text-body-2">{{ item.description }}</p>
         </v-card-text>
       </v-card>
 
@@ -35,11 +37,11 @@ const props = defineProps<{
         <v-card-text class="d-flex flex-column ga-1">
           <div class="d-flex align-center ga-2">
             <span class="text-caption text-medium-emphasis date-label">Start</span>
-            <DateChip :date="props.item['start-date']" />
+            <DateChip :date="item['start-date']" />
           </div>
           <div class="d-flex align-center ga-2">
             <span class="text-caption text-medium-emphasis date-label">End</span>
-            <DateChip :date="props.item['end-date']" />
+            <DateChip :date="item['end-date']" />
           </div>
         </v-card-text>
       </v-card>
@@ -48,7 +50,7 @@ const props = defineProps<{
         <v-card-title class="text-subtitle-2">Appearance</v-card-title>
         <v-divider />
         <v-card-text>
-          <v-chip :color="props.item.color" label>{{ props.item.color }}</v-chip>
+          <v-chip :color="item.color" label>{{ item.color }}</v-chip>
         </v-card-text>
       </v-card>
 

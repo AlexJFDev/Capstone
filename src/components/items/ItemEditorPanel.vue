@@ -5,7 +5,7 @@ import { ref } from 'vue'
 const model = defineModel<boolean>()
 
 const props = defineProps<{
-  itemId: string
+  itemId?: string
 }>()
 
 const save = () => {}

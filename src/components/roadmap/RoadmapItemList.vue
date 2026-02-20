@@ -36,7 +36,12 @@ defineProps<{
   height: 30px;
   display: flex;
   gap: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+  & + .item-row {
+    border-top: none;
+  }
   align-items: center;
 
   .move-buttons {

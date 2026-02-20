@@ -21,8 +21,14 @@ const scale: RoadmapScale = {
   <div class="pa-8">
     <div class="border-md rounded">
 
-      <!-- Fixed Header: New Item button and the dates area -->
-      <!-- <div class="margin">Header, New Item</div> -->
+      <!-- Header -->
+      <div class="header">
+        <div class="list-header">
+          <div class="list-box" />
+          <div class="list-margin">Add Item</div>
+        </div>
+        <div class="chart-header"></div>
+      </div>
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
@@ -33,16 +39,36 @@ const scale: RoadmapScale = {
         <RoadmapChart :itemIds="workspace.items" :scale="scale" />
       </div>
 
-      <!-- Fixed Footer: New Item Button -->
-      <!-- <div class="margin">Footer, New Item</div> -->
+      <!-- Footer -->
+      <div class="list-margin">Add Item</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.margin {
-  background-color: white;
+.header {
+  display: flex;
+  flex-direction: row;
+
+  .list-header {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    
+    .list-box {
+      background-color: rgba(0, 0, 0, 0.12);
+      height: 30px;
+    }
+  }
+
+  .chart-header {
+    width: calc(100% - 400px);
+  }
+}
+
+.list-margin {
   height: 30px;
+  width: 400px;
 }
 
 .body {

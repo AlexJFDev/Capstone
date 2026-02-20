@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { workspaces } from '@/testing/dummy-workspaces'
+import RoadmapItemList from './RoadmapItemList.vue';
 
 
 const props = 
@@ -17,7 +18,7 @@ const workspace = workspaces[props.workspaceId]!
 
 <template>
   <div class="pa-8">
-    <div class="border-md rounded" style="background-color: green;">
+    <div class="border-md rounded">
 
       <!-- Fixed Header: New Item button and the dates area -->
       <div class="margin">Header, New Item</div>
@@ -25,9 +26,7 @@ const workspace = workspaces[props.workspaceId]!
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Items List -->
-        <div class="items-list">
-          {{ workspace }}
-        </div>
+        <RoadmapItemList :itemIds="workspace.items" />
 
         <!-- Roadmap Render -->
         <div class="roadmap-render">
@@ -49,11 +48,6 @@ const workspace = workspaces[props.workspaceId]!
 .body {
   display: flex;
   max-height: calc(100vh - 200px);
-}
-
-.items-list {
-  background-color: blue;
-  width: 400px;
 }
 
 .roadmap-render {

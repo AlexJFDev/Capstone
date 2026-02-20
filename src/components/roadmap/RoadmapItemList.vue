@@ -35,10 +35,22 @@ defineProps<{
 .item-row {
   height: 30px;
   display: flex;
+  gap: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  align-items: center;
 
   .move-buttons {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 24px;
+  }
+
+  .settings-button {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    padding-right: 8px;
   }
 
 }

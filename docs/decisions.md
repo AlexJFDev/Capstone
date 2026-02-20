@@ -9,4 +9,18 @@ When created the item panels, Claude generated a proposal with two approaches. D
 ## Item Panels Merge
 
 Details are found in `item-panels-merge-proposal.md`.
-I have decided to NOT merge the item panels as recommended by Claude.
+I have decided to NOT merge the item panels as recommended by Claude because of the complexity introduced by v-form.
+
+## Roadmap Pane
+
+### Decision 1
+
+I have decided to go a third route and make the date header on the left side of the roadmap be a separate SVG area. It will be kept in sync with the main roadmap using JavaScript which watches when horizontal scrolling occurs.
+
+### Decision 2
+
+I will use divs for rows on the right side. Furthermore, I will avoid using any of Vuetify's structural and layout elements in this component.
+
+### Decision 3
+
+I will use a prop to control scale. The value of this prop will represent the pixel width of a day. The default value will be 80, which gives one week a width of 560 pixels.

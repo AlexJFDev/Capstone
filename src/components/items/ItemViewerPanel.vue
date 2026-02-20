@@ -12,7 +12,12 @@ const { item } = props
 </script>
 
 <template>
-  <v-navigation-drawer v-model="model" temporary location="right">
+  <v-navigation-drawer
+    v-model="model"
+    temporary 
+    location="right"
+    width="500"
+  >
 
     <!-- HEADER -->
     <v-toolbar density="compact">

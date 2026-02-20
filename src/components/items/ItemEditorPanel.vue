@@ -15,7 +15,12 @@ const draft = ref(items['i-a1b2c3d4-e5f6-7890-abcd-ef1234567890']!)
 </script>
 
 <template>
-  <v-navigation-drawer v-model="model" temporary location="right">
+  <v-navigation-drawer 
+    v-model="model" 
+    temporary 
+    location="right"
+    width="500"
+  >
 
     <!-- HEADER -->
     <v-toolbar density="compact">

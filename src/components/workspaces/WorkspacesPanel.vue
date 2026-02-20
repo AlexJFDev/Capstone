@@ -11,6 +11,7 @@ const model = defineModel<boolean>()
   <v-navigation-drawer
     v-model="model"
     temporary
+    width="500"
   >
     <!-- HEADER -->
     <v-toolbar density="compact">

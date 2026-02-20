@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { type Item } from '@/testing/dummy-items'
 
-const props = defineProps<{
+defineProps<{
   item: Item
 }>()
 </script>
 
 <template>
-  <v-row>
+  <div class="item-row border-b py-2 px-4">
     {{ item.name }}
-  </v-row>
+  </div>
 </template>
 
 <style scoped>
-
+.item-row:last-child {
+  border-bottom: none;
+}
 </style>

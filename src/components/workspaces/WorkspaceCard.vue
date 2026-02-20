@@ -3,11 +3,10 @@ import { type Workspace } from '@/testing/dummy-workspaces'
 import ItemRow from '../items/ItemRow.vue'
 import { items } from '@/testing/dummy-items'
 
-const props = defineProps<{
+defineProps<{
   workspace: Workspace
 }>()
 
-const { workspace } = props
 
 </script>
 
@@ -16,10 +15,10 @@ const { workspace } = props
     :title="workspace.name"
     :color="workspace.color"
   >
-    <v-card-text>
+    <v-card-text class="d-flex ga-8 flex-column">
       {{ workspace.description }}
-      <v-container>
-        <ItemRow 
+      <v-container class="table-container bg-white text-black rounded-lg border pa-0">
+        <ItemRow
           v-for="itemId in workspace.items"
           :key="itemId"
           :item="items[itemId]!"
@@ -30,5 +29,7 @@ const { workspace } = props
 </template>
 
 <style scoped>
-
+.table-container {
+  overflow: hidden;
+}
 </style>

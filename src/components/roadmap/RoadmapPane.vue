@@ -19,7 +19,7 @@ const scale: RoadmapScale = {
 
 <template>
   <div class="pa-8">
-    <div class="border-md rounded">
+    <div class="roadmap-pane">
 
       <!-- Header -->
       <div class="header">
@@ -49,6 +49,10 @@ const scale: RoadmapScale = {
 .header {
   display: flex;
   flex-direction: row;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background-color: rgb(var(--v-theme-surface));
 
   .list-header {
     display: flex;
@@ -73,7 +77,17 @@ const scale: RoadmapScale = {
 
 .body {
   display: flex;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 250px);
+}
+
+.roadmap-pane {
+  max-height: calc(100vh - 64px);
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  border-width: 2px;
+  border-radius: 4px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 </style>

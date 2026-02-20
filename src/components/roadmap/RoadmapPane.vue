@@ -23,17 +23,15 @@ const workspace = workspaces[props.workspaceId]!
       <div class="margin">Header, New Item</div>
 
       <!-- Body: Items List & Roadmap Render -->
-      <div class="d-flex body">
+      <div class="body">
         <!-- Items List -->
         <div class="items-list">
           {{ workspace }}
-
-          <!-- Simulating large content -->
-          <div style="height: 2000px;" />
         </div>
 
         <!-- Roadmap Render -->
-        <div class="roadmap-render"></div>
+        <div class="roadmap-render">
+        </div>
       </div>
 
       <!-- Fixed Footer: New Item Button -->
@@ -49,7 +47,8 @@ const workspace = workspaces[props.workspaceId]!
 }
 
 .body {
-  overflow-y: scroll;
+  display: flex;
+  max-height: calc(100vh - 200px);
 }
 
 .items-list {

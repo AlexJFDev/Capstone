@@ -7,5 +7,6 @@ const TEST_WORKSPACE_ID = 'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890'
 <template>
   <v-main>
     <RoadmapPane :workspaceId="TEST_WORKSPACE_ID"/>
+    <div style="height: 1000px;"></div>
   </v-main>
 </template>

@@ -26,13 +26,11 @@ const scale: RoadmapScale = {
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
-        <!-- Items List -->
+        <!-- Item List -->
         <RoadmapItemList :itemIds="workspace.items" />
 
-        <!-- Roadmap Render -->
-        <div class="roadmap-render">
-          <RoadmapChart :itemIds="workspace.items" :scale="scale" />
-        </div>
+        <!-- Roadmap Chart -->
+        <RoadmapChart :itemIds="workspace.items" :scale="scale" />
       </div>
 
       <!-- Fixed Footer: New Item Button -->
@@ -50,10 +48,6 @@ const scale: RoadmapScale = {
 .body {
   display: flex;
   max-height: calc(100vh - 200px);
-}
-
-.roadmap-render {
-  overflow: auto;
-  width: 100%;
+  overflow-y: auto;
 }
 </style>

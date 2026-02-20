@@ -30,6 +30,7 @@ defineProps<{
 <style scoped>
 .items-list-wrapper {
   width: 400px;
+  min-width: 400px;
 }
 
 .item-row {

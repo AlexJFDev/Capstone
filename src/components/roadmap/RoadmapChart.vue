@@ -81,6 +81,7 @@ const bars = computed(() =>
 
 <template>
   <svg
+    class="roadmap-chart"
     :width="svgWidth"
     :height="svgHeight"
     xmlns="http://www.w3.org/2000/svg"
@@ -135,5 +136,9 @@ const bars = computed(() =>
 <style scoped>
 svg {
   display: block;
+}
+
+.roadmap-chart {
+  overflow-x: auto;
 }
 </style>

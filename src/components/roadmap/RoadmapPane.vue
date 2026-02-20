@@ -23,7 +23,7 @@ const workspace = workspaces[props.workspaceId]!
       <div class="margin">Header, New Item</div>
 
       <!-- Body: Items List & Roadmap Render -->
-      <div class="d-flex" style="overflow-y: scroll;">
+      <div class="d-flex body">
         <!-- Items List -->
         <div class="items-list">
           {{ workspace }}
@@ -46,6 +46,10 @@ const workspace = workspaces[props.workspaceId]!
 .margin {
   background-color: white;
   height: 30px;
+}
+
+.body {
+  overflow-y: scroll;
 }
 
 .items-list {

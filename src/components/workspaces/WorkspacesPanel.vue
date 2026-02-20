@@ -6,6 +6,8 @@ defineProps<{
 }>()
 
 const model = defineModel<boolean>()
+
+const addWorkspace = () => {}
 </script>
 
 <template>
@@ -27,9 +29,21 @@ const model = defineModel<boolean>()
         :key="workspaceId"
         :workspaceId="workspaceId"
       />
+
+      <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">
+        <v-card-title class="d-flex align-center ga-2 text-medium-emphasis">
+          <v-icon>mdi-plus</v-icon>
+          New workspace
+        </v-card-title>
+      </v-card>
+
     </div>
   </v-navigation-drawer>
 </template>
 
 <style scoped>
+.add-workspace-card {
+  cursor: pointer;
+  border-style: dashed !important;
+}
 </style>

@@ -36,28 +36,33 @@ const { item } = props
         </v-card-text>
       </v-card>
 
-      <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Schedule</v-card-title>
-        <v-divider />
-        <v-card-text class="d-flex flex-column ga-1">
-          <div class="d-flex align-center ga-2">
-            <span class="text-caption text-medium-emphasis date-label">Start</span>
-            <DateChip :date="item['start-date']" />
-          </div>
-          <div class="d-flex align-center ga-2">
-            <span class="text-caption text-medium-emphasis date-label">End</span>
-            <DateChip :date="item['end-date']" />
-          </div>
-        </v-card-text>
-      </v-card>
-
-      <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Appearance</v-card-title>
-        <v-divider />
-        <v-card-text>
-          <v-chip :color="item.color" label>{{ item.color }}</v-chip>
-        </v-card-text>
-      </v-card>
+      <v-row no-gutters class="ga-3">
+        <v-col cols="8">
+          <v-card variant="outlined">
+            <v-card-title class="text-subtitle-2">Schedule</v-card-title>
+            <v-divider />
+            <v-card-text class="d-flex flex-column ga-1">
+              <div class="d-flex align-center ga-2">
+                <span class="text-caption text-medium-emphasis date-label">Start</span>
+                <DateChip :date="item['start-date']" />
+              </div>
+              <div class="d-flex align-center ga-2">
+                <span class="text-caption text-medium-emphasis date-label">End</span>
+                <DateChip :date="item['end-date']" />
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card variant="outlined" height="100%">
+            <v-card-title class="text-subtitle-2">Appearance</v-card-title>
+            <v-divider />
+            <v-card-text>
+              <v-chip :color="item.color" label>{{ item.color }}</v-chip>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
 
     </div>
 
@@ -65,4 +70,7 @@ const { item } = props
 </template>
 
 <style scoped>
+.date-label {
+  min-width: 2.5rem;
+}
 </style>

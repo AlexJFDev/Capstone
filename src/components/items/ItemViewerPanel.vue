@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { type Item } from '@/testing/dummy-items'
+import { items } from '@/testing/dummy-items'
 import DateChip from '@/components/DateChip.vue'
 
 const model = defineModel<boolean>()
 
 const props = defineProps<{
-  item: Item
+  itemId: string
 }>()
 
-const { item } = props
+const item = items[props.itemId]!
 </script>
 
 <template>

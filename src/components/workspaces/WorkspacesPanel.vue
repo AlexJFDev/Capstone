@@ -2,7 +2,9 @@
 import { workspaces } from '@/testing/dummy-workspaces'
 import WorkspaceCard from './WorkspaceCard.vue'
 
-const workspaceIds = Object.keys(workspaces)
+defineProps<{
+  workspaceIds: Array<string>
+}>()
 
 const model = defineModel<boolean>()
 </script>

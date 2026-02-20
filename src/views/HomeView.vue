@@ -4,14 +4,16 @@ import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
-import { items } from '@/testing/dummy-items'
+import { workspaces } from '@/testing/dummy-workspaces'
+
+const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+
+const workspaceIds = Object.keys(workspaces)
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
 const workspaceEditorOpen = ref(false)
 const workspacesOpen = ref(false)
-
-const testItem = items['i-a1b2c3d4-e5f6-7890-abcd-ef1234567890']!
 </script>
 
 <template>
@@ -34,8 +36,8 @@ const testItem = items['i-a1b2c3d4-e5f6-7890-abcd-ef1234567890']!
     </v-container>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
-    <ItemViewerPanel v-model="itemViewerOpen" :item="testItem" />
+    <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
-    <WorkspacesPanel v-model="workspacesOpen" />
+    <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
   </v-main>
 </template>

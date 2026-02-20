@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { type Workspace } from '@/testing/dummy-workspaces'
+import { workspaces } from '@/testing/dummy-workspaces';
 import ItemList from '../items/ItemList.vue'
 
-defineProps<{
-  workspace: Workspace
+const props = defineProps<{
+  workspaceId: string
 }>()
 
+const workspace = workspaces[props.workspaceId]!
 
 </script>
 

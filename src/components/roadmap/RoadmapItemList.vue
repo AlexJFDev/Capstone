@@ -44,6 +44,7 @@ defineProps<{
     flex-direction: column;
     align-items: center;
     width: 24px;
+    visibility: hidden;
   }
 
   .settings-button {
@@ -51,6 +52,14 @@ defineProps<{
     flex: 1;
     justify-content: flex-end;
     padding-right: 8px;
+    visibility: hidden;
+  }
+
+  &:hover {
+    .move-buttons,
+    .settings-button {
+      visibility: visible;
+    }
   }
 
 }

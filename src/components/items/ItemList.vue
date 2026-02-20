@@ -2,12 +2,11 @@
 import { items } from '@/testing/dummy-items'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 
-defineProps<{
-  edit: {
-    type: boolean
-    default: false
-  }
-}>()
+withDefaults(defineProps<{
+  edit?: boolean
+}>(), {
+  edit: false,
+})
 
 const model = defineModel<string[]>({ default: [] })
 

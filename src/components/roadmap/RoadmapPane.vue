@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { workspaces } from '@/testing/dummy-workspaces'
 import RoadmapItemList from './RoadmapItemList.vue';
+import RoadmapChart, { type RoadmapScale } from './RoadmapChart.vue';
 
-
-const props = 
-withDefaults(defineProps<{
+const props = defineProps<{
   workspaceId: string,
-  scale?: number
-}>(), {
-  scale: 80
-}
-)
+}>()
 
 const workspace = workspaces[props.workspaceId]!
+
+const scale: RoadmapScale = {
+  pixelsPerDay: 30,
+  headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+  gridInterval: 'week',
+}
 
 </script>
 
@@ -30,6 +31,7 @@ const workspace = workspaces[props.workspaceId]!
 
         <!-- Roadmap Render -->
         <div class="roadmap-render">
+          <RoadmapChart :itemIds="workspace.items" :scale="scale" />
         </div>
       </div>
 
@@ -51,7 +53,7 @@ const workspace = workspaces[props.workspaceId]!
 }
 
 .roadmap-render {
-  background-color: red;
+  overflow: auto;
   width: 100%;
 }
 </style>

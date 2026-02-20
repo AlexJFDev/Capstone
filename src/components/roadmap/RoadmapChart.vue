@@ -178,23 +178,36 @@ const bars = computed(() =>
         stroke-width="1"
       />
 
-      <!-- Horizontal row dividers matching the item list borders -->
+      <!-- 
+        Horizontal row dividers matching the item list borders. 
+        Increments of .5 ensure SVG renders lines in a single pixel and not between two pixels.
+      -->
+      <!-- Top Divider -->
+      <line
+        x1="0"
+        :x2="svgWidth"
+        :y1="0.5"
+        :y2="0.5"
+        stroke="rgba(0,0,0,0.12)"
+        stroke-width="1"
+      />
+      <!-- Main group of dividers -->
       <line
         v-for="(_, index) in itemIds"
         :key="index"
         x1="0"
         :x2="svgWidth"
-        :y1="index * ROW_HEIGHT"
-        :y2="index * ROW_HEIGHT"
+        :y1="index * ROW_HEIGHT - 0.5"
+        :y2="index * ROW_HEIGHT - 0.5"
         stroke="rgba(0,0,0,0.12)"
         stroke-width="1"
       />
-      <!-- Bottom border of last row -->
+      <!-- Bottom border of last row. -->
       <line
         x1="0"
         :x2="svgWidth"
-        :y1="svgHeight"
-        :y2="svgHeight"
+        :y1="svgHeight - 0.5"
+        :y2="svgHeight - 0.5"
         stroke="rgba(0,0,0,0.12)"
         stroke-width="1"
       />

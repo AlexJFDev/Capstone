@@ -22,7 +22,7 @@ const scale: RoadmapScale = {
     <div class="border-md rounded">
 
       <!-- Fixed Header: New Item button and the dates area -->
-      <div class="margin">Header, New Item</div>
+      <!-- <div class="margin">Header, New Item</div> -->
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
@@ -34,7 +34,7 @@ const scale: RoadmapScale = {
       </div>
 
       <!-- Fixed Footer: New Item Button -->
-      <div class="margin">Footer, New Item</div>
+      <!-- <div class="margin">Footer, New Item</div> -->
     </div>
   </div>
 </template>

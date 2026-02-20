@@ -5,3 +5,8 @@ User generated file. Agents should NOT modify this file. This file is intended t
 ## Item Panels
 
 When created the item panels, Claude generated a proposal with two approaches. Details are found in `item-panels-proposal.md`. Claude recommended I go with proposal A. I decided to use proposal B because I felt it would be more future-proof for whatever features I might like to add. I also appreciate the greater control that `v-cards` give.
+
+## Item Panels Merge
+
+Details are found in `item-panels-merge-proposal.md`.
+I have decided to NOT merge the item panels as recommended by Claude.

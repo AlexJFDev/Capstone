@@ -223,7 +223,6 @@ svg {
 }
 
 .roadmap-chart {
-  overflow-x: scroll;
   height: max-content;
 }
 </style>

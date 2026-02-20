@@ -74,6 +74,6 @@ const scale: RoadmapScale = {
 .body {
   display: flex;
   max-height: calc(100vh - 200px);
-  overflow-y: auto;
+  overflow: auto;
 }
 </style>

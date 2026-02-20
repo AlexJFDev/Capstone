@@ -80,57 +80,58 @@ const bars = computed(() =>
 </script>
 
 <template>
-  <svg
-    class="roadmap-chart"
-    :width="svgWidth"
-    :height="svgHeight"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <!-- Vertical grid lines at each week boundary -->
-    <line
-      v-for="week in weekStarts"
-      :key="week.getTime()"
-      :x1="xForDate(week)"
-      :x2="xForDate(week)"
-      y1="0"
-      :y2="svgHeight"
-      stroke="rgba(0,0,0,0.12)"
-      stroke-width="1"
-    />
+  <div class="roadmap-chart">
+    <svg
+      :width="svgWidth"
+      :height="svgHeight"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- Vertical grid lines at each week boundary -->
+      <line
+        v-for="week in weekStarts"
+        :key="week.getTime()"
+        :x1="xForDate(week)"
+        :x2="xForDate(week)"
+        y1="0"
+        :y2="svgHeight"
+        stroke="rgba(0,0,0,0.12)"
+        stroke-width="1"
+      />
 
-    <!-- Horizontal row dividers matching the item list borders -->
-    <line
-      v-for="(_, index) in itemIds"
-      :key="index"
-      x1="0"
-      :x2="svgWidth"
-      :y1="index * ROW_HEIGHT"
-      :y2="index * ROW_HEIGHT"
-      stroke="rgba(0,0,0,0.12)"
-      stroke-width="1"
-    />
-    <!-- Bottom border of last row -->
-    <line
-      x1="0"
-      :x2="svgWidth"
-      :y1="svgHeight"
-      :y2="svgHeight"
-      stroke="rgba(0,0,0,0.12)"
-      stroke-width="1"
-    />
+      <!-- Horizontal row dividers matching the item list borders -->
+      <line
+        v-for="(_, index) in itemIds"
+        :key="index"
+        x1="0"
+        :x2="svgWidth"
+        :y1="index * ROW_HEIGHT"
+        :y2="index * ROW_HEIGHT"
+        stroke="rgba(0,0,0,0.12)"
+        stroke-width="1"
+      />
+      <!-- Bottom border of last row -->
+      <line
+        x1="0"
+        :x2="svgWidth"
+        :y1="svgHeight"
+        :y2="svgHeight"
+        stroke="rgba(0,0,0,0.12)"
+        stroke-width="1"
+      />
 
-    <!-- Item bars -->
-    <rect
-      v-for="bar in bars"
-      :key="bar.id"
-      :x="bar.x"
-      :y="bar.y + BAR_PADDING"
-      :width="bar.width"
-      :height="ROW_HEIGHT - BAR_PADDING * 2"
-      :fill="bar.color"
-      rx="3"
-    />
-  </svg>
+      <!-- Item bars -->
+      <rect
+        v-for="bar in bars"
+        :key="bar.id"
+        :x="bar.x"
+        :y="bar.y + BAR_PADDING"
+        :width="bar.width"
+        :height="ROW_HEIGHT - BAR_PADDING * 2"
+        :fill="bar.color"
+        rx="3"
+      />
+    </svg>
+  </div>
 </template>
 
 <style scoped>
@@ -139,6 +140,7 @@ svg {
 }
 
 .roadmap-chart {
-  overflow-x: auto;
+  overflow-x: scroll;
+  height: max-content;
 }
 </style>

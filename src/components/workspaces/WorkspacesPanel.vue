@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { workspaces } from '@/testing/dummy-workspaces'
 import WorkspaceCard from './WorkspaceCard.vue'
 
 defineProps<{
@@ -26,7 +25,7 @@ const model = defineModel<boolean>()
       <WorkspaceCard
         v-for="workspaceId in workspaceIds"
         :key="workspaceId"
-        :workspace="workspaces[workspaceId]!"
+        :workspaceId="workspaceId"
       />
     </div>
   </v-navigation-drawer>

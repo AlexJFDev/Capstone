@@ -31,6 +31,8 @@ defineProps<{
 .items-list-wrapper {
   width: 400px;
   min-width: 400px;
+  height: 100%;
+  border-right: 1px solid rgba(0, 0, .5);
 }
 
 .item-row {
@@ -73,5 +75,4 @@ defineProps<{
   }
 
 }
-
 </style>

@@ -16,22 +16,45 @@ const workspace = workspaces[props.workspaceId]!
 </script>
 
 <template>
-  <div class="w-100 h-100 pa-8">
-    <div class="w-100 h-100 border-md rounded" style="background-color: green;">
-      <div style="background-color: white; height: 30px;">Header, New Item</div>
+  <div class="pa-8">
+    <div class="border-md rounded" style="background-color: green;">
+
+      <!-- Fixed Header: New Item button and the dates area -->
+      <div class="margin">Header, New Item</div>
+
+      <!-- Body: Items List & Roadmap Render -->
       <div class="d-flex" style="overflow-y: scroll;">
-        <div style="background-color: blue; width: 400px; height: 2000px;">
+        <!-- Items List -->
+        <div class="items-list">
           {{ workspace }}
+
+          <!-- Simulating large content -->
+          <div style="height: 2000px;" />
         </div>
-        <div style="background-color: red; width: 100%;"></div>
+
+        <!-- Roadmap Render -->
+        <div class="roadmap-render"></div>
       </div>
-      <div style="background-color: white; height: 30px;">Footer, New Item</div>
-      
-      <div style="background-color: red;"></div>
+
+      <!-- Fixed Footer: New Item Button -->
+      <div class="margin">Footer, New Item</div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.margin {
+  background-color: white;
+  height: 30px;
+}
 
+.items-list {
+  background-color: blue;
+  width: 400px;
+}
+
+.roadmap-render {
+  background-color: red;
+  width: 100%;
+}
 </style>

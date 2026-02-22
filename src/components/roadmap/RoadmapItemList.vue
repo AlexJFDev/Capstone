@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { items } from '@/testing/dummy-items';
-import { LIST_WIDTH, ROW_HEIGHT } from './constants';
+import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants';
 
 
 defineProps<{
@@ -30,19 +30,19 @@ defineProps<{
 
 <style scoped>
 .items-list-wrapper {
-  width: v-bind(LIST_WIDTH + "px");
-  min-width: v-bind(LIST_WIDTH + "px");
+  width: v-bind(LIST_WIDTH_PX);
+  min-width: v-bind(LIST_WIDTH_PX);
   height: 100%;
   border-right: 1px solid rgba(0, 0, .5);
   background-color: rgb(var(--v-theme-surface));
 }
 
 .item-row {
-  height: v-bind(ROW_HEIGHT + "px");
+  height: v-bind(ROW_HEIGHT_PX);
   display: flex;
   gap: 8px;
-  border-top: 1px solid rgba(0, 0, 0, 0.12);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  border-top: 1px solid v-bind(LIST_BORDER_COLOR);
+  border-bottom: 1px solid v-bind(LIST_BORDER_COLOR);
 
   &:first-child {
     border-top: none;

@@ -10,7 +10,7 @@
  * Layout
  * ------
  *  - Every item occupies one fixed-height row (ROW_HEIGHT px).
- *  - Bars are vertically inset by BAR_PADDING on each side so they don't touch the row borders.
+ *  - Bars are vertically inset by CHART_BAR_PADDING on each side so they don't touch the row borders.
  *  - Vertical grid lines mark the start of every week (Sunday midnight).
  *  - Horizontal grid lines separate rows, with an additional line closing the last row.
  *
@@ -31,7 +31,7 @@
 
 import { computed } from 'vue'
 import { items } from '@/testing/dummy-items'
-import { BAR_PADDING, ROW_HEIGHT } from './constants'
+import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 
 /**
  * Describes the current zoom / display scale of the roadmap timeline.
@@ -138,7 +138,7 @@ function xForDate(date: Date): number {
  *  - x      → left edge pixel position (from item start-date)
  *  - width  → bar width in pixels  (end-date x − start-date x)
  *  - color  → fill color from the item definition
- *  - y      → top edge of the row (before BAR_PADDING is applied in the template)
+ *  - y      → top edge of the row (before CHART_BAR_PADDING is applied in the template)
  *
  * Items whose IDs are not found in the `items` map are silently excluded.
  */
@@ -170,7 +170,7 @@ const bars = computed(() =>
         :x2="xForDate(week)"
         y1="0"
         :y2="svgHeight"
-        stroke="rgba(0,0,0,0.12)"
+        :stroke="CHART_BORDER_COLOR_PRIMARY"
         stroke-width="1"
       />
 
@@ -185,7 +185,7 @@ const bars = computed(() =>
         :x2="svgWidth"
         :y1="index * ROW_HEIGHT - 0.5"
         :y2="index * ROW_HEIGHT - 0.5"
-        stroke="rgba(0,0,0,0.12)"
+        :stroke="CHART_BORDER_COLOR_PRIMARY"
         stroke-width="1"
       />
       <!-- Bottom border of last row. -->
@@ -194,7 +194,7 @@ const bars = computed(() =>
         :x2="svgWidth"
         :y1="svgHeight - 0.5"
         :y2="svgHeight - 0.5"
-        stroke="rgba(0,0,0,0.12)"
+        :stroke="CHART_BORDER_COLOR_PRIMARY"
         stroke-width="1"
       />
 
@@ -203,9 +203,9 @@ const bars = computed(() =>
         v-for="bar in bars"
         :key="bar.id"
         :x="bar.x"
-        :y="bar.y + BAR_PADDING"
+        :y="bar.y + CHART_BAR_PADDING"
         :width="bar.width"
-        :height="ROW_HEIGHT - BAR_PADDING * 2"
+        :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
         :fill="bar.color"
         rx="3"
       />

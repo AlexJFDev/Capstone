@@ -2,7 +2,7 @@
 import { workspaces } from '@/testing/dummy-workspaces'
 import RoadmapItemList from './RoadmapItemList.vue';
 import RoadmapChart, { type RoadmapScale } from './RoadmapChart.vue';
-import { ROW_HEIGHT, LIST_WIDTH } from './constants';
+import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX } from './constants';
 
 const props = defineProps<{
   workspaceId: string,
@@ -55,22 +55,22 @@ const scale: RoadmapScale = {
   .list-header {
     display: flex;
     flex-direction: column;
-    width: v-bind(LIST_WIDTH + "px");
+    width: v-bind(LIST_WIDTH_PX);
     
     .list-box {
-      background-color: rgba(0, 0, 0, 0.12);
-      height: v-bind(ROW_HEIGHT + "px");
+      background-color: v-bind(PANE_COLOR_PRIMARY);
+      height: v-bind(ROW_HEIGHT_PX);
     }
   }
 
   .chart-header {
-    width: calc(100% - v-bind(LIST_WIDTH + "px"));
+    width: calc(100% - v-bind(LIST_WIDTH_PX));
   }
 }
 
 .list-margin {
-  height: v-bind(ROW_HEIGHT + "px");
-  width: v-bind(LIST_WIDTH + "px");
+  height: v-bind(ROW_HEIGHT_PX);
+  width: v-bind(LIST_WIDTH_PX);
 }
 
 .body {
@@ -86,6 +86,6 @@ const scale: RoadmapScale = {
   border-width: 2px;
   border-radius: 4px;
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.12);
+  border-color: v-bind(PANE_COLOR_PRIMARY);
 }
 </style>

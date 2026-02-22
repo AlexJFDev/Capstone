@@ -4,7 +4,7 @@ import { computed } from 'vue'
 type DateStyle = 'long-american' | 'short-american' | 'long-european' | 'short-european'
 
 const props = defineProps<{
-  date: string
+  date: string | number | Date
   style?: DateStyle
 }>()
 

@@ -33,7 +33,6 @@ defineProps<{
   width: v-bind(LIST_WIDTH_PX);
   min-width: v-bind(LIST_WIDTH_PX);
   height: 100%;
-  border-right: 1px solid rgba(0, 0, .5);
   background-color: rgb(var(--v-theme-surface));
 }
 

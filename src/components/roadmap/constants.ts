@@ -1,6 +1,7 @@
 // Shared Values
 export const ROW_HEIGHT = 30
 export const ROW_HEIGHT_PX = `${ROW_HEIGHT}px`
+export const SECTION_BORDER_COLOR = `rgba(0,0,0,.5)`
 
 // Pane Values
 export const PANE_COLOR_PRIMARY = 'rgba(0,0,0,0.12)'

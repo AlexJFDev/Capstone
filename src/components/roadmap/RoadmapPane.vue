@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { workspaces } from '@/testing/dummy-workspaces'
 import RoadmapItemList from './RoadmapItemList.vue';
-import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX } from './constants'
+import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue';
@@ -36,10 +36,10 @@ const scale: RoadmapScale = {
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList :itemIds="workspace.items" />
+        <RoadmapItemList class="item-list" :itemIds="workspace.items" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart :itemIds="workspace.items" :scale="scale" />
+        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />
       </div>
 
       <!-- Footer -->
@@ -53,11 +53,15 @@ const scale: RoadmapScale = {
   display: flex;
   flex-direction: row;
   background-color: rgb(var(--v-theme-surface));
+  width: fit-content;
+
+  border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
 
   .list-header {
     display: flex;
     flex-direction: column;
     width: v-bind(LIST_WIDTH_PX);
+    border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
     
     .list-box {
       background-color: v-bind(PANE_COLOR_PRIMARY);
@@ -78,6 +82,10 @@ const scale: RoadmapScale = {
 .body {
   display: flex;
   max-height: calc(100vh - 250px);
+
+  .item-list {
+    border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+  }
 }
 
 .roadmap-pane {

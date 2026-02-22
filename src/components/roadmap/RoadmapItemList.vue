@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { items } from '@/testing/dummy-items';
+import { LIST_WIDTH, ROW_HEIGHT } from './constants';
 
 
 defineProps<{
@@ -29,15 +30,15 @@ defineProps<{
 
 <style scoped>
 .items-list-wrapper {
-  width: 400px;
-  min-width: 400px;
+  width: v-bind(LIST_WIDTH + "px");
+  min-width: v-bind(LIST_WIDTH + "px");
   height: 100%;
   border-right: 1px solid rgba(0, 0, .5);
   background-color: rgb(var(--v-theme-surface));
 }
 
 .item-row {
-  height: 30px;
+  height: v-bind(ROW_HEIGHT + "px");
   display: flex;
   gap: 8px;
   border-top: 1px solid rgba(0, 0, 0, 0.12);

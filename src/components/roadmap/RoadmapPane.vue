@@ -2,6 +2,7 @@
 import { workspaces } from '@/testing/dummy-workspaces'
 import RoadmapItemList from './RoadmapItemList.vue';
 import RoadmapChart, { type RoadmapScale } from './RoadmapChart.vue';
+import { ROW_HEIGHT, LIST_WIDTH } from './constants';
 
 const props = defineProps<{
   workspaceId: string,
@@ -54,22 +55,22 @@ const scale: RoadmapScale = {
   .list-header {
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: v-bind(LIST_WIDTH + "px");
     
     .list-box {
       background-color: rgba(0, 0, 0, 0.12);
-      height: 30px;
+      height: v-bind(ROW_HEIGHT + "px");
     }
   }
 
   .chart-header {
-    width: calc(100% - 400px);
+    width: calc(100% - v-bind(LIST_WIDTH + "px"));
   }
 }
 
 .list-margin {
-  height: 30px;
-  width: 400px;
+  height: v-bind(ROW_HEIGHT + "px");
+  width: v-bind(LIST_WIDTH + "px");
 }
 
 .body {

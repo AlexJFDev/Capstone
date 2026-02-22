@@ -31,6 +31,7 @@
 
 import { computed } from 'vue'
 import { items } from '@/testing/dummy-items'
+import { BAR_PADDING, ROW_HEIGHT } from './constants'
 
 /**
  * Describes the current zoom / display scale of the roadmap timeline.
@@ -54,11 +55,6 @@ const props = defineProps<{
   /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
   scale: RoadmapScale
 }>()
-
-/** Height of each item row in SVG pixels. */
-const ROW_HEIGHT = 30
-/** Vertical gap between a row's top/bottom edge and the bar drawn inside it. */
-const BAR_PADDING = 6
 
 /**
  * Derives the overall timeline window from the earliest start-date and latest end-date

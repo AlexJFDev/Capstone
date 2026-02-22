@@ -4,6 +4,7 @@ import type { RoadmapScale } from './types'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { computeDateRange, computeDaysInRange, computeStartsInRange, xForDate } from './utils'
 import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants';
+import { formatDate } from '../utils';
 
 const props = defineProps<{
   itemIds: string[]
@@ -45,6 +46,14 @@ const weekStarts = computed(() => computeStartsInRange(dateRange.value))
         :stroke="CHART_BORDER_COLOR_PRIMARY"
         stroke-width="1"
       />
+      <text
+        v-for="week in weekStarts"
+        :key="week.getTime()"
+        :x="xForDate(week, dateRange, scale.pixelsPerDay) + 4"
+        y="40"
+      >
+        {{ formatDate(week, 'short-american') }}
+      </text>
     </svg>
   </div>
 </template>

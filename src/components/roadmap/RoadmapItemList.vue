@@ -34,9 +34,6 @@ defineProps<{
   height: 100%;
   border-right: 1px solid rgba(0, 0, .5);
   background-color: rgb(var(--v-theme-surface));
-  position: sticky;
-  left: 0;
-  z-index: 1;
 }
 
 .item-row {

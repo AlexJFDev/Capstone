@@ -49,18 +49,12 @@ const scale: RoadmapScale = {
 .header {
   display: flex;
   flex-direction: row;
-  position: sticky;
-  top: 0;
-  z-index: 2;
   background-color: rgb(var(--v-theme-surface));
 
   .list-header {
     display: flex;
     flex-direction: column;
     width: 400px;
-    position: sticky;
-    left: 0;
-    z-index: 1;
     
     .list-box {
       background-color: rgba(0, 0, 0, 0.12);

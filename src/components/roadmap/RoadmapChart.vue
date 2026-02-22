@@ -33,7 +33,7 @@ import { computed } from 'vue'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import type { RoadmapScale } from './types'
-import { computeDateRange, computeDaysInRange, computeStartsInRange } from './utils'
+import { computeDateRange, computeDaysInRange, computeStartsInRange, xForDate } from './utils'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -61,20 +61,6 @@ const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
 const weekStarts = computed(() => computeStartsInRange(dateRange.value))
 
 /**
- * Converts a Date to an SVG x-coordinate relative to the left edge of the canvas.
- *
- * Formula: (date − rangeStart) in days × pixelsPerDay
- *
- * @param date  The date to convert.
- * @returns     Pixel offset from the left edge of the SVG.
- */
-function xForDate(date: Date): number {
-  if (!dateRange.value) return 0
-  const days = (date.getTime() - dateRange.value.start.getTime()) / 86400000
-  return days * props.scale.pixelsPerDay
-}
-
-/**
  * Derived bar geometry for every visible item. Each bar object carries:
  *  - id     → item identifier (used as Vue key)
  *  - x      → left edge pixel position (from item start-date)
@@ -89,8 +75,8 @@ const bars = computed(() =>
     .map((id, index) => {
       const item = dummyItems[id]
       if (!item) return null
-      const x = xForDate(new Date(item['start-date']))
-      const width = xForDate(new Date(item['end-date'])) - x
+      const x = xForDate(item['start-date'], dateRange.value, props.scale.pixelsPerDay)
+      const width = xForDate(item['end-date'], dateRange.value, props.scale.pixelsPerDay) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)
@@ -108,8 +94,8 @@ const bars = computed(() =>
       <line
         v-for="week in weekStarts"
         :key="week.getTime()"
-        :x1="xForDate(week)"
-        :x2="xForDate(week)"
+        :x1="xForDate(week, dateRange, scale.pixelsPerDay)"
+        :x2="xForDate(week, dateRange, scale.pixelsPerDay)"
         y1="0"
         :y2="svgHeight"
         :stroke="CHART_BORDER_COLOR_PRIMARY"

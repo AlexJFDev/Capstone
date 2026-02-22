@@ -13,3 +13,14 @@ export interface RoadmapScale {
   headerLabel: (date: Date) => string
   gridInterval: 'day' | 'week' | 'month'
 }
+
+/**
+ * Simple range of dates.
+ * 
+ * @property start   The Beginning of the range
+ * @property end     The end of the range
+ */
+export interface DateRange {
+  start: Date
+  end: Date
+}

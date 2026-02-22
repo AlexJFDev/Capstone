@@ -30,9 +30,10 @@
  */
 
 import { computed } from 'vue'
-import { items } from '@/testing/dummy-items'
+import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import type { RoadmapScale } from './types'
+import { computeDateRange, computeDaysInRange, computeStartsInRange } from './utils'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -41,47 +42,12 @@ const props = defineProps<{
   scale: RoadmapScale
 }>()
 
-/**
- * Derives the overall timeline window from the earliest start-date and latest end-date
- * across all visible items. Both boundaries are then snapped to Sunday midnight so the
- * week columns align perfectly with the grid lines.
- *
- * Returns null when no valid items are provided (nothing to render).
- */
-const dateRange = computed(() => {
-  // Collect every start and end date from the visible items, skipping unknown IDs.
-  const dates = props.itemIds.flatMap(id => {
-    const item = items[id]
-    if (!item) return []
-    return [new Date(item['start-date']), new Date(item['end-date'])]
-  })
-  if (dates.length === 0) return null
+const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
 
-  const min = new Date(Math.min(...dates.map(d => d.getTime())))
-  const max = new Date(Math.max(...dates.map(d => d.getTime())))
-
-  // Snap start back to the nearest Sunday (getDay() === 0 means already Sunday → stays).
-  const start = new Date(min)
-  start.setDate(start.getDate() - start.getDay())
-  start.setHours(0, 0, 0, 0)
-
-  // Snap end forward to the *next* Sunday.
-  // If max is already a Sunday, (7 - 0) % 7 === 0, so we force a full week forward (|| 7)
-  // to ensure there is always at least one grid column after the last bar.
-  const end = new Date(max)
-  const daysUntilSunday = (7 - end.getDay()) % 7
-  end.setDate(end.getDate() + (daysUntilSunday || 7))
-  end.setHours(0, 0, 0, 0)
-
-  return { start, end }
-})
+const dateRange = computed(() => computeDateRange(items.value))
 
 /** Total number of calendar days spanned by the timeline window (used for SVG width). */
-const totalDays = computed(() => {
-  if (!dateRange.value) return 0
-  // Divide millisecond difference by ms-per-day (86 400 000) and round to avoid float drift.
-  return Math.round((dateRange.value.end.getTime() - dateRange.value.start.getTime()) / 86400000)
-})
+const totalDays = computed(() => computeDaysInRange(dateRange.value))
 
 /** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
 const svgWidth = computed(() => totalDays.value * props.scale.pixelsPerDay)
@@ -92,16 +58,7 @@ const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
  * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
  * Used to draw the vertical grid lines in the template.
  */
-const weekStarts = computed(() => {
-  if (!dateRange.value) return []
-  const weeks: Date[] = []
-  const cur = new Date(dateRange.value.start)
-  while (cur.getTime() < dateRange.value.end.getTime()) {
-    weeks.push(new Date(cur))
-    cur.setDate(cur.getDate() + 7)
-  }
-  return weeks
-})
+const weekStarts = computed(() => computeStartsInRange(dateRange.value))
 
 /**
  * Converts a Date to an SVG x-coordinate relative to the left edge of the canvas.
@@ -130,7 +87,7 @@ function xForDate(date: Date): number {
 const bars = computed(() =>
   props.itemIds
     .map((id, index) => {
-      const item = items[id]
+      const item = dummyItems[id]
       if (!item) return null
       const x = xForDate(new Date(item['start-date']))
       const width = xForDate(new Date(item['end-date'])) - x

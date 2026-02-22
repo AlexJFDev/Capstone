@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { workspaces } from '@/testing/dummy-workspaces'
 import RoadmapItemList from './RoadmapItemList.vue';
-import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX } from './constants';
-import type { RoadmapScale } from './types';
+import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX } from './constants'
+import type { RoadmapScale } from './types'
+import RoadmapChart from './RoadmapChart.vue'
 
 const props = defineProps<{
   workspaceId: string,

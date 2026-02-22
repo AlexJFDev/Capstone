@@ -57,11 +57,20 @@ const scale: RoadmapScale = {
 
   border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
 
+  position: sticky;
+  top: 0;
+  z-index: 1;
+
   .list-header {
     display: flex;
     flex-direction: column;
     width: v-bind(LIST_WIDTH_PX);
     border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+    position: sticky;
+    left: 0;
+    z-index: 2;
+
+    background-color: rgb(var(--v-theme-surface));
     
     .list-box {
       background-color: v-bind(PANE_COLOR_PRIMARY);
@@ -82,9 +91,13 @@ const scale: RoadmapScale = {
 .body {
   display: flex;
   max-height: calc(100vh - 250px);
+  width: fit-content;
 
   .item-list {
     border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+
+    position: sticky;
+    left: 0;
   }
 }
 

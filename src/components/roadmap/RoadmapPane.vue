@@ -4,6 +4,7 @@ import RoadmapItemList from './RoadmapItemList.vue';
 import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX } from './constants'
 import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
+import RoadmapHeader from './RoadmapHeader.vue';
 
 const props = defineProps<{
   workspaceId: string,
@@ -29,7 +30,7 @@ const scale: RoadmapScale = {
           <div class="list-box" />
           <div class="list-margin">Add Item</div>
         </div>
-        <div class="chart-header"></div>
+        <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->

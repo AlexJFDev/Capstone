@@ -56,3 +56,16 @@ export function computeStartsInRange(range: DateRange): Date[] {
   }
   return weeks
 }
+
+/**
+ * Converts a Date to an SVG x-coordinate relative to the left edge of the canvas.
+ *
+ * Formula: (date − rangeStart) in days × pixelsPerDay
+ *
+ * @param date  The date to convert.
+ * @returns     Pixel offset from the left edge of the SVG.
+ */
+export function xForDate(date: Date, range: DateRange, pixelsPerDay: number): number {
+  const days = (date.getTime() - range.start.getTime()) / SEC_IN_DAY
+  return days * pixelsPerDay
+}

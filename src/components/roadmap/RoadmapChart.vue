@@ -128,14 +128,6 @@ const bars = computed(() =>
         stroke-width="1"
       />
       <!-- Bottom border of last row. -->
-      <line
-        x1="0"
-        :x2="svgWidth"
-        :y1="svgHeight - 0.5"
-        :y2="svgHeight - 0.5"
-        :stroke="CHART_BORDER_COLOR_PRIMARY"
-        stroke-width="1"
-      />
 
       <!-- Item bars -->
       <rect

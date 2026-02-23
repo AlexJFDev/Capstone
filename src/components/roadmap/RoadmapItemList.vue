@@ -47,6 +47,10 @@ defineProps<{
     border-top: none;
   }
 
+  &:last-child {
+    border-bottom: none;
+  }
+
   & + .item-row {
     border-top: none;
   }

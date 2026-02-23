@@ -1,13 +1,29 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 
-const TEST_WORKSPACE_ID = 'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890'
+const WORKSPACE_IDS = [
+  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
+  'w-2b3c4d5e-6f7a-8901-bcde-f12345678901',
+]
+
+const workspaceIndex = ref(0)
+const workspaceId = computed(() => {
+  return WORKSPACE_IDS[workspaceIndex.value]!
+})
+
+function toggle() {
+  workspaceIndex.value = (workspaceIndex.value + 1) % WORKSPACE_IDS.length
+
+  console.log("Toggled")
+}
 </script>
 
 <template>
   <v-main>
     <div class="pane">
-      <RoadmapPane :workspaceId="TEST_WORKSPACE_ID"/>
+      <v-btn @click="toggle" style="margin-bottom: 8px">Toggle Workspace</v-btn>
+      <RoadmapPane :workspaceId="workspaceId" />
     </div>
   </v-main>
 </template>

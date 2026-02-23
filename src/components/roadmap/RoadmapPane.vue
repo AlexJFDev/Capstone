@@ -5,12 +5,13 @@ import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR 
 import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
   workspaceId: string,
 }>()
 
-const workspace = workspaces[props.workspaceId]!
+const workspace = computed(() => workspaces[props.workspaceId]!)
 
 const scale: RoadmapScale = {
   pixelsPerDay: 30,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { items } from '@/testing/dummy-items'
 import DateChip from '@/components/DateChip.vue'
+import { computed } from 'vue'
 
 const model = defineModel<boolean>()
 
@@ -8,11 +9,13 @@ const props = defineProps<{
   itemId: string
 }>()
 
-const item = items[props.itemId]!
+const item = computed(() => items[props.itemId])
+
 </script>
 
 <template>
   <v-navigation-drawer
+    v-if="item"
     v-model="model"
     temporary 
     location="right"

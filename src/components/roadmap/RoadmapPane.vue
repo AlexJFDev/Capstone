@@ -18,6 +18,8 @@ const scale: RoadmapScale = {
   gridInterval: 'week',
 }
 
+const addItem = () => {}
+
 </script>
 
 <template>
@@ -27,7 +29,7 @@ const scale: RoadmapScale = {
     <div class="header">
       <div class="list-header">
         <div class="list-box" />
-        <div>Add Item</div>
+        <v-btn flat class="add-button" @click="addItem">Add Item</v-btn>
       </div>
       <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
     </div>
@@ -72,6 +74,12 @@ const scale: RoadmapScale = {
       .list-box {
         background-color: v-bind(PANE_COLOR_PRIMARY);
         height: v-bind(ROW_HEIGHT_PX);
+      }
+
+      .add-button {
+        width: v-bind(LIST_WIDTH_PX);
+        height: v-bind(ROW_HEIGHT_PX);
+        border-radius: 0;
       }
     }
 

@@ -3,8 +3,8 @@ import { computed, ref } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 
 const WORKSPACE_IDS = [
-  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
   'w-2b3c4d5e-6f7a-8901-bcde-f12345678901',
+  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
 ]
 
 const workspaceIndex = ref(0)

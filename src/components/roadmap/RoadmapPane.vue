@@ -45,7 +45,7 @@ const scale: RoadmapScale = {
 
 <style scoped>
 .roadmap-pane {
-  max-height: calc(100vh - 64px);
+  height: 100%;
   overflow: auto;
   border: 2px solid v-bind(PANE_COLOR_PRIMARY);
   border-radius: 4px;
@@ -79,7 +79,6 @@ const scale: RoadmapScale = {
 
   .body {
     display: flex;
-    max-height: calc(100vh - 250px);
     width: fit-content;
 
     .item-list {

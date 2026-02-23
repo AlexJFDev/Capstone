@@ -1,3 +1,10 @@
+// === MISC ===
+const COLOR_REGEX = /^#[0-9a-f]{6}$/i
+export function isValidColor(color: string): boolean {
+  return COLOR_REGEX.test(color)
+}
+
+// === WORKSPACES ===
 export interface Workspace {
   name: string;
   description: string;
@@ -14,6 +21,12 @@ export function constructEmptyWorkspace(): Workspace {
   }
 }
 
+const WORKSPACE_UUID_REGEX = /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+export function isValidWorkspaceKey(key: string): boolean {
+  return WORKSPACE_UUID_REGEX.test(key)
+}
+
+// === ITEMS ===
 export interface Item {
   name: string;
   description: string;
@@ -30,4 +43,9 @@ export function constructEmptyItem(): Item {
     'end-date': new Date(),
     color: '#000000',
   }
+}
+
+const ITEM_UUID_REGEX = /^i-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+export function isValidItemKey(key: string): boolean {
+  return ITEM_UUID_REGEX.test(key)
 }

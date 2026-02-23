@@ -1,37 +1,66 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
+import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
+import { workspaces } from '@/testing/dummy-workspaces'
 
-const WORKSPACE_IDS = [
-  'w-2b3c4d5e-6f7a-8901-bcde-f12345678901',
-  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
-]
+const workspaceIds = Object.keys(workspaces)
 
-const workspaceIndex = ref(0)
-const workspaceId = computed(() => {
-  return WORKSPACE_IDS[workspaceIndex.value]!
-})
+const activeWorkspaceId = ref(workspaceIds[0]!)
+const workspacesPanelOpen = ref(false)
 
-function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % WORKSPACE_IDS.length
-
-  console.log("Toggled")
-}
+const workspaceName = computed(() => workspaces[activeWorkspaceId.value]?.name ?? '')
 </script>
 
 <template>
-  <v-main>
-    <v-btn @click="toggle" style="margin-bottom: 8px">Toggle Workspace</v-btn>
-    <div class="pane">
-      <RoadmapPane :workspaceId="workspaceId" />
+  <v-app-bar elevation="0" border="b">
+    <v-app-bar-title>Capstone</v-app-bar-title>
+    <template #append>
+      <v-btn
+        prepend-icon="mdi-view-dashboard-outline"
+        variant="text"
+        @click="workspacesPanelOpen = true"
+      >
+        Workspaces
+      </v-btn>
+    </template>
+  </v-app-bar>
+
+  <v-main style="height: 100vh; overflow: hidden;">
+    <div class="view">
+      <div class="view-header">
+        <div class="d-flex align-center ga-2">
+          <v-icon>mdi-chart-gantt</v-icon>
+          <span class="text-h6">{{ workspaceName }}</span>
+        </div>
+      </div>
+
+      <div class="roadmap-container">
+        <RoadmapPane :workspaceId="activeWorkspaceId" />
+      </div>
     </div>
   </v-main>
+
+  <WorkspacesPanel v-model="workspacesPanelOpen" :workspaceIds="workspaceIds" />
 </template>
 
 <style scoped>
-.pane {
-  width: calc(100vw - 200px);
-  height: calc(100vh - 200px);
+.view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 16px;
+  gap: 12px;
+}
+
+.view-header {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.roadmap-container {
+  flex: 1;
+  min-height: 0;
 }
 </style>

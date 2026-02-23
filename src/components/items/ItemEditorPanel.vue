@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { items } from '@/testing/dummy-items'
-import { ref } from 'vue'
+import { constructEmptyItem, items } from '@/testing/dummy-items'
+import { computed, ref, watch } from 'vue'
 
 const model = defineModel<boolean>()
 
@@ -11,7 +11,17 @@ const props = defineProps<{
 const save = () => {}
 const cancel = () => {}
 
-const draft = ref(items['i-a1b2c3d4-e5f6-7890-abcd-ef1234567890']!)
+const draft = ref(constructEmptyItem())
+const item = computed(() => items[props.itemId!])
+
+watch(model, isOpen => {
+  if (isOpen && item.value) {
+    draft.value = { ...item.value }
+  } else {
+    draft.value = constructEmptyItem()
+  }
+})
+
 </script>
 
 <template>

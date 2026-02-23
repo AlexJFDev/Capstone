@@ -8,7 +8,12 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
-    }
+    },
+    ...(import.meta.env.DEV ? [{
+      path: '/test',
+      name: 'test',
+      component: () => import('../views/TestView.vue'),
+    }] : []),
   ],
 })
 

@@ -1,27 +1,34 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { items } from '@/testing/dummy-items'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   edit?: boolean
+  maxItems?: number
 }>(), {
   edit: false,
+  maxItems: 10,
 })
 
 const model = defineModel<string[]>({ default: [] })
 
+const visibleItems = computed(() => props.edit ? model.value : model.value.slice(0, props.maxItems))
+const hasMore = computed(() => !props.edit && model.value.length > props.maxItems)
+
 const removeItem = (_itemId: string) => {}
 const addItem = () => {}
+const viewMore = () => {}
 </script>
 
 <template>
   <div class="item-list bg-white text-black rounded-lg border">
 
     <v-row
-      v-for="(itemId, index) in model"
+      v-for="(itemId, index) in visibleItems"
       :key="itemId"
       class="ma-0"
-      :class="{ 'border-b': edit || index < model.length - 1 }"
+      :class="{ 'border-b': edit || index < visibleItems.length - 1 || hasMore }"
       align="center"
     >
       <v-col cols="1" class="d-flex justify-center">
@@ -38,6 +45,17 @@ const addItem = () => {}
           size="small"
           @click="removeItem(itemId)"
         />
+      </v-col>
+    </v-row>
+
+    <v-row v-if="hasMore" class="ma-0 add-row" align="center" @click="viewMore">
+      <v-col cols="1" class="d-flex justify-center">
+        <div class="add-swatch d-flex align-center justify-center">
+          <v-icon size="8">mdi-chevron-down</v-icon>
+        </div>
+      </v-col>
+      <v-col class="pa-0 text-caption text-medium-emphasis">
+        View {{ model.length - props.maxItems }} more
       </v-col>
     </v-row>
 

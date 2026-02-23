@@ -33,7 +33,7 @@ import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
 import type { RoadmapScale } from './types'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, xForDate } from './utils'
+import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -69,7 +69,7 @@ const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
  * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
  * Used to draw the vertical grid lines in the template.
  */
-const weekStarts = computed(() => computeStartsInRange(dateRange.value))
+const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRange.value), svgWidth.value, dateRange.value, props.scale.pixelsPerDay))
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:

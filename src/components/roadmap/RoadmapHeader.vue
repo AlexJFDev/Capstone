@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import type { RoadmapScale } from './types'
 import { items as dummyItems } from '@/testing/dummy-items'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, xForDate } from './utils'
+import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
 import { CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants';
 import { formatDate } from '../utils';
 
@@ -37,7 +37,7 @@ const svgHeight = ROW_HEIGHT * 2
  * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
  * Used to draw the vertical grid lines in the template.
  */
-const weekStarts = computed(() => computeStartsInRange(dateRange.value))
+const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRange.value), svgWidth.value, dateRange.value, props.scale.pixelsPerDay))
 
 </script>
 

@@ -58,6 +58,27 @@ export function computeStartsInRange(range: DateRange): Date[] {
 }
 
 /**
+ * Extends a week-starts array beyond the date range to cover a given SVG pixel width.
+ * Appends additional weekly dates until the next week would start past svgWidth.
+ *
+ * @param weekStarts  Output of computeStartsInRange — the baseline week boundaries.
+ * @param svgWidth    The target pixel width that grid lines must cover.
+ * @param range       The date range used to convert dates to x-coordinates.
+ * @param pixelsPerDay  Zoom level; must match the value used to compute svgWidth.
+ */
+export function extendWeekStarts(weekStarts: Date[], svgWidth: number, range: DateRange, pixelsPerDay: number): Date[] {
+  if (weekStarts.length === 0) return weekStarts
+  const result = [...weekStarts]
+  const next = new Date(result[result.length - 1]!)
+  next.setDate(next.getDate() + 7)
+  while (xForDate(next, range, pixelsPerDay) < svgWidth) {
+    result.push(new Date(next))
+    next.setDate(next.getDate() + 7)
+  }
+  return result
+}
+
+/**
  * Converts a Date to an SVG x-coordinate relative to the left edge of the canvas.
  *
  * Formula: (date − rangeStart) in days × pixelsPerDay

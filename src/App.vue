@@ -1,92 +1,46 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+import { RouterView } from 'vue-router'
+import { ref } from 'vue'
+import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
+import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
+import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
+import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
+import { workspaces } from '@/testing/dummy-workspaces'
 
-import MarkdownIt from 'markdown-it'
+const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890'
 
-const md = new MarkdownIt()
-const result = md.render('# markdown-it rulezz!')
+const workspaceIds = Object.keys(workspaces)
 
+const itemEditorOpen = ref(false)
+const itemViewerOpen = ref(false)
+const workspaceEditorOpen = ref(false)
+const workspacesOpen = ref(false)
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <v-app>
+    <v-container>
+      <v-row>
+        <v-col cols="auto">
+          <v-btn @click="itemEditorOpen = true">Item Editor</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="itemViewerOpen = true">Item Viewer</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="workspaceEditorOpen = true">Workspace Editor</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="workspacesOpen = true">Workspaces</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-      <v-btn color="primary">Vuetify is installed!</v-btn>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-      <div v-html="result"></div>
-    </div>
-  </header>
-
-  <RouterView />
+    <ItemEditorPanel v-model="itemEditorOpen" />
+    <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
+    <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
+    <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
+    
+    <RouterView />
+  </v-app>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

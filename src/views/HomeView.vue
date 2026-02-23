@@ -21,8 +21,8 @@ function toggle() {
 
 <template>
   <v-main>
+    <v-btn @click="toggle" style="margin-bottom: 8px">Toggle Workspace</v-btn>
     <div class="pane">
-      <v-btn @click="toggle" style="margin-bottom: 8px">Toggle Workspace</v-btn>
       <RoadmapPane :workspaceId="workspaceId" />
     </div>
   </v-main>

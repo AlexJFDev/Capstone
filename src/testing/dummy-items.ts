@@ -1,20 +1,4 @@
-export interface Item {
-  name: string;
-  description: string;
-  'start-date': Date;
-  'end-date': Date;
-  color: string;
-}
-
-export function constructEmptyItem(): Item {
-  return {
-    name: '',
-    description: '',
-    'start-date': new Date(),
-    'end-date': new Date(),
-    color: '#000000',
-  }
-}
+import type { Item } from "@/types"
 
 export const items: Record<string, Item> = {
   'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890': {

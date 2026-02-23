@@ -1,18 +1,4 @@
-export interface Workspace {
-  name: string;
-  description: string;
-  color: string;
-  items: string[]; // List of item IDs
-}
-
-export function constructEmptyWorkspace(): Workspace {
-  return {
-    name: '',
-    description: '',
-    color: '#000000',
-    items: []
-  }
-}
+import type { Workspace } from "@/types"
 
 export const workspaces: Record<string, Workspace> = {
   'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890': {

@@ -28,7 +28,7 @@ const scale: RoadmapScale = {
       <div class="header">
         <div class="list-header">
           <div class="list-box" />
-          <div class="list-margin">Add Item</div>
+          <div>Add Item</div>
         </div>
         <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
       </div>
@@ -41,74 +41,60 @@ const scale: RoadmapScale = {
         <!-- Roadmap Chart -->
         <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />
       </div>
-
-      <!-- Footer -->
-      <div class="list-margin">Add Item</div>
     </div>
   </div>
 </template>
 
 <style scoped>
-.header {
-  display: flex;
-  flex-direction: row;
-  background-color: rgb(var(--v-theme-surface));
-  width: fit-content;
-
-  border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
-
-  position: sticky;
-  top: 0;
-  z-index: 1;
-
-  .list-header {
-    display: flex;
-    flex-direction: column;
-    width: v-bind(LIST_WIDTH_PX);
-    border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-    position: sticky;
-    left: 0;
-    z-index: 2;
-
-    background-color: rgb(var(--v-theme-surface));
-    
-    .list-box {
-      background-color: v-bind(PANE_COLOR_PRIMARY);
-      height: v-bind(ROW_HEIGHT_PX);
-    }
-  }
-
-  .chart-header {
-    width: calc(100% - v-bind(LIST_WIDTH_PX));
-  }
-}
-
-.list-margin {
-  height: v-bind(ROW_HEIGHT_PX);
-  width: v-bind(LIST_WIDTH_PX);
-}
-
-.body {
-  display: flex;
-  max-height: calc(100vh - 250px);
-  width: fit-content;
-
-  .item-list {
-    border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-
-    position: sticky;
-    left: 0;
-  }
-}
-
 .roadmap-pane {
   max-height: calc(100vh - 64px);
   overflow: auto;
   display: flex;
   flex-direction: column;
-  border-width: 2px;
+  border: 2px solid v-bind(PANE_COLOR_PRIMARY);
   border-radius: 4px;
-  border-style: solid;
-  border-color: v-bind(PANE_COLOR_PRIMARY);
+
+  .header {
+    display: flex;
+    background-color: rgb(var(--v-theme-surface));
+    width: fit-content;
+
+    border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
+
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+    .list-header {
+      display: flex;
+      flex-direction: column;
+      width: v-bind(LIST_WIDTH_PX);
+      border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+      position: sticky;
+      left: 0;
+      z-index: 2;
+
+      background-color: rgb(var(--v-theme-surface));
+
+      .list-box {
+        background-color: v-bind(PANE_COLOR_PRIMARY);
+        height: v-bind(ROW_HEIGHT_PX);
+      }
+    }
+
+  }
+
+  .body {
+    display: flex;
+    max-height: calc(100vh - 250px);
+    width: fit-content;
+
+    .item-list {
+      border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+
+      position: sticky;
+      left: 0;
+    }
+  }
 }
 </style>

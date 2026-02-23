@@ -29,7 +29,7 @@
  *  y positions are simply `rowIndex * ROW_HEIGHT`.
  */
 
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import type { RoadmapScale } from './types'
@@ -41,6 +41,17 @@ const props = defineProps<{
   /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
   scale: RoadmapScale
 }>()
+
+const rootRef = useTemplateRef('root')
+const width = ref(0)
+let resizeObserver: ResizeObserver | null = null
+onMounted(() => {
+  resizeObserver = new ResizeObserver(entries => {
+    width.value = entries[0]?.contentRect.width ?? 0
+  })
+  resizeObserver.observe(rootRef.value!)
+})
+onBeforeUnmount(() => resizeObserver?.disconnect())
 
 const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
 
@@ -84,7 +95,7 @@ const bars = computed(() =>
 </script>
 
 <template>
-  <div class="roadmap-chart">
+  <div class="roadmap-chart" ref="root">
     <svg
       :width="svgWidth"
       :height="svgHeight"

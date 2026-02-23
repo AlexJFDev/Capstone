@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import type { RoadmapScale } from './types'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { computeDateRange, computeDaysInRange, computeStartsInRange, xForDate } from './utils'
@@ -10,6 +10,17 @@ const props = defineProps<{
   itemIds: string[]
   scale: RoadmapScale
 }>()
+
+const rootRef = useTemplateRef('root')
+const width = ref(0)
+let resizeObserver: ResizeObserver | null = null
+onMounted(() => {
+  resizeObserver = new ResizeObserver(entries => {
+    width.value = entries[0]?.contentRect.width ?? 0
+  })
+  resizeObserver.observe(rootRef.value!)
+})
+onBeforeUnmount(() => resizeObserver?.disconnect())
 
 const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
 
@@ -31,7 +42,7 @@ const weekStarts = computed(() => computeStartsInRange(dateRange.value))
 </script>
 
 <template>
-  <div class="roadmap-header">
+  <div class="roadmap-header" ref="root">
     <svg
       :width="svgWidth"
       :height="svgHeight"

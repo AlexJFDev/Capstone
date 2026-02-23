@@ -57,6 +57,7 @@ const addItem = () => {}
     display: flex;
     background-color: rgb(var(--v-theme-surface));
     width: fit-content;
+    min-width: 100%;
 
     border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
 
@@ -83,12 +84,12 @@ const addItem = () => {}
         border-radius: 0;
       }
     }
-
   }
 
   .body {
     display: flex;
     width: fit-content;
+    min-width: 100%;
 
     .item-list {
       border-right: 1px solid v-bind(SECTION_BORDER_COLOR);

@@ -42,7 +42,7 @@ const viewLess = () => { expanded.value = false }
       <v-col cols="1" class="d-flex justify-center">
         <ColorSwatch :color="itemsStore.getColor(itemId)" />
       </v-col>
-      <v-col class="pa-0">
+      <v-col class="pa-0 item-name">
         {{ itemsStore.getName(itemId) }}
       </v-col>
       <v-col v-if="edit" cols="auto" class="pa-1">
@@ -95,6 +95,12 @@ const viewLess = () => { expanded.value = false }
 <style scoped>
 .item-list {
   overflow: hidden;
+}
+
+.item-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .item-row {

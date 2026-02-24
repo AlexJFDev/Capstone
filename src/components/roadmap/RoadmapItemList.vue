@@ -62,6 +62,13 @@ const interfaceStore = useInterfaceStore()
   }
   align-items: center;
 
+  .item-name {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   .move-buttons {
     display: flex;
     flex-direction: column;

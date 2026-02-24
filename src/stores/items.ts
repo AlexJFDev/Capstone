@@ -1,5 +1,5 @@
 import { items as dummyItems } from "@/testing/dummy-items"
-import { constructEmptyItem, validateItemKey, type Item } from "@/types"
+import { constructEmptyItem, validateColor, validateItemKey, type Item } from "@/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
@@ -49,6 +49,24 @@ export const useItemsStore = defineStore('items', () => {
     return { key, item }
   }
 
+  function updateItem(key: string, updates: Partial<Item>) {
+    validateItemKey(key)
+    if (!(key in items.value)) {
+      throw new Error(`Unknown item key: "${key}"`)
+    }
+    if (updates.color) {
+      validateColor(updates.color)
+    }
+    if (updates["start-date"]) {
+      console.log("TODO: Start date validation")
+    }
+    if (updates["end-date"]) {
+      console.log("TODO: End date validation")
+    }
+
+    Object.assign(getItem(key), updates)
+  }
+
   return {
     items,
     initializeItems,
@@ -57,6 +75,7 @@ export const useItemsStore = defineStore('items', () => {
     getItem,
     getItems,
     getName,
-    getColor
+    getColor,
+    updateItem
   }
 })

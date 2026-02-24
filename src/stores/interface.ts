@@ -37,6 +37,10 @@ export const useInterfaceStore = defineStore('panels', () => {
     editingItemId.value = itemId
     itemEditorOpen.value = true
   }
+  function closeItemEditor() {
+    editingItemId.value = ''
+    itemEditorOpen.value = false
+  }
 
   return {
     workspacesOpen,
@@ -51,6 +55,7 @@ export const useInterfaceStore = defineStore('panels', () => {
     editingItemId,
     openItemEditor,
     activeWorkspace,
-    setActiveWorkspace
+    setActiveWorkspace,
+    closeItemEditor
   }
 })

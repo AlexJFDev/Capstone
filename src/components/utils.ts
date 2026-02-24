@@ -35,3 +35,7 @@ export function formatDate(date: string | number | Date, style: DateStyle) {
       return `${dd}-${mm}-${year}`
   }
 }
+
+export function dateToShortISOString(date: Date): string {
+  return date.toISOString().slice(0, 10)
+}

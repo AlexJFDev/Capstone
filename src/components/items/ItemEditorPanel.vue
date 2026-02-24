@@ -2,6 +2,8 @@
 import { constructEmptyItem } from '@/types'
 import { computed, ref, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
+import { dateToShortISOString } from '../utils';
+import { useInterfaceStore } from '@/stores/interface';
 
 const model = defineModel<boolean>()
 
@@ -10,19 +12,38 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
+const userInterface = useInterfaceStore()
 
-const save = () => {}
-const cancel = () => {}
+const save = () => {
+  if (props.itemId) {
+    itemsStore.updateItem(props.itemId, draft.value)
+    userInterface.closeItemEditor()
+  } else {
+    console.log("TODO: Handle saving new item")
+  }
+}
+const cancel = () => {
+  console.log("TODO: Should have a warning popup if changes have been made")
+}
 
 const draft = ref(constructEmptyItem())
+const startDraft = ref('')
+const endDraft = ref('')
 
 watch(model, isOpen => {
   if (isOpen && props.itemId) {
     draft.value = { ...itemsStore.getItem(props.itemId) }
+    startDraft.value = dateToShortISOString(draft.value['start-date'])
+    endDraft.value = dateToShortISOString(draft.value['end-date'])
   } else {
     draft.value = constructEmptyItem()
+    startDraft.value = ''
+    endDraft.value = ''
   }
 })
+
+watch(startDraft, date => draft.value['start-date'] = new Date(date))
+watch(endDraft, date => draft.value['end-date'] = new Date(date))
 
 </script>
 
@@ -74,7 +95,7 @@ watch(model, isOpen => {
             <v-divider />
             <v-card-text class="d-flex flex-column ga-2">
               <v-text-field
-                v-model="draft['start-date']"
+                v-model="startDraft"
                 label="Start date"
                 type="date"
                 variant="outlined"
@@ -82,7 +103,7 @@ watch(model, isOpen => {
                 hide-details="auto"
               />
               <v-text-field
-                v-model="draft['end-date']"
+                v-model="endDraft"
                 label="End date"
                 type="date"
                 variant="outlined"

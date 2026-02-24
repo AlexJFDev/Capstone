@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
-import { usePanelStore } from '@/stores/panels'
+import { useInterfaceStore } from '@/stores/interface'
 import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
 import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
@@ -14,7 +14,7 @@ const activeWorkspaceId = ref(workspacesStore.workspaceKeys[0]!)
 
 const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWorkspaceId.value))
 
-const panels = usePanelStore()
+const panels = useInterfaceStore()
 </script>
 
 <template>

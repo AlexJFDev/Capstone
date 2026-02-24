@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
-import { usePanelStore } from '@/stores/panels'
+import { useInterfaceStore } from '@/stores/interface'
 import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
 
 
@@ -9,7 +9,7 @@ defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const panelStore = usePanelStore()
+const interfaceStore = useInterfaceStore()
 
 </script>
 
@@ -19,7 +19,7 @@ const panelStore = usePanelStore()
       v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
-      @click="panelStore.openItemViewer(itemId)"
+      @click="interfaceStore.openItemViewer(itemId)"
     >
       <div class="move-buttons">
         <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" @click.stop />
@@ -27,7 +27,7 @@ const panelStore = usePanelStore()
       </div>
       <div class="item-name">{{ itemsStore.getName(itemId) }}</div>
       <div class="settings-button">
-        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" @click.stop="panelStore.openItemEditor(itemId)" />
+        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" @click.stop="interfaceStore.openItemEditor(itemId)" />
       </div>
     </div>
   </div>

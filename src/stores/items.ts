@@ -1,5 +1,5 @@
 import { items as dummyItems } from "@/testing/dummy-items"
-import { constructEmptyItem, isValidItemKey, type Item } from "@/types"
+import { constructEmptyItem, validateItemKey, type Item } from "@/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
@@ -19,16 +19,12 @@ export const useItemsStore = defineStore('items', () => {
   }
 
   function addItem(key: string, item: Item) {
-    if (!isValidItemKey(key)) {
-      throw new Error(`Invalid item key: "${key}"`)
-    }
+    validateItemKey(key)
     items.value[key] = item
   }
 
   function getItem(key: string): Item {
-    if (!isValidItemKey(key)) {
-      throw new Error(`Invalid item key: "${key}"`)
-    }
+    validateItemKey(key)
     return items.value[key]!
   }
 

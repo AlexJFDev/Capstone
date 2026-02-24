@@ -3,6 +3,11 @@ const COLOR_REGEX = /^#[0-9a-f]{6}$/i
 export function isValidColor(color: string): boolean {
   return COLOR_REGEX.test(color)
 }
+export function validateColor(color: string) {
+  if (!isValidColor(color)) {
+    throw new Error(`Invalid hex color: "${color}"`)
+  }
+}
 
 // === WORKSPACES ===
 export interface Workspace {
@@ -24,6 +29,11 @@ export function constructEmptyWorkspace(): Workspace {
 const WORKSPACE_UUID_REGEX = /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidWorkspaceKey(key: string): boolean {
   return WORKSPACE_UUID_REGEX.test(key)
+}
+export function validateWorkspaceKey(key: string) {
+  if (!isValidWorkspaceKey(key)) {
+    throw new Error(`Invalid workspace key: "${key}"`)
+  }
 }
 
 // === ITEMS ===
@@ -48,4 +58,9 @@ export function constructEmptyItem(): Item {
 const ITEM_UUID_REGEX = /^i-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidItemKey(key: string): boolean {
   return ITEM_UUID_REGEX.test(key)
+}
+export function validateItemKey(key: string) {
+  if (!isValidItemKey(key)) {
+    throw new Error(`Invalid item key: "${key}"`)
+  }
 }

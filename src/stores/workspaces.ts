@@ -1,5 +1,5 @@
 import { workspaces as dummyWorkspaces } from "@/testing/dummy-workspaces"
-import { constructEmptyWorkspace, isValidColor, isValidItemKey, isValidWorkspaceKey, type Workspace } from "@/types"
+import { constructEmptyWorkspace, validateColor, validateItemKey, validateWorkspaceKey, type Workspace } from "@/types"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
@@ -16,16 +16,12 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   }
 
   function addWorkspace(key: string, workspace: Workspace) {
-    if (!isValidWorkspaceKey(key)) {
-      throw new Error(`Invalid workspace key: "${key}"`)
-    }
+    validateWorkspaceKey(key)
     workspaces.value[key] = workspace
   }
 
   function getWorkspace(key: string): Workspace {
-    if (!isValidWorkspaceKey(key)) {
-      throw new Error(`Invalid workspace key: "${key}"`)
-    }
+    validateWorkspaceKey(key)
     return workspaces.value[key]!
   }
 
@@ -39,23 +35,15 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   }
 
   function updateWorkspace(key: string, updates: Partial<Workspace>) {
-    if (!isValidWorkspaceKey(key)) {
-      throw new Error(`Invalid workspace key: "${key}"`)
-    }
+    validateWorkspaceKey(key)
     if (!(key in workspaces.value)) {
       throw new Error(`Unknown workspace key: "${key}"`)
     }
-    if (updates.color && !isValidColor(updates.color)) {
-      throw new Error(`Invalid color: "${updates.color}"`)
+    if (updates.color) {
+      validateColor(updates.color)
     }
     if (updates.items) {
-      updates.items.forEach(
-        itemId => {
-          if (!isValidItemKey(itemId)) {
-            throw new Error(`Invalid item key: "${itemId}"`)
-          }
-        }
-      )
+      updates.items.forEach(validateItemKey)
     }
 
     Object.assign(workspaces.value[key]!, updates)

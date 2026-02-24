@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { useItemsStore } from '@/stores/items';
+import { useItemsStore } from '@/stores/items'
+import { usePanelStore } from '@/stores/panels'
 import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
 
 
@@ -8,6 +9,7 @@ defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
+const panelStore = usePanelStore()
 
 </script>
 
@@ -17,14 +19,15 @@ const itemsStore = useItemsStore()
       v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
+      @click="panelStore.openItemViewer(itemId)"
     >
       <div class="move-buttons">
-        <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" />
-        <v-btn icon="mdi-menu-down" density="compact" size="x-small" variant="text" />
+        <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" @click.stop />
+        <v-btn icon="mdi-menu-down" density="compact" size="x-small" variant="text" @click.stop />
       </div>
       <div class="item-name">{{ itemsStore.getName(itemId) }}</div>
       <div class="settings-button">
-        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" />
+        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" @click.stop="panelStore.openItemEditor(itemId)" />
       </div>
     </div>
   </div>
@@ -41,6 +44,7 @@ const itemsStore = useItemsStore()
 .item-row {
   height: v-bind(ROW_HEIGHT_PX);
   display: flex;
+  cursor: pointer;
   gap: 8px;
   border-top: 1px solid v-bind(LIST_BORDER_COLOR);
   border-bottom: 1px solid v-bind(LIST_BORDER_COLOR);

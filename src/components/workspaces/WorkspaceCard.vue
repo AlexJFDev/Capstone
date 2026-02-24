@@ -31,7 +31,12 @@ const hovered = ref(false)
   >
     <template #append>
       <div class="actions" :class="{ visible: hovered }">
-        <v-btn icon="mdi-pencil" density="compact" variant="text" />
+        <v-btn
+          icon="mdi-pencil"
+          density="compact"
+          variant="text" 
+          @click="userInterface.openWorkspaceEditor(workspaceId)"
+        />
         <v-btn 
           icon="mdi-open-in-new"
           density="compact"

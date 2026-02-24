@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import { useItemsStore } from '@/stores/items'
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = withDefaults(defineProps<{
   edit?: boolean
@@ -14,6 +15,7 @@ const props = withDefaults(defineProps<{
 const model = defineModel<string[]>({ default: [] })
 
 const itemsStore = useItemsStore()
+const interfaceStore = useInterfaceStore()
 
 const visibleItems = computed(() => props.edit ? model.value : model.value.slice(0, props.maxItems))
 const hasMore = computed(() => !props.edit && model.value.length > props.maxItems)
@@ -30,8 +32,9 @@ const viewMore = () => {}
       v-for="(itemId, index) in visibleItems"
       :key="itemId"
       class="ma-0"
-      :class="{ 'border-b': edit || index < visibleItems.length - 1 || hasMore }"
+      :class="{ 'border-b': edit || index < visibleItems.length - 1 || hasMore, 'item-row': !edit }"
       align="center"
+      @click="!edit && interfaceStore.openItemViewer(itemId)"
     >
       <v-col cols="1" class="d-flex justify-center">
         <ColorSwatch :color="itemsStore.getColor(itemId)" />
@@ -78,6 +81,10 @@ const viewMore = () => {}
 <style scoped>
 .item-list {
   overflow: hidden;
+}
+
+.item-row {
+  cursor: pointer;
 }
 
 .add-row {

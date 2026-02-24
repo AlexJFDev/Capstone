@@ -9,12 +9,10 @@ import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 
 const workspacesStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
 
-const activeWorkspaceId = ref(workspacesStore.workspaceKeys[0]!)
+const workspaceName = computed(() => workspacesStore.getWorkspaceName(userInterface.activeWorkspace))
 
-const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWorkspaceId.value))
-
-const panels = useInterfaceStore()
 </script>
 
 <template>
@@ -24,7 +22,7 @@ const panels = useInterfaceStore()
       <v-btn
         prepend-icon="mdi-view-dashboard-outline"
         variant="text"
-        @click="panels.openWorkspaces"
+        @click="userInterface.openWorkspaces"
       >
         Workspaces
       </v-btn>
@@ -41,15 +39,15 @@ const panels = useInterfaceStore()
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :workspaceId="activeWorkspaceId" />
+        <RoadmapPane :workspaceId="userInterface.activeWorkspace" />
       </div>
     </div>
   </v-main>
 
-  <WorkspacesPanel v-model="panels.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
-  <WorkspaceEditorPanel v-model="panels.workspaceEditorOpen" :workspace-id="panels.editingWorkspaceId" />
-  <ItemViewerPanel v-model="panels.itemViewerOpen" :item-id="panels.viewingItemId" />
-  <ItemEditorPanel v-model="panels.itemEditorOpen" :item-id="panels.editingItemId" />
+  <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
+  <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
+  <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
+  <ItemEditorPanel v-model="userInterface.itemEditorOpen" :item-id="userInterface.editingItemId" />
 </template>
 
 <style scoped>

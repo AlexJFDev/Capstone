@@ -3,12 +3,14 @@ import { computed, ref } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { constructEmptyWorkspace } from '@/types'
+import { useInterfaceStore } from '@/stores/interface';
 
 const props = defineProps<{
   workspaceId: string
 }>()
 
 const workspacesStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
 
 const workspace = computed(
   () => props.workspaceId ?
@@ -30,7 +32,12 @@ const hovered = ref(false)
     <template #append>
       <div class="actions" :class="{ visible: hovered }">
         <v-btn icon="mdi-pencil" density="compact" variant="text" />
-        <v-btn icon="mdi-open-in-new" density="compact" variant="text" />
+        <v-btn 
+          icon="mdi-open-in-new"
+          density="compact"
+          variant="text"
+          @click="userInterface.setActiveWorkspace(workspaceId)"
+        />
       </div>
     </template>
 

@@ -30,7 +30,7 @@ const item = computed(
   >
 
     <!-- HEADER -->
-    <v-toolbar density="compact">
+    <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
       <v-toolbar-title>{{ item.name }}</v-toolbar-title>
     </v-toolbar>
@@ -82,5 +82,11 @@ const item = computed(
 <style scoped>
 .date-label {
   min-width: 2.5rem;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 </style>

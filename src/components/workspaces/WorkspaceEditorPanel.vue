@@ -34,7 +34,7 @@ watch(model, isOpen => {
     width="500"
   >
     <!-- HEADER -->
-    <v-toolbar density="compact">
+    <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
       <v-toolbar-title>{{ props.workspaceId ? 'Edit workspace' : 'New workspace' }}</v-toolbar-title>
       <v-spacer />
@@ -101,4 +101,9 @@ watch(model, isOpen => {
 </template>
 
 <style scoped>
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 </style>

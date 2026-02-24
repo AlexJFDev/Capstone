@@ -17,7 +17,7 @@ const addWorkspace = () => {}
     width="500"
   >
     <!-- HEADER -->
-    <v-toolbar density="compact">
+    <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
       <v-toolbar-title>Workspaces</v-toolbar-title>
     </v-toolbar>
@@ -45,5 +45,11 @@ const addWorkspace = () => {}
 .add-workspace-card {
   cursor: pointer;
   border-style: dashed !important;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 </style>

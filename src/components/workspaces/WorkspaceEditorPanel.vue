@@ -36,7 +36,7 @@ watch(model, isOpen => {
     <!-- HEADER -->
     <v-toolbar density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
-      <v-toolbar-title>{{ props.workspaceId ? 'Edit item' : 'New workspace' }}</v-toolbar-title>
+      <v-toolbar-title>{{ props.workspaceId ? 'Edit workspace' : 'New workspace' }}</v-toolbar-title>
       <v-spacer />
       <v-btn variant="text" @click="save">Save</v-btn>
     </v-toolbar>

@@ -2,14 +2,19 @@
 import { computed, ref } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
-import { workspaces } from '@/testing/dummy-workspaces'
+import { usePanelStore } from '@/stores/panels'
+import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
+import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
+import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
 
-const workspaceIds = Object.keys(workspaces)
+const workspacesStore = useWorkspacesStore()
 
-const activeWorkspaceId = ref(workspaceIds[0]!)
-const workspacesPanelOpen = ref(false)
+const activeWorkspaceId = ref(workspacesStore.workspaceKeys[0]!)
 
-const workspaceName = computed(() => workspaces[activeWorkspaceId.value]?.name ?? '')
+const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWorkspaceId.value))
+
+const panels = usePanelStore()
 </script>
 
 <template>
@@ -19,7 +24,7 @@ const workspaceName = computed(() => workspaces[activeWorkspaceId.value]?.name ?
       <v-btn
         prepend-icon="mdi-view-dashboard-outline"
         variant="text"
-        @click="workspacesPanelOpen = true"
+        @click="panels.openWorkspaces"
       >
         Workspaces
       </v-btn>
@@ -41,7 +46,10 @@ const workspaceName = computed(() => workspaces[activeWorkspaceId.value]?.name ?
     </div>
   </v-main>
 
-  <WorkspacesPanel v-model="workspacesPanelOpen" :workspaceIds="workspaceIds" />
+  <WorkspacesPanel v-model="panels.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
+  <WorkspaceEditorPanel v-model="panels.workspaceEditorOpen" :workspace-id="panels.editingWorkspaceId" />
+  <ItemViewerPanel v-model="panels.itemViewerOpen" :item-id="panels.viewingItemId" />
+  <ItemEditorPanel v-model="panels.itemEditorOpen" :item-id="panels.editingItemId" />
 </template>
 
 <style scoped>

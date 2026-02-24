@@ -3,6 +3,9 @@ import { ref } from "vue"
 
 export const usePanelStore = defineStore('panels', () => {
   const workspacesOpen = ref(false)
+  function openWorkspaces() {
+    workspacesOpen.value = true
+  }
 
   const workspaceEditorOpen = ref(false)
   const editingWorkspaceId = ref<string | undefined>()
@@ -27,6 +30,7 @@ export const usePanelStore = defineStore('panels', () => {
 
   return {
     workspacesOpen,
+    openWorkspaces,
     workspaceEditorOpen,
     editingWorkspaceId,
     openWorkspaceEditor,

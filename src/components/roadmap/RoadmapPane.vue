@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { workspaces } from '@/testing/dummy-workspaces'
-import RoadmapItemList from './RoadmapItemList.vue';
+import RoadmapItemList from './RoadmapItemList.vue'
 import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
-import RoadmapHeader from './RoadmapHeader.vue';
-import { computed } from 'vue';
+import RoadmapHeader from './RoadmapHeader.vue'
+import { computed } from 'vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { constructEmptyWorkspace } from '@/types'
 
 const props = defineProps<{
   workspaceId: string,
 }>()
 
-const workspace = computed(() => workspaces[props.workspaceId]!)
+const workspacesStore = useWorkspacesStore()
+
+const workspace = computed(
+  () => props.workspaceId ?
+    workspacesStore.getWorkspace(props.workspaceId) :
+    constructEmptyWorkspace()
+)
 
 const scale: RoadmapScale = {
   pixelsPerDay: 30,

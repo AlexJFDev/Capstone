@@ -1,4 +1,4 @@
-import type { Item } from "@/testing/dummy-items"
+import type { Item } from '@/types'
 import type { DateRange } from './types'
 
 const SEC_IN_DAY = 86400000

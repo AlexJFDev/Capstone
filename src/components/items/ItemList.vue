@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { items } from '@/testing/dummy-items'
 import ColorSwatch from '@/components/ColorSwatch.vue'
+import { useItemsStore } from '@/stores/items'
 
 const props = withDefaults(defineProps<{
   edit?: boolean
@@ -12,6 +12,8 @@ const props = withDefaults(defineProps<{
 })
 
 const model = defineModel<string[]>({ default: [] })
+
+const itemsStore = useItemsStore()
 
 const visibleItems = computed(() => props.edit ? model.value : model.value.slice(0, props.maxItems))
 const hasMore = computed(() => !props.edit && model.value.length > props.maxItems)
@@ -32,10 +34,10 @@ const viewMore = () => {}
       align="center"
     >
       <v-col cols="1" class="d-flex justify-center">
-        <ColorSwatch :color="items[itemId]!.color" />
+        <ColorSwatch :color="itemsStore.getColor(itemId)" />
       </v-col>
       <v-col class="pa-0">
-        {{ items[itemId]!.name }}
+        {{ itemsStore.getName(itemId) }}
       </v-col>
       <v-col v-if="edit" cols="auto" class="pa-1">
         <v-btn

@@ -61,12 +61,17 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     Object.assign(workspaces.value[key]!, updates)
   }
 
+  function getWorkspaceName(key: string): string {
+    return getWorkspace(key).name
+  }
+
   return {
     initializeWorkspaces,
     addWorkspace,
     addNewWorkspace,
     getWorkspace,
     workspaceKeys,
-    updateWorkspace
+    updateWorkspace,
+    getWorkspaceName
   }
 })

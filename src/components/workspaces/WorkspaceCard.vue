@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { workspaces } from '@/testing/dummy-workspaces';
+import { computed, ref } from 'vue'
 import ItemList from '../items/ItemList.vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { constructEmptyWorkspace } from '@/types'
 
 const props = defineProps<{
   workspaceId: string
 }>()
 
-const workspace = workspaces[props.workspaceId]!
+const workspacesStore = useWorkspacesStore()
+
+const workspace = computed(
+  () => props.workspaceId ?
+    workspacesStore.getWorkspace(props.workspaceId) :
+    constructEmptyWorkspace()
+)
+
 const hovered = ref(false)
 </script>
 

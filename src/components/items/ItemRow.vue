@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { type Item } from '@/testing/dummy-items'
 import ColorSwatch from '@/components/ColorSwatch.vue'
+import type { Item } from '@/types'
 
 defineProps<{
   item: Item

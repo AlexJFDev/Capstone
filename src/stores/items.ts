@@ -25,6 +25,25 @@ export const useItemsStore = defineStore('items', () => {
     items.value[key] = item
   }
 
+  function getItem(key: string): Item {
+    if (!isValidItemKey(key)) {
+      throw new Error(`Invalid item key: "${key}"`)
+    }
+    return items.value[key]!
+  }
+
+  function getItems(keys: string[]): Item[] {
+    return keys.map(getItem)
+  }
+  
+  function getName(key: string): string {
+    return getItem(key).name
+  }
+
+  function getColor(key: string): string {
+    return getItem(key).color
+  }
+
   function addNewItem() {
     const key = `i-${crypto.randomUUID()}`
     const item = constructEmptyItem()
@@ -38,6 +57,10 @@ export const useItemsStore = defineStore('items', () => {
     items,
     initializeItems,
     addItem,
-    addNewItem
+    addNewItem,
+    getItem,
+    getItems,
+    getName,
+    getColor
   }
 })

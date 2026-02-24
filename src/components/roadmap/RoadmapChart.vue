@@ -17,7 +17,6 @@
  * Props
  * -----
  *  itemIds  – Ordered list of item IDs to display (top-to-bottom).
- *             Each ID must exist in the `items` record imported from dummy-items.
  *  scale    – Controls zoom level and (future) header labelling.
  *             `pixelsPerDay` is the only field used for rendering here; the other
  *             fields (`headerLabel`, `gridInterval`) are reserved for a header bar component.
@@ -30,10 +29,10 @@
  */
 
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
 import type { RoadmapScale } from './types'
 import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
+import { useItemsStore } from '@/stores/items'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -41,6 +40,8 @@ const props = defineProps<{
   /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
   scale: RoadmapScale
 }>()
+
+const itemsStore = useItemsStore()
 
 const rootRef = useTemplateRef('root')
 const width = ref(0)
@@ -53,7 +54,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
+const items = computed(() => itemsStore.getItems(props.itemIds))
 
 const dateRange = computed(() => computeDateRange(items.value))
 
@@ -84,7 +85,7 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
 const bars = computed(() =>
   props.itemIds
     .map((id, index) => {
-      const item = dummyItems[id]
+      const item = itemsStore.getItem(id)
       if (!item) return null
       const x = xForDate(item['start-date'], dateRange.value, props.scale.pixelsPerDay)
       const width = xForDate(item['end-date'], dateRange.value, props.scale.pixelsPerDay) - x

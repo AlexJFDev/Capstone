@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { constructEmptyWorkspace, workspaces } from '@/testing/dummy-workspaces'
 import { computed, ref, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
+import { useWorkspacesStore } from '@/stores/workspaces';
+import { constructEmptyWorkspace } from '@/types';
 
 const model = defineModel<boolean>()
 
@@ -9,15 +10,16 @@ const props = defineProps<{
   workspaceId?: string
 }>()
 
+const workspaceStore = useWorkspacesStore()
+
 const save = () => {}
 const cancel = () => {}
 
 const draft = ref(constructEmptyWorkspace())
-const workspace = computed(() => workspaces[props.workspaceId!])
 
 watch(model, isOpen => {
-  if (isOpen && workspace.value) {
-    draft.value = { ...workspace.value }
+  if (isOpen && props.workspaceId) {
+    draft.value = { ...workspaceStore.getWorkspace(props.workspaceId) }
   } else {
     draft.value = constructEmptyWorkspace()
   }

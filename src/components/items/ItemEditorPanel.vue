@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { constructEmptyItem, items } from '@/testing/dummy-items'
+import { constructEmptyItem } from '@/types'
 import { computed, ref, watch } from 'vue'
+import { useItemsStore } from '@/stores/items'
 
 const model = defineModel<boolean>()
 
@@ -8,15 +9,16 @@ const props = defineProps<{
   itemId?: string
 }>()
 
+const itemsStore = useItemsStore()
+
 const save = () => {}
 const cancel = () => {}
 
 const draft = ref(constructEmptyItem())
-const item = computed(() => items[props.itemId!])
 
 watch(model, isOpen => {
-  if (isOpen && item.value) {
-    draft.value = { ...item.value }
+  if (isOpen && props.itemId) {
+    draft.value = { ...itemsStore.getItem(props.itemId) }
   } else {
     draft.value = constructEmptyItem()
   }

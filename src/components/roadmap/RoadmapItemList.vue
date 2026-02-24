@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { items } from '@/testing/dummy-items';
-import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants';
+import { useItemsStore } from '@/stores/items';
+import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
 
 
 defineProps<{
   itemIds: Array<string>
 }>()
+
+const itemsStore = useItemsStore()
 
 </script>
 
@@ -20,7 +22,7 @@ defineProps<{
         <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" />
         <v-btn icon="mdi-menu-down" density="compact" size="x-small" variant="text" />
       </div>
-      <div class="item-name">{{ items[itemId]?.name }}</div>
+      <div class="item-name">{{ itemsStore.getName(itemId) }}</div>
       <div class="settings-button">
         <v-btn icon="mdi-cog" density="compact" size="small" variant="text" />
       </div>

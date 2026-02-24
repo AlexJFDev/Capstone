@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { items } from '@/testing/dummy-items'
 import DateChip from '@/components/DateChip.vue'
+import { useItemsStore } from '@/stores/items'
+import { constructEmptyItem } from '@/types'
 import { computed } from 'vue'
 
 const model = defineModel<boolean>()
 
 const props = defineProps<{
-  itemId: string
+  itemId?: string
 }>()
 
-const item = computed(() => items[props.itemId])
+const itemsStore = useItemsStore()
+
+const item = computed(
+  () => props.itemId ? 
+    itemsStore.getItem(props.itemId) : 
+    constructEmptyItem()
+)
 
 </script>
 

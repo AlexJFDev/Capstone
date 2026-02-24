@@ -5,11 +5,13 @@ import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { workspaces } from '@/testing/dummy-workspaces'
+import { useWorkspacesStore } from '@/stores/workspaces'
 
 const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890'
 
-const workspaceIds = Object.keys(workspaces)
+const workspacesStore = useWorkspacesStore()
+
+const workspaceIds = workspacesStore.workspaceKeys
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)

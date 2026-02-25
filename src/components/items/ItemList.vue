@@ -22,7 +22,13 @@ const expanded = ref(false)
 const visibleItems = computed(() => (props.edit || expanded.value) ? model.value : model.value.slice(0, props.maxItems))
 const hasMore = computed(() => !props.edit && !expanded.value && model.value.length > props.maxItems)
 
-const removeItem = (_itemId: string) => {}
+const emit = defineEmits<{
+  removeItem: [itemId: string]
+}>()
+
+function removeItem(itemId: string) {
+  emit('removeItem', itemId)
+}
 const addItem = () => {}
 const viewMore = () => { expanded.value = true }
 const viewLess = () => { expanded.value = false }

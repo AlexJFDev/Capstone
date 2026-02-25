@@ -53,6 +53,11 @@ async function cancel() {
   }
 }
 
+function remove(itemId: string) {
+  const index = draft.value.items.indexOf(itemId)
+  draft.value.items.splice(index, 1)
+}
+
 </script>
 
 <template>
@@ -112,7 +117,7 @@ async function cancel() {
         <v-card-title class="text-subtitle-2">Items</v-card-title>
         <v-divider />
         <v-card-text>
-          <ItemList :model-value="draft.items" edit></ItemList>
+          <ItemList :model-value="draft.items" edit @remove-item="remove"></ItemList>
         </v-card-text>
       </v-card>
 

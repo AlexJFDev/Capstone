@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { constructEmptyItem } from '@/types'
+import { areItemsEqual, constructEmptyItem, type Item } from '@/types'
 import { computed, ref, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
 import { dateToShortISOString } from '../utils';
 import { useInterfaceStore } from '@/stores/interface';
 
+// External State
 const model = defineModel<boolean>()
-
 const props = defineProps<{
   itemId?: string
 }>()
@@ -14,36 +14,51 @@ const props = defineProps<{
 const itemsStore = useItemsStore()
 const userInterface = useInterfaceStore()
 
-const save = () => {
-  if (props.itemId) {
-    itemsStore.updateItem(props.itemId, draft.value)
+// Editing State
+const isEditing = computed(() => !!props.itemId)
+const editingItem = computed(
+  () => isEditing.value ?
+    itemsStore.getItem(props.itemId!) :
+    constructEmptyItem()
+)
+
+// Draft State
+const draft = ref<Item>(constructEmptyItem())
+const startDateDraft = ref('')
+const endDateDraft = ref('')
+const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value))
+
+// Draft Management
+function setDraft(item: Item) {
+  draft.value = { ...item }
+  startDateDraft.value = dateToShortISOString(item['start-date'])
+  endDateDraft.value = dateToShortISOString(item['end-date'])
+}
+
+watch(model, isOpen => {
+  if (isOpen) {
+    setDraft(editingItem.value)
+  }
+})
+
+watch(startDateDraft, date => draft.value['start-date'] = new Date(date))
+watch(endDateDraft, date => draft.value['end-date'] = new Date(date))
+
+// Action Functions
+function save() {
+  if (isEditing.value) {
+    itemsStore.updateItem(props.itemId!, draft.value)
     userInterface.closeItemEditor()
   } else {
     console.log("TODO: Handle saving new item")
   }
 }
-const cancel = () => {
-  console.log("TODO: Should have a warning popup if changes have been made")
-}
 
-const draft = ref(constructEmptyItem())
-const startDraft = ref('')
-const endDraft = ref('')
-
-watch(model, isOpen => {
-  if (isOpen && props.itemId) {
-    draft.value = { ...itemsStore.getItem(props.itemId) }
-    startDraft.value = dateToShortISOString(draft.value['start-date'])
-    endDraft.value = dateToShortISOString(draft.value['end-date'])
-  } else {
-    draft.value = constructEmptyItem()
-    startDraft.value = ''
-    endDraft.value = ''
+async function cancel() {
+  if (!changesMade.value || await userInterface.confirm("You have unsaved changes. Are you sure you would like to discard them?")) {
+    userInterface.closeItemEditor()
   }
-})
-
-watch(startDraft, date => draft.value['start-date'] = new Date(date))
-watch(endDraft, date => draft.value['end-date'] = new Date(date))
+}
 
 </script>
 
@@ -58,7 +73,7 @@ watch(endDraft, date => draft.value['end-date'] = new Date(date))
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
-      <v-toolbar-title>{{ props.itemId ? 'Edit item' : 'New item' }}</v-toolbar-title>
+      <v-toolbar-title>{{ isEditing ? 'Edit item' : 'New item' }}</v-toolbar-title>
       <v-spacer />
       <v-btn variant="text" @click="save">Save</v-btn>
     </v-toolbar>
@@ -95,7 +110,7 @@ watch(endDraft, date => draft.value['end-date'] = new Date(date))
             <v-divider />
             <v-card-text class="d-flex flex-column ga-2">
               <v-text-field
-                v-model="startDraft"
+                v-model="startDateDraft"
                 label="Start date"
                 type="date"
                 variant="outlined"
@@ -103,7 +118,7 @@ watch(endDraft, date => draft.value['end-date'] = new Date(date))
                 hide-details="auto"
               />
               <v-text-field
-                v-model="endDraft"
+                v-model="endDateDraft"
                 label="End date"
                 type="date"
                 variant="outlined"

@@ -53,6 +53,31 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     return getWorkspace(key).name
   }
 
+  function moveItem(workspaceId: string, itemId: string, amount: number) {
+    validateWorkspaceKey(workspaceId)
+    if (!(workspaceId in workspaces.value)) {
+      throw new Error(`Unknown workspace key: "${workspaceId}"`)
+    }
+
+    validateItemKey(itemId)
+    const items = workspaces.value[workspaceId]!.items
+    const index = items.indexOf(itemId)
+    if (index === -1) {
+      throw new Error(`Item "${itemId}" not found in workspace "${workspaceId}"`)
+    }
+
+    const newIndex = index + amount
+    if (newIndex < 0) {
+      throw new Error(`Cannot move item before the start of the list`)
+    }
+    if (newIndex >= items.length) {
+      throw new Error(`Cannot move item past the end of the list`)
+    }
+
+    items.splice(index, 1)
+    items.splice(newIndex, 0, itemId)
+  }
+
   return {
     initializeWorkspaces,
     addWorkspace,
@@ -60,6 +85,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     getWorkspace,
     workspaceKeys,
     updateWorkspace,
-    getWorkspaceName
+    getWorkspaceName,
+    moveItem
   }
 })

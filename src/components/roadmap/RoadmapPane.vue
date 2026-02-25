@@ -46,7 +46,7 @@ const addItem = () => {}
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :itemIds="workspace.items" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
 
         <!-- Roadmap Chart -->
         <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />

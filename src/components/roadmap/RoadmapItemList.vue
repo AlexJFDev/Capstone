@@ -2,14 +2,27 @@
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
+import { computed } from 'vue';
+import { useWorkspacesStore } from '@/stores/workspaces';
 
 
-defineProps<{
-  itemIds: Array<string>
+const props = defineProps<{
+  workspaceId: string
 }>()
 
 const itemsStore = useItemsStore()
+const workspacesStore = useWorkspacesStore()
 const interfaceStore = useInterfaceStore()
+
+const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
+
+function moveUp(itemId: string) {
+  workspacesStore.moveItem(props.workspaceId, itemId, -1)
+}
+
+function moveDown(itemId: string) {
+  workspacesStore.moveItem(props.workspaceId, itemId, 1)
+}
 
 </script>
 
@@ -19,15 +32,14 @@ const interfaceStore = useInterfaceStore()
       v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
-      @click="interfaceStore.openItemViewer(itemId)"
     >
       <div class="move-buttons">
-        <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" @click.stop />
-        <v-btn icon="mdi-menu-down" density="compact" size="x-small" variant="text" @click.stop />
+        <v-icon class="move-button" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
+        <v-icon class="move-button" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
       </div>
-      <div class="item-name">{{ itemsStore.getName(itemId) }}</div>
-      <div class="settings-button">
-        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" @click.stop="interfaceStore.openItemEditor(itemId)" />
+      <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
+      <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
+        <v-icon>mdi-cog</v-icon>
       </div>
     </div>
   </div>
@@ -44,7 +56,6 @@ const interfaceStore = useInterfaceStore()
 .item-row {
   height: v-bind(ROW_HEIGHT_PX);
   display: flex;
-  cursor: pointer;
   gap: 8px;
   border-top: 1px solid v-bind(LIST_BORDER_COLOR);
   border-bottom: 1px solid v-bind(LIST_BORDER_COLOR);
@@ -67,22 +78,30 @@ const interfaceStore = useInterfaceStore()
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   .move-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 24px;
+    width: v-bind(ROW_HEIGHT_PX);
     visibility: hidden;
+
+    .move-button {
+      cursor: pointer;
+      width: 100%;
+    }
   }
 
   .settings-button {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
-    padding-right: 8px;
     visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: v-bind(ROW_HEIGHT_PX);
+    height: 100%;
+    cursor: pointer;
   }
 
   &:hover {

@@ -55,6 +55,18 @@ export function constructEmptyItem(): Item {
   }
 }
 
+export function areItemsEqual(item1: Item, item2: Item): boolean {
+  if (item1 === item2) return true
+
+  return (
+    item1.name === item2.name &&
+    item1.description === item2.description &&
+    item1.color === item2.color &&
+    item1["start-date"].getTime() === item2["start-date"].getTime() &&
+    item1["end-date"].getTime() === item2["end-date"].getTime()
+  )
+}
+
 const ITEM_UUID_REGEX = /^i-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidItemKey(key: string): boolean {
   return ITEM_UUID_REGEX.test(key)

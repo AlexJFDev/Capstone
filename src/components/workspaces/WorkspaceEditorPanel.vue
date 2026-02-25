@@ -1,29 +1,57 @@
 <script setup lang="ts">
+import { areWorkspacesEqual, constructEmptyWorkspace, type Workspace } from '@/types'
 import { computed, ref, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
-import { useWorkspacesStore } from '@/stores/workspaces';
-import { constructEmptyWorkspace } from '@/types';
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { useInterfaceStore } from '@/stores/interface'
 
+// External state
 const model = defineModel<boolean>()
-
 const props = defineProps<{
   workspaceId?: string
 }>()
 
 const workspaceStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
 
-const save = () => {}
-const cancel = () => {}
+// Editing state
+const isEditing = computed(() => !!props.workspaceId)
+const editingWorkspace = computed(
+  () => isEditing.value ?
+    workspaceStore.getWorkspace(props.workspaceId!) :
+    constructEmptyWorkspace()
+)
 
-const draft = ref(constructEmptyWorkspace())
+// Draft state
+const draft = ref<Workspace>(constructEmptyWorkspace())
+const changesMade = computed(() => !areWorkspacesEqual(draft.value, editingWorkspace.value))
+
+// Draft management
+function setDraft(workspace: Workspace) {
+  draft.value = { ...workspace, items: [...workspace.items] }
+}
 
 watch(model, isOpen => {
-  if (isOpen && props.workspaceId) {
-    draft.value = { ...workspaceStore.getWorkspace(props.workspaceId) }
-  } else {
-    draft.value = constructEmptyWorkspace()
+  if (isOpen) {
+    setDraft(editingWorkspace.value)
   }
 })
+
+// Actions
+function save() {
+  if (isEditing.value) {
+    workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
+    userInterface.closeWorkspaceEditor()
+  } else {
+    console.log("TODO: Handle saving new workspace")
+  }
+}
+
+async function cancel() {
+  if (!changesMade.value || await userInterface.confirm("You have unsaved changes. Are you sure you would like to discard them?")) {
+    userInterface.closeWorkspaceEditor()
+  }
+}
 
 </script>
 

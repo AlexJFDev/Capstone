@@ -62,7 +62,8 @@ function remove(itemId: string) {
 
 <template>
   <v-navigation-drawer
-    v-model="model"
+    :model-value="model"
+    @update:model-value="val => { if (!val) cancel() }"
     temporary
     width="500"
   >

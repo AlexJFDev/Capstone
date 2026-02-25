@@ -63,9 +63,10 @@ async function cancel() {
 </script>
 
 <template>
-  <v-navigation-drawer 
-    v-model="model" 
-    temporary 
+  <v-navigation-drawer
+    :model-value="model"
+    @update:model-value="val => { if (!val) cancel() }"
+    temporary
     location="right"
     width="500"
   >

@@ -6,10 +6,13 @@ import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.v
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
+import { useInterfaceStore } from '@/stores/interface'
+import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 
 const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890'
 
 const workspacesStore = useWorkspacesStore()
+const interfaceStore = useInterfaceStore()
 
 const workspaceIds = workspacesStore.workspaceKeys
 
@@ -50,6 +53,9 @@ function toggle() {
         <v-col cols="auto">
           <v-btn @click="toggle">Toggle Workspace</v-btn>
         </v-col>
+        <v-col cols="auto">
+          <v-btn @click="interfaceStore.confirm('Are you sure?')">Speedbump</v-btn>
+        </v-col>
       </v-row>
     </v-container>
 
@@ -61,6 +67,7 @@ function toggle() {
     <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
+    <SpeedbumpDialog />
   </v-main>
 </template>
 

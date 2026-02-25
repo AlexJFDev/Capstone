@@ -7,6 +7,7 @@ import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.v
 import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
+import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
@@ -48,6 +49,7 @@ const workspaceName = computed(() => workspacesStore.getWorkspaceName(userInterf
   <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
   <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
   <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
+  <SpeedbumpDialog />
 </template>
 
 <style scoped>

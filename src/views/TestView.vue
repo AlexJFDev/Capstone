@@ -7,7 +7,7 @@ import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 
-const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890'
 
 const workspacesStore = useWorkspacesStore()
 
@@ -19,8 +19,8 @@ const workspaceEditorOpen = ref(false)
 const workspacesOpen = ref(false)
 
 const WORKSPACE_IDS = [
-  'w-2b3c4d5e-6f7a-8901-bcde-f12345678901',
-  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
+  'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890',
+  'w-2b3c4d5e-6f7a-4901-bcde-f12345678901',
 ]
 
 const workspaceIndex = ref(0)

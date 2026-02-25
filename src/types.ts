@@ -26,6 +26,18 @@ export function constructEmptyWorkspace(): Workspace {
   }
 }
 
+export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
+  if (w1 === w2) return true
+
+  return (
+    w1.name === w2.name &&
+    w1.description === w2.description &&
+    w1.color === w2.color &&
+    w1.items.length === w2.items.length &&
+    w1.items.every((id, i) => id === w2.items[i])
+  )
+}
+
 const WORKSPACE_UUID_REGEX = /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidWorkspaceKey(key: string): boolean {
   return WORKSPACE_UUID_REGEX.test(key)

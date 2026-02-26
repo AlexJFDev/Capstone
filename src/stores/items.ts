@@ -69,6 +69,7 @@ export const useItemsStore = defineStore('items', () => {
 
   return {
     items,
+    itemKeys,
     initializeItems,
     addItem,
     addNewItem,

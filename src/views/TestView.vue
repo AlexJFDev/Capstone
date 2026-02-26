@@ -8,10 +8,13 @@ import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
+import BacklogList from '@/components/backlog/BacklogList.vue'
+import { useItemsStore } from '@/stores/items'
 
 const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890'
 
 const workspacesStore = useWorkspacesStore()
+const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
 
 const workspaceIds = workspacesStore.workspaceKeys
@@ -26,7 +29,7 @@ const WORKSPACE_IDS = [
   'w-2b3c4d5e-6f7a-4901-bcde-f12345678901',
 ]
 
-const workspaceIndex = ref(0)
+const workspaceIndex = ref(1)
 const workspaceId = computed(() => WORKSPACE_IDS[workspaceIndex.value]!)
 
 function toggle() {
@@ -68,6 +71,8 @@ function toggle() {
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
     <SpeedbumpDialog />
+
+    <BacklogList :item-ids="itemsStore.itemKeys" />
   </v-main>
 </template>
 

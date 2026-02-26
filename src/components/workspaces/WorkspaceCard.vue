@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { constructEmptyWorkspace } from '@/types'
@@ -9,6 +10,7 @@ const props = defineProps<{
   workspaceId: string
 }>()
 
+const router = useRouter()
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 
@@ -41,7 +43,7 @@ const hovered = ref(false)
           icon="mdi-open-in-new"
           density="compact"
           variant="text"
-          @click="userInterface.setActiveWorkspace(workspaceId)"
+          @click="router.push({ name: 'workspace', params: { workspaceId } })"
         />
       </div>
     </template>

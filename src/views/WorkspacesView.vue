@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import { useInterfaceStore } from '@/stores/interface'
@@ -9,10 +10,16 @@ import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 
+const route = useRoute()
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 
-const workspaceName = computed(() => workspacesStore.getWorkspaceName(userInterface.activeWorkspace))
+// Falls back to the first workspace when at '/'. In the future this should
+// open the last viewed workspace instead, which will require persistence logic.
+const activeWorkspace = computed(() =>
+  (route.params.workspaceId as string) || workspacesStore.workspaceKeys[0]!
+)
+const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWorkspace.value))
 
 </script>
 
@@ -40,7 +47,7 @@ const workspaceName = computed(() => workspacesStore.getWorkspaceName(userInterf
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :workspaceId="userInterface.activeWorkspace" />
+        <RoadmapPane :workspaceId="activeWorkspace" />
       </div>
     </div>
   </v-main>

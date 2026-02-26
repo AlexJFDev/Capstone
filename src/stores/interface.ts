@@ -1,17 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
-import { useWorkspacesStore } from "./workspaces"
-import { validateWorkspaceKey } from "@/types"
 
 export const useInterfaceStore = defineStore('panels', () => {
-  const workspacesStore = useWorkspacesStore()
-
-  const activeWorkspace = ref(workspacesStore.workspaceKeys[0]!)
-  function setActiveWorkspace(key: string) {
-    validateWorkspaceKey(key)
-    activeWorkspace.value = key
-  }
-
   const workspacesOpen = ref(false)
   function openWorkspaces() {
     workspacesOpen.value = true
@@ -86,8 +76,6 @@ export const useInterfaceStore = defineStore('panels', () => {
     itemEditorOpen,
     editingItemId,
     openItemEditor,
-    activeWorkspace,
-    setActiveWorkspace,
     closeItemEditor,
     speedbumpOpen,
     speedbumpMessage,

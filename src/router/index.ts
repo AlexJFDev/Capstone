@@ -9,6 +9,11 @@ const router = createRouter({
       name: 'home',
       component: WorkspacesView,
     },
+    {
+      path: '/workspace/:workspaceId',
+      name: 'workspace',
+      component: WorkspacesView,
+    },
     ...(import.meta.env.DEV ? [{
       path: '/test',
       name: 'test',

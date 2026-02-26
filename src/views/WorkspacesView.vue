@@ -2,17 +2,10 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
-import { useInterfaceStore } from '@/stores/interface'
-import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
-import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
-import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 
 const route = useRoute()
 const workspacesStore = useWorkspacesStore()
-const userInterface = useInterfaceStore()
 
 // Falls back to the first workspace when at '/'. In the future this should
 // open the last viewed workspace instead, which will require persistence logic.

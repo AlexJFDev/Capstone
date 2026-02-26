@@ -1,73 +1,68 @@
-# .
+# Chronicle
 
-This template should help get you started developing with Vue 3 in Vite.
+This project is called "Chronicle". I chose this name because of its connotations of permanent, time-ordered record-keeping, reflecting the app's role as a lasting record of your work, plans, and events across time.
 
-## Recommended IDE Setup
+## Objective
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+This repository contains my capstone project for my computer science major at CNU. I am developing a roadmap management application for organizing workspaces and tracking items on a Gantt-style (roadmap) timeline. I have chosen this project because I was unsatisfied with the other project tools available. Everything I found required payment, creating an account, was a demo, had a poor UI, or some combination of those problems. Inspired by [Excalidraw](https://excalidraw.com/), I knew I could develop something better.
 
-## Recommended Browser Setup
+Like Excalidraw, this tool will store all data locally. I will use IndexedDB for this. This simplifies development for me because I don't need to develop a backend server. It also eliminates any cost that a server might have.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Current state
 
-## Type Support for `.vue` Imports in TS
+Currently, the UI of the app works, but it is not in a functional state. The Pinia store is still in development and there is no persistence. If the page is reloaded, all changes are lost.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Long-term Plans
 
-## Customize configuration
+In the long-term, I would like to create a more expansive tool. This tool would be intended not only for project management, but time management in general. This tool would support online account creation and sharing between accounts. However, just like Excalidraw, using it without an account and using local storage would remain a possibility.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+The main addition with this tool would be a datatype called a "View" which would function as a container for Workspaces and interface settings. At least four different visualizations would be available, Roadmap, Backlog, Kanban, and Calendar.
 
-## Project Setup
+This tool solves the disconnect that occurs between professional project management and time management more generally. A user of the site could see what they need to do for work and what is happening in their personal life all in the same place. As hybrid working schedules become more common and people tend to work outside the traditional nine-to-five, I think this is important.
+
+As a student who also does web-development contracting part-time, a tool like this would have been very useful for me. It would have been very useful if all my class times, extracurricular meetings, work meetings, plans with friends, breaks from school, assignments, tasks for work, etc. were all contained in a single place. Then, by switching between "Views" I would be able to prioritize different information when planning. With a roadmap or backlog, I could look at the assignments I have in my classes; on a Kanban board, I can keep track of work; on a calendar, I can see when I have class and extracurriculars. Finally, I could collate all that information into a single calendar where I can keep track of what I have to do and when.
+
+Team collaboration is built around access control rather than a rigid hierarchy. A user can add any item they have read access to into their own Workspaces and Views, regardless of where that item came from. A team member could pull shared meeting items into a personal daily calendar alongside their own private tasks, all without duplicating data. Items are shared by reference, so an update by whoever owns the item is immediately reflected everywhere it appears. A user could also choose to duplicate an item, taking a personal copy they can modify freely, though this breaks the updating relationship and the two copies diverge independently from that point on.
+
+## Architecture
+
+The core of this project are two datatypes representing "Workspaces" and "Items". These are stored as JSON. The rest of the site is simply a way to visualize this information. Workspaces act as containers for items, but items are still first class items stored separately. Workspaces just contain a list of item-ids as references. This allows for flexibility and having one item in multiple workspaces. "Views" will be another datatype but are not going to be added for some time.
+
+## Tech Stack
+
+- [Vue 3](https://vuejs.org/) + TypeScript
+- [Vite](https://vite.dev/)
+- [Pinia](https://pinia.vuejs.org/) — state management
+- [Vuetify](https://vuetifyjs.com/) — UI components
+
+## Setup
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Development
 
 ```sh
 npm run dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Build
 
 ```sh
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
-
-```sh
-# Install browsers for the first run
-npx playwright install
-
-# When testing on CI, must build the project first
-npm run build
-
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
-
-### Lint with [ESLint](https://eslint.org/)
+### Lint
 
 ```sh
 npm run lint
 ```
+
+## Recommended IDE Setup
+
+[VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (disable Vetur if installed)
+
+### Browser DevTools
+
+- [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) (Chrome/Edge)

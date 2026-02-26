@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import { useInterfaceStore } from '@/stores/interface'

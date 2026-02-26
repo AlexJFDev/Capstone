@@ -24,19 +24,6 @@ const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWork
 </script>
 
 <template>
-  <v-app-bar elevation="0" border="b">
-    <v-app-bar-title>Chronicle</v-app-bar-title>
-    <template #append>
-      <v-btn
-        prepend-icon="mdi-view-dashboard-outline"
-        variant="text"
-        @click="userInterface.openWorkspaces"
-      >
-        Workspaces
-      </v-btn>
-    </template>
-  </v-app-bar>
-
   <v-main style="height: 100vh; overflow: hidden;">
     <div class="view">
       <div class="view-header">
@@ -51,12 +38,6 @@ const workspaceName = computed(() => workspacesStore.getWorkspaceName(activeWork
       </div>
     </div>
   </v-main>
-
-  <ItemEditorPanel v-model="userInterface.itemEditorOpen" :item-id="userInterface.editingItemId" />
-  <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
-  <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
-  <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
-  <SpeedbumpDialog />
 </template>
 
 <style scoped>

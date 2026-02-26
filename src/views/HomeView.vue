@@ -18,7 +18,7 @@ const workspaceName = computed(() => workspacesStore.getWorkspaceName(userInterf
 
 <template>
   <v-app-bar elevation="0" border="b">
-    <v-app-bar-title>Capstone</v-app-bar-title>
+    <v-app-bar-title>Chronicle</v-app-bar-title>
     <template #append>
       <v-btn
         prepend-icon="mdi-view-dashboard-outline"

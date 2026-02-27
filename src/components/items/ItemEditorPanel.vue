@@ -31,8 +31,8 @@ const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value
 // Draft Management
 function setDraft(item: Item) {
   draft.value = { ...item }
-  startDateDraft.value = dateToShortISOString(item['start-date'])
-  endDateDraft.value = dateToShortISOString(item['end-date'])
+  startDateDraft.value = dateToShortISOString(item.startDate)
+  endDateDraft.value = dateToShortISOString(item.endDate)
 }
 
 watch(model, isOpen => {
@@ -41,8 +41,8 @@ watch(model, isOpen => {
   }
 })
 
-watch(startDateDraft, date => draft.value['start-date'] = new Date(date))
-watch(endDateDraft, date => draft.value['end-date'] = new Date(date))
+watch(startDateDraft, date => draft.value.startDate = new Date(date))
+watch(endDateDraft, date => draft.value.endDate = new Date(date))
 
 // Action Functions
 function save() {

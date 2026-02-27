@@ -4,7 +4,7 @@ import type { DateRange } from './types'
 const SEC_IN_DAY = 86400000
 
 /**
- * Derives the overall timeline window from the earliest start-date and latest end-date
+ * Derives the overall timeline window from the earliest startDate and latest endDate
  * across all visible items. Both boundaries are then snapped to Sunday midnight so the
  * week columns align perfectly with the grid lines.
  * 
@@ -17,8 +17,8 @@ export function computeDateRange(items: Item[]): DateRange {
   let min = Infinity
   let max = -Infinity
   items.forEach((item) => {
-    min = Math.min(item["start-date"].getTime(), min)
-    max = Math.max(item["end-date"].getTime(), max)
+    min = Math.min(item.startDate.getTime(), min)
+    max = Math.max(item.endDate.getTime(), max)
   })
   // Range start is the Sunday before the first item start date
   const start = new Date(min)

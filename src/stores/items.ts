@@ -11,8 +11,8 @@ export const useItemsStore = defineStore('items', () => {
     // Will need to be updated when IndexedDB is added
     // For now, basically simulating loading
     Object.entries(dummyItems).forEach(([key, item]) => {
-      item["start-date"] = new Date(item['start-date'])
-      item["end-date"] = new Date(item['end-date'])
+      item.startDate = new Date(item.startDate)
+      item.endDate = new Date(item.endDate)
 
       addItem(key, item)
     })
@@ -57,10 +57,10 @@ export const useItemsStore = defineStore('items', () => {
     if (updates.color) {
       validateColor(updates.color)
     }
-    if (updates["start-date"]) {
+    if (updates.startDate) {
       console.log("TODO: Start date validation")
     }
-    if (updates["end-date"]) {
+    if (updates.endDate) {
       console.log("TODO: End date validation")
     }
 

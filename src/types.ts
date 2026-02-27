@@ -52,8 +52,8 @@ export function validateWorkspaceKey(key: string) {
 export interface Item {
   name: string;
   description: string;
-  'start-date': Date;
-  'end-date': Date;
+  startDate: Date;
+  endDate: Date;
   color: string;
 }
 
@@ -61,8 +61,8 @@ export function constructEmptyItem(): Item {
   return {
     name: '',
     description: '',
-    'start-date': new Date(),
-    'end-date': new Date(),
+    startDate: new Date(),
+    endDate: new Date(),
     color: '#000000',
   }
 }
@@ -74,8 +74,8 @@ export function areItemsEqual(item1: Item, item2: Item): boolean {
     item1.name === item2.name &&
     item1.description === item2.description &&
     item1.color === item2.color &&
-    item1["start-date"].getTime() === item2["start-date"].getTime() &&
-    item1["end-date"].getTime() === item2["end-date"].getTime()
+    item1.startDate.getTime() === item2.startDate.getTime() &&
+    item1.endDate.getTime() === item2.endDate.getTime()
   )
 }
 

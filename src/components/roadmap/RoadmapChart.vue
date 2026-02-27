@@ -3,7 +3,7 @@
  * RoadmapChart
  *
  * Renders a horizontally-scrollable SVG Gantt-style chart for a list of roadmap items.
- * Each item is drawn as a colored bar spanning its start-date to end-date, aligned to a
+ * Each item is drawn as a colored bar spanning its startDate to endDate, aligned to a
  * shared timeline. The timeline always starts on a Sunday and ends on a Sunday so that
  * the week grid lines fall cleanly on column boundaries.
  *
@@ -75,8 +75,8 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
  *  - id     → item identifier (used as Vue key)
- *  - x      → left edge pixel position (from item start-date)
- *  - width  → bar width in pixels  (end-date x − start-date x)
+ *  - x      → left edge pixel position (from item startDate)
+ *  - width  → bar width in pixels  (endDate x − startDate x)
  *  - color  → fill color from the item definition
  *  - y      → top edge of the row (before CHART_BAR_PADDING is applied in the template)
  *
@@ -87,8 +87,8 @@ const bars = computed(() =>
     .map((id, index) => {
       const item = itemsStore.getItem(id)
       if (!item) return null
-      const x = xForDate(item['start-date'], dateRange.value, props.scale.pixelsPerDay)
-      const width = xForDate(item['end-date'], dateRange.value, props.scale.pixelsPerDay) - x
+      const x = xForDate(item.startDate, dateRange.value, props.scale.pixelsPerDay)
+      const width = xForDate(item.endDate, dateRange.value, props.scale.pixelsPerDay) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)

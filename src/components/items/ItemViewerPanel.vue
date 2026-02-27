@@ -54,11 +54,11 @@ const item = computed(
             <v-card-text class="d-flex flex-column ga-1">
               <div class="d-flex align-center ga-2">
                 <span class="text-caption text-medium-emphasis date-label">Start</span>
-                <DateChip :date="item['start-date']" />
+                <DateChip :date="item.startDate" />
               </div>
               <div class="d-flex align-center ga-2">
                 <span class="text-caption text-medium-emphasis date-label">End</span>
-                <DateChip :date="item['end-date']" />
+                <DateChip :date="item.endDate" />
               </div>
             </v-card-text>
           </v-card>

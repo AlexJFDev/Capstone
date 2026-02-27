@@ -31,3 +31,8 @@ Details found in `workspace-overflow-proposal.md`.
 Currently, if a workspace has more than X (default 10) items the item list component will truncate to the first X and include a "View X more" item at the bottom.
 
 I will make clicking the "View X more" item simply show the full list. There will then be a way to re-truncate. I am adopting this approach because it would be easier to reverse in the future if a more complex approach is needed.
+
+## Backlog List
+
+Details found in `backlog-list-proposal.md`.
+I will accept the recommendation of creating this component using the `v-data-table`. The hyphenation issue will be addressed by updating the Item interface to use `startDate` and `endDate` rather than `start-date` and `end-date`.

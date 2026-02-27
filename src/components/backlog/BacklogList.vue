@@ -1,24 +1,63 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import ColorSwatch from '@/components/ColorSwatch.vue'
+import DateChip from '@/components/DateChip.vue'
+import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
 
-
-defineProps<{
+const props = defineProps<{
   itemIds: string[]
 }>()
 
-const itemStore = useItemsStore()
+const itemsStore = useItemsStore()
+const workspacesStore = useWorkspacesStore()
 
+const headers = [
+  { key: 'color',       title: '',             sortable: false, width: '40px' },
+  { key: 'name',        title: 'Name',         sortable: true  },
+  { key: 'description', title: 'Description',  sortable: false },
+  { key: 'startDate',   title: 'Start',        sortable: true  },
+  { key: 'endDate',     title: 'End',          sortable: true  },
+  { key: 'workspaces',  title: 'Workspaces',   sortable: false },
+]
+
+const rows = computed(() =>
+  props.itemIds.map(id => ({ id, ...itemsStore.getItem(id) }))
+)
+
+function workspaceIdsFor(itemId: string) {
+  return workspacesStore.workspaceKeys
+    .filter(wid => workspacesStore.getWorkspace(wid).items.includes(itemId))
+}
 </script>
 
 <template>
-  <div
-    v-for="itemId in itemIds"
-    :key="itemId"
-  >
-    {{ itemStore.getItem(itemId) }}
-  </div>
+  <v-data-table :headers="headers" :items="rows" item-value="id">
+    <template #item.color="{ item }">
+      <ColorSwatch :color="item.color" />
+    </template>
+    <template #item.description="{ item }">
+      <span class="truncate">{{ item.description }}</span>
+    </template>
+    <template #item.startDate="{ item }">
+      <DateChip :date="item.startDate" />
+    </template>
+    <template #item.endDate="{ item }">
+      <DateChip :date="item.endDate" />
+    </template>
+    <template #item.workspaces="{ item }">
+      <WorkspaceChip v-for="wid in workspaceIdsFor(item.id)" :key="wid" :workspaceId="wid" class="mr-1" />
+    </template>
+  </v-data-table>
 </template>
 
 <style scoped>
-
+.truncate {
+  display: block;
+  max-width: 200px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 </style>

@@ -16,6 +16,11 @@ const router = createRouter({
       name: 'workspace',
       component: WorkspacesView,
     },
+    {
+      path: '/items',
+      name: 'items',
+      component: () => import('../views/ItemsView.vue'),
+    },
     ...(import.meta.env.DEV ? [{
       path: '/test',
       name: 'test',

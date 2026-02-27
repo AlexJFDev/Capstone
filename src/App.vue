@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 import { useInterfaceStore } from './stores/interface'
 import { useWorkspacesStore } from './stores/workspaces'
 import ItemEditorPanel from './components/items/ItemEditorPanel.vue'
@@ -8,6 +8,7 @@ import WorkspaceEditorPanel from './components/workspaces/WorkspaceEditorPanel.v
 import WorkspacesPanel from './components/workspaces/WorkspacesPanel.vue'
 import SpeedbumpDialog from './SpeedbumpDialog.vue'
 
+const router = useRouter()
 const userInterface = useInterfaceStore()
 const workspacesStore = useWorkspacesStore()
 </script>
@@ -17,6 +18,13 @@ const workspacesStore = useWorkspacesStore()
     <v-app-bar elevation="0" border="b">
       <v-app-bar-title>Chronicle</v-app-bar-title>
       <template #append>
+        <v-btn
+          prepend-icon="mdi-format-list-bulleted"
+          variant="text"
+          @click="router.push({ name: 'items' })"
+        >
+          Items
+        </v-btn>
         <v-btn
           prepend-icon="mdi-view-dashboard-outline"
           variant="text"

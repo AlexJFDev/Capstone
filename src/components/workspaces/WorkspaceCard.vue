@@ -14,11 +14,7 @@ const router = useRouter()
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(
-  () => props.workspaceId ?
-    workspacesStore.getWorkspace(props.workspaceId) :
-    constructEmptyWorkspace()
-)
+const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
 const hovered = ref(false)
 </script>

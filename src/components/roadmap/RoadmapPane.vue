@@ -17,11 +17,7 @@ const props = defineProps<{
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(
-  () => props.workspaceId ?
-    workspacesStore.getWorkspace(props.workspaceId) :
-    constructEmptyWorkspace()
-)
+const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
 const scale: RoadmapScale = {
   pixelsPerDay: 30,

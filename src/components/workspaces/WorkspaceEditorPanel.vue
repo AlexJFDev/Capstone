@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceKey, type Workspace } from '@/types'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
+import { required } from '@/utils/validation'
 
 // External state
 const model = defineModel<boolean>()
@@ -34,11 +35,16 @@ function setDraft(workspace: Workspace) {
 watch(model, isOpen => {
   if (isOpen) {
     setDraft(editingWorkspace.value)
+  } else {
+    formRef.value?.resetValidation()
   }
 })
 
 // Actions
-function save() {
+async function save() {
+  const { valid } = await formRef.value!.validate()
+  if (!valid) return
+
   if (isEditing.value) {
     workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
     userInterface.closeWorkspaceEditor()
@@ -69,6 +75,10 @@ async function newItem() {
   if (itemId) draft.value.items.push(itemId)
 }
 
+// Validation
+const formRef = useTemplateRef('formRef')
+const nameRules = [ required ]
+
 </script>
 
 <template>
@@ -98,6 +108,7 @@ async function newItem() {
             variant="outlined"
             density="compact"
             hide-details="auto"
+            :rules="nameRules"
           />
           <v-textarea
             v-model="draft.description"

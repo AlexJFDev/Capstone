@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { areItemsEqual, constructEmptyItem, generateItemKey, type Item } from '@/types'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
 import { dateToShortISOString } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface';
+import { endDateAfterStart, required, validDate } from '@/utils/validation';
 
 // External State
 const model = defineModel<boolean>()
@@ -38,6 +39,8 @@ function setDraft(item: Item) {
 watch(model, isOpen => {
   if (isOpen) {
     setDraft(editingItem.value)
+  } else {
+    formRef.value?.resetValidation()
   }
 })
 
@@ -45,7 +48,10 @@ watch(startDateDraft, date => draft.value.startDate = new Date(date))
 watch(endDateDraft, date => draft.value.endDate = new Date(date))
 
 // Action Functions
-function save() {
+async function save() {
+  const { valid } = await formRef.value!.validate()
+  if (!valid) return
+
   if (isEditing.value) {
     itemsStore.updateItem(props.itemId!, draft.value)
     userInterface.closeItemEditor()
@@ -63,6 +69,12 @@ async function cancel() {
   }
 }
 
+// Validation
+const formRef = useTemplateRef('formRef')
+const nameRules = [ required ]
+const startDateRules = [ validDate ]
+const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) ]
+
 </script>
 
 <template>
@@ -73,7 +85,6 @@ async function cancel() {
     location="right"
     width="500"
   >
-
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
@@ -95,6 +106,7 @@ async function cancel() {
             variant="outlined"
             density="compact"
             hide-details="auto"
+            :rules="nameRules"
           />
           <v-textarea
             v-model="draft.description"
@@ -120,6 +132,7 @@ async function cancel() {
                 variant="outlined"
                 density="compact"
                 hide-details="auto"
+                :rules="startDateRules"
               />
               <v-text-field
                 v-model="endDateDraft"
@@ -128,6 +141,7 @@ async function cancel() {
                 variant="outlined"
                 density="compact"
                 hide-details="auto"
+                :rules="endDateRules"
               />
             </v-card-text>
           </v-card>

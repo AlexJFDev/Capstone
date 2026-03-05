@@ -1,7 +1,7 @@
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-export const useInterfaceStore = defineStore('panels', () => {
+export const useInterfaceStore = defineStore('interface', () => {
   const workspacesOpen = ref(false)
   function openWorkspaces() {
     workspacesOpen.value = true
@@ -44,7 +44,7 @@ export const useInterfaceStore = defineStore('panels', () => {
   }
   function closeItemEditor() {
     resolveItemCreator(null)
-    editingItemId.value = ''
+    editingItemId.value = undefined
     itemEditorOpen.value = false
   }
 

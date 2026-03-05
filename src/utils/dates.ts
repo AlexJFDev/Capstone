@@ -14,6 +14,23 @@ export interface DateRange {
   end: Date
 }
 
+// === VALIDATION ===
+/** True if the end date is after the start date. */
+export function isValidRange(range: DateRange): boolean {
+  const { start, end } = range
+  return (
+    isNaN(start.getTime()) ||
+    isNaN(end.getTime()) ||
+    end >= start
+  )
+}
+/** Throws if range is invalid. */
+export function validateRange(range: DateRange) {
+  if (!isValidRange(range)) {
+    throw new Error(`Invalid date range: ${range}`)
+  }
+}
+
 // === CONSTANTS ===
 
 /** Number of milliseconds in one day. */

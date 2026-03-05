@@ -39,7 +39,7 @@ function createItem() {
 </script>
 
 <template>
-  <v-data-table :headers="headers" :items="rows" item-value="id">
+  <v-data-table :headers="headers" :items="rows" item-value="id" @click:row="(_: Event, { item }: { item: { id: string } }) => userInterface.openItemViewer(item.id)" class="clickable-rows">
     <template #top>
       <v-btn prepend-icon="mdi-plus" variant="text" @click="createItem">New item</v-btn>
     </template>
@@ -62,6 +62,10 @@ function createItem() {
 </template>
 
 <style scoped>
+.clickable-rows :deep(tbody tr) {
+  cursor: pointer;
+}
+
 .truncate {
   display: block;
   max-width: 200px;

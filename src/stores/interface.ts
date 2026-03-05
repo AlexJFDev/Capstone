@@ -42,6 +42,10 @@ export const useInterfaceStore = defineStore('panels', () => {
     editingItemId.value = ''
     itemEditorOpen.value = false
   }
+  function openItemCreator() {
+    editingItemId.value = ''
+    itemEditorOpen.value = true
+  }
 
   const speedbumpOpen = ref(false)
   const speedbumpMessage = ref('')
@@ -80,6 +84,7 @@ export const useInterfaceStore = defineStore('panels', () => {
     speedbumpOpen,
     speedbumpMessage,
     confirm,
-    resolveSpeedbump
+    resolveSpeedbump,
+    openItemCreator
   }
 })

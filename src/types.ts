@@ -48,6 +48,10 @@ export function validateWorkspaceKey(key: string) {
   }
 }
 
+export function generateWorkspaceKey() {
+  return `w-${crypto.randomUUID()}`
+}
+
 // === ITEMS ===
 export interface Item {
   name: string;
@@ -87,4 +91,8 @@ export function validateItemKey(key: string) {
   if (!isValidItemKey(key)) {
     throw new Error(`Invalid item key: "${key}"`)
   }
+}
+
+export function generateItemKey() {
+  return `i-${crypto.randomUUID()}`
 }

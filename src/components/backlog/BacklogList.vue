@@ -5,6 +5,7 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import DateChip from '@/components/DateChip.vue'
 import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
   itemIds: string[]
@@ -12,6 +13,7 @@ const props = defineProps<{
 
 const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
 
 const headers = [
   { key: 'color',       title: '',             sortable: false, width: '40px' },
@@ -30,10 +32,17 @@ function workspaceIdsFor(itemId: string) {
   return workspacesStore.workspaceKeys
     .filter(wid => workspacesStore.getWorkspace(wid).items.includes(itemId))
 }
+
+function createItem() {
+  userInterface.openItemCreator()
+}
 </script>
 
 <template>
   <v-data-table :headers="headers" :items="rows" item-value="id">
+    <template #top>
+      <v-btn prepend-icon="mdi-plus" variant="text" @click="createItem">New item</v-btn>
+    </template>
     <template #item.color="{ item }">
       <ColorSwatch :color="item.color" />
     </template>

@@ -60,6 +60,15 @@ function remove(itemId: string) {
   draft.value.items.splice(index, 1)
 }
 
+function addItem(itemId: string) {
+  draft.value.items.push(itemId)
+}
+
+async function newItem() {
+  const itemId = await userInterface.openItemCreator()
+  if (itemId) draft.value.items.push(itemId)
+}
+
 </script>
 
 <template>
@@ -120,7 +129,7 @@ function remove(itemId: string) {
         <v-card-title class="text-subtitle-2">Items</v-card-title>
         <v-divider />
         <v-card-text>
-          <ItemList :model-value="draft.items" edit @remove-item="remove"></ItemList>
+          <ItemList :model-value="draft.items" edit @remove-item="remove" @add-item="addItem" @new-item="newItem"></ItemList>
         </v-card-text>
       </v-card>
 

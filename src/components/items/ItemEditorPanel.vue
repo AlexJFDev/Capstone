@@ -52,6 +52,7 @@ function save() {
   } else {
     const key = generateItemKey()
     itemsStore.addItem(key, draft.value)
+    userInterface.resolveItemCreator(key)
     userInterface.closeItemEditor()
   }
 }

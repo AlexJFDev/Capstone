@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
+import AddItemMenu from './AddItemMenu.vue'
 
 const props = withDefaults(defineProps<{
   edit?: boolean
@@ -24,12 +25,13 @@ const hasMore = computed(() => !props.edit && !expanded.value && model.value.len
 
 const emit = defineEmits<{
   removeItem: [itemId: string]
+  addItem: [itemId: string]
+  newItem: []
 }>()
 
 function removeItem(itemId: string) {
   emit('removeItem', itemId)
 }
-const addItem = () => {}
 const viewMore = () => { expanded.value = true }
 const viewLess = () => { expanded.value = false }
 </script>
@@ -84,16 +86,20 @@ const viewLess = () => { expanded.value = false }
       </v-col>
     </v-row>
 
-    <v-row v-if="edit" class="ma-0 add-row" align="center" @click="addItem">
-      <v-col cols="1" class="d-flex justify-center">
-        <div class="add-swatch d-flex align-center justify-center">
-          <v-icon size="8">mdi-plus</v-icon>
-        </div>
-      </v-col>
-      <v-col class="pa-0 text-caption text-medium-emphasis">
-        Add item
-      </v-col>
-    </v-row>
+    <AddItemMenu v-if="edit" :excluded-item-ids="model" @add-item="emit('addItem', $event)" @new-item="emit('newItem')">
+      <template #default="menuProps">
+        <v-row class="ma-0 add-row" align="center" v-bind="menuProps">
+          <v-col cols="1" class="d-flex justify-center">
+            <div class="add-swatch d-flex align-center justify-center">
+              <v-icon size="8">mdi-plus</v-icon>
+            </div>
+          </v-col>
+          <v-col class="pa-0 text-caption text-medium-emphasis">
+            Add item
+          </v-col>
+        </v-row>
+      </template>
+    </AddItemMenu>
 
   </div>
 </template>

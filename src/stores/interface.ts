@@ -43,12 +43,22 @@ export const useInterfaceStore = defineStore('panels', () => {
     itemEditorOpen.value = true
   }
   function closeItemEditor() {
+    resolveItemCreator(null)
     editingItemId.value = ''
     itemEditorOpen.value = false
   }
-  function openItemCreator() {
+
+  let itemCreatorResolve: ((id: string | null) => void) | null = null
+  function openItemCreator(): Promise<string | null> {
     editingItemId.value = ''
     itemEditorOpen.value = true
+    return new Promise(resolve => {
+      itemCreatorResolve = resolve
+    })
+  }
+  function resolveItemCreator(id: string | null) {
+    itemCreatorResolve?.(id)
+    itemCreatorResolve = null
   }
 
   const speedbumpOpen = ref(false)
@@ -86,10 +96,12 @@ export const useInterfaceStore = defineStore('panels', () => {
     editingItemId,
     openItemEditor,
     closeItemEditor,
+    openItemCreator,
+    resolveItemCreator,
     speedbumpOpen,
     speedbumpMessage,
     confirm,
     resolveSpeedbump,
-    openItemCreator
   }
+
 })

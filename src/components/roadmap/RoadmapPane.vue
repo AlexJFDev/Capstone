@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
-import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed } from 'vue'
@@ -9,6 +8,7 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { constructEmptyWorkspace } from '@/types'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
+import type { RoadmapScale } from './roadmap-utils'
 
 const props = defineProps<{
   workspaceId: string,

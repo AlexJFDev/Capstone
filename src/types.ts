@@ -62,11 +62,12 @@ export interface Item {
 }
 
 export function constructEmptyItem(): Item {
+  const today = new Date(new Date().toISOString().slice(0, 10))
   return {
     name: '',
     description: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: today,
+    endDate: today,
     color: '#000000',
   }
 }

@@ -91,6 +91,15 @@ function moveDown(itemId: string) {
     .move-button {
       cursor: pointer;
       width: 100%;
+      border-radius: 2px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.16);
+      }
     }
   }
 
@@ -102,6 +111,15 @@ function moveDown(itemId: string) {
     width: v-bind(ROW_HEIGHT_PX);
     height: 100%;
     cursor: pointer;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.16);
+    }
   }
 
   &:hover {

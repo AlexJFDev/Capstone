@@ -29,13 +29,13 @@ function moveDown(itemId: string) {
 <template>
   <div class="items-list-wrapper">
     <div
-      v-for="itemId in itemIds"
+      v-for="(itemId, index) in itemIds"
       :key="itemId"
       class="item-row"
     >
       <div class="move-buttons">
-        <v-icon class="move-button" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
-        <v-icon class="move-button" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
+        <v-icon class="move-button" :class="{ invisible: index === 0 }" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
+        <v-icon class="move-button" :class="{ invisible: index === itemIds.length - 1 }" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
       </div>
       <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
       <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
@@ -92,6 +92,10 @@ function moveDown(itemId: string) {
       cursor: pointer;
       width: 100%;
       border-radius: 2px;
+
+      &.invisible {
+        visibility: hidden;
+      }
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.08);

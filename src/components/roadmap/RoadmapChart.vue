@@ -32,6 +32,7 @@ import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
 import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -41,6 +42,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
+const interfaceStore = useInterfaceStore()
 
 const rootRef = useTemplateRef('root')
 const width = ref(0)
@@ -129,6 +131,17 @@ const bars = computed(() =>
       />
       <!-- Bottom border of last row. -->
 
+      <!-- Row hover backgrounds -->
+      <rect
+        v-for="(itemId, index) in itemIds"
+        :key="`bg-${itemId}`"
+        x="0"
+        :y="index * ROW_HEIGHT"
+        :width="svgWidth"
+        :height="ROW_HEIGHT"
+        class="row-bg"
+      />
+
       <!-- Item bars -->
       <rect
         v-for="bar in bars"
@@ -139,6 +152,8 @@ const bars = computed(() =>
         :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
         :fill="bar.color"
         rx="3"
+        class="bar"
+        @click="interfaceStore.openItemViewer(bar.id)"
       />
     </svg>
   </div>
@@ -151,5 +166,21 @@ svg {
 
 .roadmap-chart {
   height: max-content;
+}
+
+.row-bg {
+  fill: transparent;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.bar {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 </style>

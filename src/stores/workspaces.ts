@@ -7,6 +7,7 @@ import { computed, ref } from "vue"
 export const useWorkspacesStore = defineStore('workspaces', () => {
   const workspaces = ref<Record<string, Workspace>>({})
   const workspaceKeys = computed(() => Object.keys(workspaces.value))
+  const hasWorkspaces = computed(() => workspaceKeys.value.length > 0)
 
   function initializeWorkspaces() {
     // Will need to be updated when IndexedDB is added
@@ -87,6 +88,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     workspaceKeys,
     updateWorkspace,
     getWorkspaceName,
-    moveItem
+    moveItem,
+    hasWorkspaces
   }
 })

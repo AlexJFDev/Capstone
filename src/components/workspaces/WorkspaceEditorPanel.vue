@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { areWorkspacesEqual, constructEmptyWorkspace, type Workspace } from '@/types'
+import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceKey, type Workspace } from '@/types'
 import { computed, ref, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
@@ -43,7 +43,9 @@ function save() {
     workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
-    console.log("TODO: Handle saving new workspace")
+    const key = generateWorkspaceKey()
+    workspaceStore.addWorkspace(key, draft.value)
+    userInterface.closeWorkspaceEditor()
   }
 }
 

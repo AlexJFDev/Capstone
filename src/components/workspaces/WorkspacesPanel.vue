@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import WorkspaceCard from './WorkspaceCard.vue'
+import { useInterfaceStore } from '@/stores/interface'
 
 defineProps<{
   workspaceIds: Array<string>
@@ -7,7 +8,11 @@ defineProps<{
 
 const model = defineModel<boolean>()
 
-const addWorkspace = () => {}
+const userInterface = useInterfaceStore()
+
+function addWorkspace() {
+  userInterface.openWorkspaceCreator()
+}
 </script>
 
 <template>

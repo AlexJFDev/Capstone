@@ -1,5 +1,6 @@
 import { workspaces as dummyWorkspaces } from "@/testing/dummy-workspaces"
-import { constructEmptyWorkspace, validateColor, validateItemKey, validateWorkspaceKey, type Workspace } from "@/types"
+import { constructEmptyWorkspace, validateItemKey, validateWorkspaceKey, type Workspace } from "@/types"
+import { validateColor } from "@/utils/colors"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 

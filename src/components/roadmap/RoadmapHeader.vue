@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import type { RoadmapScale } from './types'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
+import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
-import { formatDate } from '../utils'
+import { formatDate } from '@/utils/dates'
 import { useItemsStore } from '@/stores/items'
 
 const props = defineProps<{

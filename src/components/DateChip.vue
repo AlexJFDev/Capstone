@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatDate, type DateStyle } from './utils';
+import { formatDate, type DateStyle } from '@/utils/dates'
 
 const props = withDefaults(defineProps<{
   date: string | number | Date

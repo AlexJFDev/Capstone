@@ -2,7 +2,7 @@
 import { areItemsEqual, constructEmptyItem, generateItemKey, type Item } from '@/types'
 import { computed, ref, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { dateToShortISOString } from '../utils';
+import { dateToShortISOString } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface';
 
 // External State

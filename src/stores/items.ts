@@ -1,5 +1,6 @@
 import { items as dummyItems } from "@/testing/dummy-items"
-import { constructEmptyItem, validateColor, validateItemKey, type Item } from "@/types"
+import { constructEmptyItem, validateItemKey, type Item } from "@/types"
+import { validateColor } from "@/utils/colors"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 

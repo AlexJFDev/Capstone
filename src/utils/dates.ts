@@ -1,4 +1,23 @@
+
+// === TYPES ===
+
 export type DateStyle = 'long-american' | 'short-american' | 'long-european' | 'short-european'
+
+/**
+ * Simple range of dates.
+ * 
+ * @property start   The Beginning of the range
+ * @property end     The end of the range
+ */
+export interface DateRange {
+  start: Date
+  end: Date
+}
+
+// === CONSTANTS ===
+
+/** Number of milliseconds in one day. */
+export const MSEC_IN_DAY = 86400000
 
 function ordinalSuffix(day: number): string {
   if (day >= 11 && day <= 13) return `${day}th`
@@ -10,6 +29,10 @@ function ordinalSuffix(day: number): string {
   }
 }
 
+/**
+ * Formats a date value into a human-readable string using the given style.
+ * All calculations use UTC to avoid timezone-related off-by-one-day errors.
+ */
 export function formatDate(date: string | number | Date, style: DateStyle) {
   const d = new Date(date)
   const year = d.getUTCFullYear()
@@ -36,18 +59,7 @@ export function formatDate(date: string | number | Date, style: DateStyle) {
   }
 }
 
+/** Returns the date as a `YYYY-MM-DD` string, suitable for use with `<input type="date">`. */
 export function dateToShortISOString(date: Date): string {
   return date.toISOString().slice(0, 10)
-}
-
-/**
- * Returns true if the given hex color is light enough to risk blending into
- * a light background. Uses WCAG relative luminance.
- */
-export function isLightColor(hex: string): boolean {
-  const toLinear = (c: number) => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
-  const r = toLinear(parseInt(hex.slice(1, 3), 16) / 255)
-  const g = toLinear(parseInt(hex.slice(3, 5), 16) / 255)
-  const b = toLinear(parseInt(hex.slice(5, 7), 16) / 255)
-  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.5
 }

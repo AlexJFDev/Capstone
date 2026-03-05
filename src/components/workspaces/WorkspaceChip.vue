@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import { isLightColor } from '@/components/utils'
+import { isLightColor } from '@/utils/colors'
 
 const props = defineProps<{
   workspaceId: string

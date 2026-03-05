@@ -1,14 +1,3 @@
-// === MISC ===
-const COLOR_REGEX = /^#[0-9a-f]{6}$/i
-export function isValidColor(color: string): boolean {
-  return COLOR_REGEX.test(color)
-}
-export function validateColor(color: string) {
-  if (!isValidColor(color)) {
-    throw new Error(`Invalid hex color: "${color}"`)
-  }
-}
-
 // === WORKSPACES ===
 export interface Workspace {
   name: string;

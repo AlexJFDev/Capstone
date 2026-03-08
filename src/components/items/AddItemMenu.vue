@@ -15,7 +15,7 @@ const emit = defineEmits<{
 const itemsStore = useItemsStore()
 
 const availableItems = computed(() =>
-  itemsStore.itemKeys.filter(id => !props.excludedItemIds.includes(id))
+  itemsStore.itemIds.filter(id => !props.excludedItemIds.includes(id))
 )
 </script>
 

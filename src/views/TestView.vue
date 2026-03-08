@@ -17,7 +17,7 @@ const workspacesStore = useWorkspacesStore()
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
 
-const workspaceIds = workspacesStore.workspaceKeys
+const workspaceIds = workspacesStore.workspaceIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
@@ -72,7 +72,7 @@ function toggle() {
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
     <SpeedbumpDialog />
 
-    <BacklogList :item-ids="itemsStore.itemKeys" />
+    <BacklogList :item-ids="itemsStore.itemIds" />
   </v-main>
 </template>
 

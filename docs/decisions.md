@@ -36,3 +36,8 @@ I will make clicking the "View X more" item simply show the full list. There wil
 
 Details found in `backlog-list-proposal.md`.
 I will accept the recommendation of creating this component using the `v-data-table`. The hyphenation issue will be addressed by updating the Item interface to use `startDate` and `endDate` rather than `start-date` and `end-date`.
+
+## Key or id
+
+This decision has no other documentation.
+Throughout the app, I use key and id interchangeably. I should pick one or the other. I chose to use id because its meaning, as an identifier for a workspace or item is clear, and it does not overlap with as much.

@@ -29,7 +29,7 @@ const rows = computed(() =>
 )
 
 function workspaceIdsFor(itemId: string) {
-  return workspacesStore.workspaceKeys
+  return workspacesStore.workspaceIds
     .filter(wid => workspacesStore.getWorkspace(wid).items.includes(itemId))
 }
 

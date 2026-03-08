@@ -1,58 +1,58 @@
 import { workspaces as dummyWorkspaces } from "@/testing/dummy-workspaces"
-import { constructEmptyWorkspace, validateItemKey, validateWorkspaceKey, type Workspace } from "@/types"
+import { constructEmptyWorkspace, validateItemId, validateWorkspaceId, type Workspace } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 
 export const useWorkspacesStore = defineStore('workspaces', () => {
   const workspaces = ref<Record<string, Workspace>>({})
-  const workspaceKeys = computed(() => Object.keys(workspaces.value))
-  const hasWorkspaces = computed(() => workspaceKeys.value.length > 0)
+  const workspaceIds = computed(() => Object.keys(workspaces.value))
+  const hasWorkspaces = computed(() => workspaceIds.value.length > 0)
 
   function initializeWorkspaces() {
     // Will need to be updated when IndexedDB is added
     // For now, basically simulating loading
-    Object.entries(dummyWorkspaces).forEach(([key, workspace]) => {
-      addWorkspace(key, workspace)
+    Object.entries(dummyWorkspaces).forEach(([id, workspace]) => {
+      addWorkspace(id, workspace)
     })
   }
 
-  function addWorkspace(key: string, workspace: Workspace) {
-    validateWorkspaceKey(key)
-    workspaces.value[key] = workspace
+  function addWorkspace(id: string, workspace: Workspace) {
+    validateWorkspaceId(id)
+    workspaces.value[id] = workspace
   }
 
-  function getWorkspace(key: string): Workspace {
-    validateWorkspaceKey(key)
-    return workspaces.value[key]!
+  function getWorkspace(id: string): Workspace {
+    validateWorkspaceId(id)
+    return workspaces.value[id]!
   }
 
-  function updateWorkspace(key: string, updates: Partial<Workspace>) {
-    validateWorkspaceKey(key)
-    if (!(key in workspaces.value)) {
-      throw new Error(`Unknown workspace key: "${key}"`)
+  function updateWorkspace(id: string, updates: Partial<Workspace>) {
+    validateWorkspaceId(id)
+    if (!(id in workspaces.value)) {
+      throw new Error(`Unknown workspace id: "${id}"`)
     }
     if (updates.color) {
       validateColor(updates.color)
     }
     if (updates.items) {
-      updates.items.forEach(validateItemKey)
+      updates.items.forEach(validateItemId)
     }
 
-    Object.assign(workspaces.value[key]!, updates)
+    Object.assign(workspaces.value[id]!, updates)
   }
 
-  function getWorkspaceName(key: string): string {
-    return getWorkspace(key).name
+  function getWorkspaceName(id: string): string {
+    return getWorkspace(id).name
   }
 
   function moveItem(workspaceId: string, itemId: string, amount: number) {
-    validateWorkspaceKey(workspaceId)
+    validateWorkspaceId(workspaceId)
     if (!(workspaceId in workspaces.value)) {
-      throw new Error(`Unknown workspace key: "${workspaceId}"`)
+      throw new Error(`Unknown workspace id: "${workspaceId}"`)
     }
 
-    validateItemKey(itemId)
+    validateItemId(itemId)
     const items = workspaces.value[workspaceId]!.items
     const index = items.indexOf(itemId)
     if (index === -1) {
@@ -75,7 +75,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     initializeWorkspaces,
     addWorkspace,
     getWorkspace,
-    workspaceKeys,
+    workspaceIds,
     updateWorkspace,
     getWorkspaceName,
     moveItem,

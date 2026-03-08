@@ -39,7 +39,7 @@ const workspacesStore = useWorkspacesStore()
     <ItemEditorPanel v-model="userInterface.itemEditorOpen" :item-id="userInterface.editingItemId" />
     <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
     <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
-    <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceKeys" />
+    <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceIds" />
     <SpeedbumpDialog />
   </v-app>
 </template>

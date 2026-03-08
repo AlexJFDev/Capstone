@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceKey, type Workspace } from '@/types'
+import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceId, type Workspace } from '@/types'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
@@ -49,8 +49,8 @@ async function save() {
     workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
-    const key = generateWorkspaceKey()
-    workspaceStore.addWorkspace(key, draft.value)
+    const id = generateWorkspaceId()
+    workspaceStore.addWorkspace(id, draft.value)
     userInterface.closeWorkspaceEditor()
   }
 }

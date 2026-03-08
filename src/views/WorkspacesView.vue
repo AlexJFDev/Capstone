@@ -13,7 +13,7 @@ const userInterface = useInterfaceStore()
 // open the last viewed workspace instead, which will require persistence logic.
 const activeWorkspace = computed(() => {
   if (workspacesStore.hasWorkspaces) {
-    return (route.params.workspaceId as string) || workspacesStore.workspaceKeys[0]
+    return (route.params.workspaceId as string) || workspacesStore.workspaceIds[0]
   } else {
     return undefined
   }

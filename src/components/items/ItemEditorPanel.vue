@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { areItemsEqual, constructEmptyItem, generateItemKey, type Item } from '@/types'
+import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
 import { dateToShortISOString } from '@/utils/dates'
@@ -56,9 +56,9 @@ async function save() {
     itemsStore.updateItem(props.itemId!, draft.value)
     userInterface.closeItemEditor()
   } else {
-    const key = generateItemKey()
-    itemsStore.addItem(key, draft.value)
-    userInterface.resolveItemCreator(key)
+    const id = generateItemId()
+    itemsStore.addItem(id, draft.value)
+    userInterface.resolveItemCreator(id)
     userInterface.closeItemEditor()
   }
 }

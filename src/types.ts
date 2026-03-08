@@ -28,16 +28,16 @@ export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
 }
 
 const WORKSPACE_UUID_REGEX = /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-export function isValidWorkspaceKey(key: string): boolean {
-  return WORKSPACE_UUID_REGEX.test(key)
+export function isValidWorkspaceId(id: string): boolean {
+  return WORKSPACE_UUID_REGEX.test(id)
 }
-export function validateWorkspaceKey(key: string) {
-  if (!isValidWorkspaceKey(key)) {
-    throw new Error(`Invalid workspace key: "${key}"`)
+export function validateWorkspaceId(id: string) {
+  if (!isValidWorkspaceId(id)) {
+    throw new Error(`Invalid workspace id: "${id}"`)
   }
 }
 
-export function generateWorkspaceKey() {
+export function generateWorkspaceId() {
   return `w-${crypto.randomUUID()}`
 }
 
@@ -74,15 +74,15 @@ export function areItemsEqual(item1: Item, item2: Item): boolean {
 }
 
 const ITEM_UUID_REGEX = /^i-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-export function isValidItemKey(key: string): boolean {
-  return ITEM_UUID_REGEX.test(key)
+export function isValidItemId(id: string): boolean {
+  return ITEM_UUID_REGEX.test(id)
 }
-export function validateItemKey(key: string) {
-  if (!isValidItemKey(key)) {
-    throw new Error(`Invalid item key: "${key}"`)
+export function validateItemId(id: string) {
+  if (!isValidItemId(id)) {
+    throw new Error(`Invalid item id: "${id}"`)
   }
 }
 
-export function generateItemKey() {
+export function generateItemId() {
   return `i-${crypto.randomUUID()}`
 }

@@ -50,15 +50,6 @@ export const useItemsStore = defineStore('items', () => {
     return getItem(key).endDate
   }
 
-  function addNewItem() {
-    const key = `i-${crypto.randomUUID()}`
-    const item = constructEmptyItem()
-
-    addItem(key, item)
-
-    return { key, item }
-  }
-
   function updateItem(key: string, updates: Partial<Item>) {
     validateItemKey(key)
     if (!(key in items.value)) {
@@ -95,7 +86,6 @@ export const useItemsStore = defineStore('items', () => {
     itemKeys,
     initializeItems,
     addItem,
-    addNewItem,
     getItem,
     getItems,
     getName,

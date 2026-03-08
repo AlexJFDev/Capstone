@@ -27,15 +27,6 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     return workspaces.value[key]!
   }
 
-  function addNewWorkspace() {
-    const key = `w-${crypto.randomUUID()}`
-    const workspace = constructEmptyWorkspace()
-
-    addWorkspace(key, workspace)
-
-    return { key, workspace }
-  }
-
   function updateWorkspace(key: string, updates: Partial<Workspace>) {
     validateWorkspaceKey(key)
     if (!(key in workspaces.value)) {
@@ -83,7 +74,6 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   return {
     initializeWorkspaces,
     addWorkspace,
-    addNewWorkspace,
     getWorkspace,
     workspaceKeys,
     updateWorkspace,

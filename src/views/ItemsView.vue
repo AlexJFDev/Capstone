@@ -15,7 +15,7 @@ const itemsStore = useItemsStore()
         </div>
       </div>
 
-      <BacklogList :itemIds="itemsStore.itemKeys" />
+      <BacklogList :itemIds="itemsStore.itemIds" />
     </div>
   </v-main>
 </template>

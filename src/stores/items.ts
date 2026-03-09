@@ -1,5 +1,5 @@
 import { items as dummyItems } from "@/testing/dummy-items"
-import { constructEmptyItem, validateItemId, type Item } from "@/types"
+import { validateItemId, type Item } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { validateRange } from "@/utils/dates"
 import { defineStore } from "pinia"
@@ -20,13 +20,24 @@ export const useItemsStore = defineStore('items', () => {
     })
   }
 
+  function doesItemExist(id: string): boolean {
+    validateItemId(id)
+    return id in items.value
+  }
+
+  function validateItemExists(id: string) {
+    if (!doesItemExist(id)) {
+      throw new Error(`Unknown item id: "${id}"`)
+    }
+  }
+
   function addItem(id: string, item: Item) {
     validateItemId(id)
     items.value[id] = item
   }
 
   function getItem(id: string): Item {
-    validateItemId(id)
+    validateItemExists(id)
     return items.value[id]!
   }
 
@@ -51,10 +62,8 @@ export const useItemsStore = defineStore('items', () => {
   }
 
   function updateItem(id: string, updates: Partial<Item>) {
-    validateItemId(id)
-    if (!(id in items.value)) {
-      throw new Error(`Unknown item id: "${id}"`)
-    }
+    validateItemExists(id)
+    
     if (updates.color) {
       validateColor(updates.color)
     }
@@ -83,7 +92,6 @@ export const useItemsStore = defineStore('items', () => {
   }
 
   return {
-    items,
     itemIds,
     initializeItems,
     addItem,
@@ -91,6 +99,8 @@ export const useItemsStore = defineStore('items', () => {
     getItems,
     getName,
     getColor,
-    updateItem
+    updateItem,
+    doesItemExist,
+    validateItemExists
   }
 })

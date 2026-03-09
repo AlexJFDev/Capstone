@@ -22,6 +22,7 @@ const headers = [
   { key: 'startDate',   title: 'Start',        sortable: true  },
   { key: 'endDate',     title: 'End',          sortable: true  },
   { key: 'workspaces',  title: 'Workspaces',   sortable: false },
+  { key: 'actions',     title: '',             sortable: false, width: '40px' },
 ]
 
 const rows = computed(() =>
@@ -35,6 +36,13 @@ function workspaceIdsFor(itemId: string) {
 
 function createItem() {
   userInterface.openItemCreator()
+}
+
+async function deleteItem(id: string) {
+  const name = itemsStore.getName(id)
+  if (await userInterface.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)) {
+    itemsStore.deleteItem(id)
+  }
 }
 </script>
 
@@ -57,6 +65,17 @@ function createItem() {
     </template>
     <template #item.workspaces="{ item }">
       <WorkspaceChip v-for="wid in workspaceIdsFor(item.id)" :key="wid" :workspaceId="wid" class="mr-1" />
+    </template>
+    <template #item.actions="{ item }">
+      <v-menu>
+        <template #activator="{ props: menuProps }">
+          <v-btn icon="mdi-dots-vertical" v-bind="menuProps" variant="text" density="compact" @click.stop />
+        </template>
+        <v-list density="compact">
+          <v-list-item title="Edit" prepend-icon="mdi-pencil" @click="userInterface.openItemEditor(item.id)" />
+          <v-list-item title="Delete" prepend-icon="mdi-delete" @click="deleteItem(item.id)" />
+        </v-list>
+      </v-menu>
     </template>
   </v-data-table>
 </template>

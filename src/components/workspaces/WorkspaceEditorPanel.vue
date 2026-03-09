@@ -61,6 +61,13 @@ async function cancel() {
   }
 }
 
+async function deleteWorkspace() {
+  if (await userInterface.confirm(`Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`)) {
+    workspaceStore.deleteWorkspace(props.workspaceId!)
+    userInterface.closeWorkspaceEditor()
+  }
+}
+
 function remove(itemId: string) {
   const index = draft.value.items.indexOf(itemId)
   draft.value.items.splice(index, 1)
@@ -149,7 +156,8 @@ const nameRules = [ required ]
     <!-- FOOTER -->
     <template #append>
       <v-divider />
-      <div class="pa-2">
+      <div class="pa-2 d-flex flex-column ga-2">
+        <v-btn v-if="isEditing" block color="red" @click="deleteWorkspace">Delete</v-btn>
         <v-btn block variant="text" @click="cancel">Cancel</v-btn>
       </div>
     </template>

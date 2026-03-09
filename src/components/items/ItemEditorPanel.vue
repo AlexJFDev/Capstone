@@ -69,6 +69,13 @@ async function cancel() {
   }
 }
 
+async function deleteItem() {
+  if (await userInterface.confirm(`Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`)) {
+    itemsStore.deleteItem(props.itemId!)
+    userInterface.closeItemEditor()
+  }
+}
+
 // Validation
 const formRef = useTemplateRef('formRef')
 const nameRules = [ required ]
@@ -169,7 +176,8 @@ const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) 
     <!-- FOOTER -->
     <template #append>
       <v-divider />
-      <div class="pa-2">
+      <div class="pa-2 d-flex flex-column ga-2">
+        <v-btn v-if="isEditing" block color="red" @click="deleteItem">Delete</v-btn>
         <v-btn block variant="text" @click="cancel">Cancel</v-btn>
       </div>
     </template>

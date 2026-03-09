@@ -1,13 +1,22 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 
 const route = useRoute()
+const router = useRouter()
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
+
+// Handle workspace being deleted while viewing
+watch(() => workspacesStore.workspaceIds, (ids) => {
+  const routeId = route.params.workspaceId as string
+  if (routeId && !ids.includes(routeId)) {
+    router.push({ name: 'home' })
+  }
+})
 
 // Falls back to the first workspace when at '/'. In the future this should
 // open the last viewed workspace instead, which will require persistence logic.

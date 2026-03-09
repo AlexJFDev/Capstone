@@ -4,6 +4,7 @@ import { validateColor } from "@/utils/colors"
 import { validateRange } from "@/utils/dates"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
+import { useWorkspacesStore } from "./workspaces"
 
 export const useItemsStore = defineStore('items', () => {
   const items = ref<Record<string, Item>>({})
@@ -91,6 +92,18 @@ export const useItemsStore = defineStore('items', () => {
     Object.assign(getItem(id), updates)
   }
 
+  function deleteItem(id: string) {
+    validateItemExists(id)
+
+    const workspacesStore = useWorkspacesStore()
+
+    workspacesStore.workspaceIds.forEach((workspaceId) => {
+      workspacesStore.removeItemFromWorkspace(id, workspaceId)
+    })
+
+    delete items.value[id]
+  }
+
   return {
     itemIds,
     initializeItems,
@@ -101,6 +114,7 @@ export const useItemsStore = defineStore('items', () => {
     getColor,
     updateItem,
     doesItemExist,
-    validateItemExists
+    validateItemExists,
+    deleteItem
   }
 })

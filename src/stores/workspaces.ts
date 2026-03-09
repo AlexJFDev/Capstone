@@ -6,8 +6,6 @@ import { computed, ref } from "vue"
 import { useItemsStore } from "./items"
 
 export const useWorkspacesStore = defineStore('workspaces', () => {
-  const itemsStore = useItemsStore()
-
   const workspaces = ref<Record<string, Workspace>>({})
   const workspaceIds = computed(() => Object.keys(workspaces.value))
   const hasWorkspaces = computed(() => workspaceIds.value.length > 0)
@@ -48,6 +46,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
       validateColor(updates.color)
     }
     if (updates.items) {
+      const itemsStore = useItemsStore()
       updates.items.forEach(itemsStore.validateItemExists)
     }
 
@@ -61,7 +60,9 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   function moveItem(workspaceId: string, itemId: string, amount: number) {
     validateWorkspaceExists(workspaceId)
 
+    const itemsStore = useItemsStore()
     itemsStore.validateItemExists(itemId)
+
     const items = workspaces.value[workspaceId]!.items
     const index = items.indexOf(itemId)
     if (index === -1) {
@@ -80,6 +81,26 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     items.splice(newIndex, 0, itemId)
   }
 
+  function removeItemFromWorkspace(itemId: string, workspaceId: string) {
+    const itemsStore = useItemsStore()
+
+    itemsStore.validateItemExists(itemId)
+    validateWorkspaceExists(workspaceId)
+
+    const workspace = getWorkspace(workspaceId)
+    const index = workspace.items.indexOf(itemId)
+
+    if (index === -1) return
+
+    workspace.items.splice(index, 1)
+  }
+
+  function deleteWorkspace(workspaceId: string) {
+    validateWorkspaceExists(workspaceId)
+
+    delete workspaces.value[workspaceId]
+  }
+
   return {
     initializeWorkspaces,
     addWorkspace,
@@ -90,6 +111,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     moveItem,
     hasWorkspaces,
     doesWorkspaceExist,
-    validateWorkspaceExists
+    validateWorkspaceExists,
+    removeItemFromWorkspace
   }
 })

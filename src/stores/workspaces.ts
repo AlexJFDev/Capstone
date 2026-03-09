@@ -112,6 +112,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     hasWorkspaces,
     doesWorkspaceExist,
     validateWorkspaceExists,
-    removeItemFromWorkspace
+    removeItemFromWorkspace,
+    deleteWorkspace
   }
 })

@@ -5,11 +5,19 @@ import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
 import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { workspaces } from '@/testing/dummy-workspaces'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { useInterfaceStore } from '@/stores/interface'
+import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
+import BacklogList from '@/components/backlog/BacklogList.vue'
+import { useItemsStore } from '@/stores/items'
 
-const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-7890-abcd-ef1234567890'
+const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890'
 
-const workspaceIds = Object.keys(workspaces)
+const workspacesStore = useWorkspacesStore()
+const itemsStore = useItemsStore()
+const interfaceStore = useInterfaceStore()
+
+const workspaceIds = workspacesStore.workspaceIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
@@ -17,11 +25,11 @@ const workspaceEditorOpen = ref(false)
 const workspacesOpen = ref(false)
 
 const WORKSPACE_IDS = [
-  'w-2b3c4d5e-6f7a-8901-bcde-f12345678901',
-  'w-1a2b3c4d-5e6f-7890-abcd-ef1234567890',
+  'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890',
+  'w-2b3c4d5e-6f7a-4901-bcde-f12345678901',
 ]
 
-const workspaceIndex = ref(0)
+const workspaceIndex = ref(1)
 const workspaceId = computed(() => WORKSPACE_IDS[workspaceIndex.value]!)
 
 function toggle() {
@@ -48,6 +56,9 @@ function toggle() {
         <v-col cols="auto">
           <v-btn @click="toggle">Toggle Workspace</v-btn>
         </v-col>
+        <v-col cols="auto">
+          <v-btn @click="interfaceStore.confirm('Are you sure?')">Speedbump</v-btn>
+        </v-col>
       </v-row>
     </v-container>
 
@@ -59,6 +70,9 @@ function toggle() {
     <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
+    <SpeedbumpDialog />
+
+    <BacklogList :item-ids="itemsStore.itemIds" />
   </v-main>
 </template>
 

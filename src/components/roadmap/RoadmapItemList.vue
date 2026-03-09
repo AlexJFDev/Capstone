@@ -1,28 +1,45 @@
 <script setup lang="ts">
-import { items } from '@/testing/dummy-items';
-import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants';
+import { useItemsStore } from '@/stores/items'
+import { useInterfaceStore } from '@/stores/interface'
+import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
+import { computed } from 'vue';
+import { useWorkspacesStore } from '@/stores/workspaces';
 
 
-defineProps<{
-  itemIds: Array<string>
+const props = defineProps<{
+  workspaceId: string
 }>()
+
+const itemsStore = useItemsStore()
+const workspacesStore = useWorkspacesStore()
+const interfaceStore = useInterfaceStore()
+
+const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
+
+function moveUp(itemId: string) {
+  workspacesStore.moveItem(props.workspaceId, itemId, -1)
+}
+
+function moveDown(itemId: string) {
+  workspacesStore.moveItem(props.workspaceId, itemId, 1)
+}
 
 </script>
 
 <template>
   <div class="items-list-wrapper">
     <div
-      v-for="itemId in itemIds"
+      v-for="(itemId, index) in itemIds"
       :key="itemId"
       class="item-row"
     >
       <div class="move-buttons">
-        <v-btn icon="mdi-menu-up" density="compact" size="x-small" variant="text" />
-        <v-btn icon="mdi-menu-down" density="compact" size="x-small" variant="text" />
+        <v-icon class="move-button" :class="{ invisible: index === 0 }" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
+        <v-icon class="move-button" :class="{ invisible: index === itemIds.length - 1 }" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
       </div>
-      <div class="item-name">{{ items[itemId]?.name }}</div>
-      <div class="settings-button">
-        <v-btn icon="mdi-cog" density="compact" size="small" variant="text" />
+      <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
+      <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
+        <v-icon>mdi-cog</v-icon>
       </div>
     </div>
   </div>
@@ -56,20 +73,57 @@ defineProps<{
   }
   align-items: center;
 
+  .item-name {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+
   .move-buttons {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 24px;
+    width: v-bind(ROW_HEIGHT_PX);
     visibility: hidden;
+
+    .move-button {
+      cursor: pointer;
+      width: 100%;
+      border-radius: 2px;
+
+      &.invisible {
+        visibility: hidden;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+
+      &:active {
+        background-color: rgba(0, 0, 0, 0.16);
+      }
+    }
   }
 
   .settings-button {
-    display: flex;
-    flex: 1;
-    justify-content: flex-end;
-    padding-right: 8px;
     visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: v-bind(ROW_HEIGHT_PX);
+    height: 100%;
+    cursor: pointer;
+    border-radius: 2px;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.08);
+    }
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.16);
+    }
   }
 
   &:hover {

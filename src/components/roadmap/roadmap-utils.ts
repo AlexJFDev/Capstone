@@ -1,10 +1,28 @@
-import type { Item } from "@/testing/dummy-items"
-import type { DateRange } from './types'
+import type { Item } from '@/types'
+import { MSEC_IN_DAY, type DateRange } from '@/utils/dates'
 
-const SEC_IN_DAY = 86400000
+// === TYPES ===
 
 /**
- * Derives the overall timeline window from the earliest start-date and latest end-date
+ * Describes the current zoom / display scale of the roadmap timeline.
+ *
+ * @property pixelsPerDay   How many SVG pixels represent one calendar day.
+ *                          Higher values zoom in; lower values zoom out.
+ * @property headerLabel    Function that formats a Date for display in the (external)
+ *                          timeline header row. Unused inside this component.
+ * @property gridInterval   Intended granularity of the header labels ('day' | 'week' | 'month').
+ *                          Unused inside this component — grid lines are always drawn weekly.
+ */
+export interface RoadmapScale {
+  pixelsPerDay: number
+  headerLabel: (date: Date) => string
+  gridInterval: 'day' | 'week' | 'month'
+}
+
+// === FUNCTIONS ===
+
+/**
+ * Derives the overall timeline window from the earliest startDate and latest endDate
  * across all visible items. Both boundaries are then snapped to Sunday midnight so the
  * week columns align perfectly with the grid lines.
  * 
@@ -17,8 +35,8 @@ export function computeDateRange(items: Item[]): DateRange {
   let min = Infinity
   let max = -Infinity
   items.forEach((item) => {
-    min = Math.min(item["start-date"].getTime(), min)
-    max = Math.max(item["end-date"].getTime(), max)
+    min = Math.min(item.startDate.getTime(), min)
+    max = Math.max(item.endDate.getTime(), max)
   })
   // Range start is the Sunday before the first item start date
   const start = new Date(min)
@@ -39,7 +57,7 @@ export function computeDateRange(items: Item[]): DateRange {
  * @returns 
  */
 export function computeDaysInRange(range: DateRange): number {
-  return Math.round((range.end.getTime() - range.start.getTime()) / SEC_IN_DAY)
+  return Math.round((range.end.getTime() - range.start.getTime()) / MSEC_IN_DAY)
 }
 
 /**
@@ -87,6 +105,6 @@ export function extendWeekStarts(weekStarts: Date[], svgWidth: number, range: Da
  * @returns     Pixel offset from the left edge of the SVG.
  */
 export function xForDate(date: Date, range: DateRange, pixelsPerDay: number): number {
-  const days = (date.getTime() - range.start.getTime()) / SEC_IN_DAY
+  const days = (date.getTime() - range.start.getTime()) / MSEC_IN_DAY
   return days * pixelsPerDay
 }

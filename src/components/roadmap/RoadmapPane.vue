@@ -1,17 +1,23 @@
 <script setup lang="ts">
-import { workspaces } from '@/testing/dummy-workspaces'
-import RoadmapItemList from './RoadmapItemList.vue';
+import RoadmapItemList from './RoadmapItemList.vue'
 import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
-import type { RoadmapScale } from './types'
 import RoadmapChart from './RoadmapChart.vue'
-import RoadmapHeader from './RoadmapHeader.vue';
-import { computed } from 'vue';
+import RoadmapHeader from './RoadmapHeader.vue'
+import { computed } from 'vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { useInterfaceStore } from '@/stores/interface'
+import { constructEmptyWorkspace } from '@/types'
+import AddItemMenu from '@/components/items/AddItemMenu.vue'
+import type { RoadmapScale } from './roadmap-utils'
 
 const props = defineProps<{
   workspaceId: string,
 }>()
 
-const workspace = computed(() => workspaces[props.workspaceId]!)
+const workspacesStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
+
+const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
 const scale: RoadmapScale = {
   pixelsPerDay: 30,
@@ -19,7 +25,14 @@ const scale: RoadmapScale = {
   gridInterval: 'week',
 }
 
-const addItem = () => {}
+function addItem(itemId: string) {
+  workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
+}
+
+async function newItem() {
+  const itemId = await userInterface.openItemCreator()
+  if (itemId) workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
+}
 
 </script>
 
@@ -31,7 +44,11 @@ const addItem = () => {}
       <div class="header">
         <div class="list-header">
           <div class="list-box" />
-          <v-btn flat class="add-button" @click="addItem">Add Item</v-btn>
+          <AddItemMenu :excluded-item-ids="workspace.items" @add-item="addItem" @new-item="newItem">
+            <template #default="menuProps">
+              <v-btn flat class="add-button" v-bind="menuProps">Add Item</v-btn>
+            </template>
+          </AddItemMenu>
         </div>
         <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
       </div>
@@ -39,7 +56,7 @@ const addItem = () => {}
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :itemIds="workspace.items" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
 
         <!-- Roadmap Chart -->
         <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />

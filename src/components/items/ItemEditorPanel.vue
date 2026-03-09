@@ -1,41 +1,101 @@
 <script setup lang="ts">
-import { constructEmptyItem, items } from '@/testing/dummy-items'
-import { computed, ref, watch } from 'vue'
+import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
+import { computed, ref, useTemplateRef, watch } from 'vue'
+import { useItemsStore } from '@/stores/items'
+import { dateToShortISOString } from '@/utils/dates'
+import { useInterfaceStore } from '@/stores/interface';
+import { endDateAfterStart, required, validDate } from '@/utils/validation';
 
+// External State
 const model = defineModel<boolean>()
-
 const props = defineProps<{
   itemId?: string
 }>()
 
-const save = () => {}
-const cancel = () => {}
+const itemsStore = useItemsStore()
+const userInterface = useInterfaceStore()
 
-const draft = ref(constructEmptyItem())
-const item = computed(() => items[props.itemId!])
+// Editing State
+const isEditing = computed(() => !!props.itemId)
+const editingItem = computed(
+  () => isEditing.value ?
+    itemsStore.getItem(props.itemId!) :
+    constructEmptyItem()
+)
+
+// Draft State
+const draft = ref<Item>(constructEmptyItem())
+const startDateDraft = ref('')
+const endDateDraft = ref('')
+const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value))
+
+// Draft Management
+function setDraft(item: Item) {
+  draft.value = { ...item }
+  startDateDraft.value = dateToShortISOString(item.startDate)
+  endDateDraft.value = dateToShortISOString(item.endDate)
+}
 
 watch(model, isOpen => {
-  if (isOpen && item.value) {
-    draft.value = { ...item.value }
+  if (isOpen) {
+    setDraft(editingItem.value)
   } else {
-    draft.value = constructEmptyItem()
+    formRef.value?.resetValidation()
   }
 })
+
+watch(startDateDraft, date => draft.value.startDate = new Date(date))
+watch(endDateDraft, date => draft.value.endDate = new Date(date))
+
+// Action Functions
+async function save() {
+  const { valid } = await formRef.value!.validate()
+  if (!valid) return
+
+  if (isEditing.value) {
+    itemsStore.updateItem(props.itemId!, draft.value)
+    userInterface.closeItemEditor()
+  } else {
+    const id = generateItemId()
+    itemsStore.addItem(id, draft.value)
+    userInterface.resolveItemCreator(id)
+    userInterface.closeItemEditor()
+  }
+}
+
+async function cancel() {
+  if (!changesMade.value || await userInterface.confirm("You have unsaved changes. Are you sure you would like to discard them?")) {
+    userInterface.closeItemEditor()
+  }
+}
+
+async function deleteItem() {
+  if (await userInterface.confirm(`Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`)) {
+    itemsStore.deleteItem(props.itemId!)
+    userInterface.closeItemEditor()
+  }
+}
+
+// Validation
+const formRef = useTemplateRef('formRef')
+const nameRules = [ required ]
+const startDateRules = [ validDate ]
+const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) ]
 
 </script>
 
 <template>
-  <v-navigation-drawer 
-    v-model="model" 
-    temporary 
+  <v-navigation-drawer
+    :model-value="model"
+    @update:model-value="val => { if (!val) cancel() }"
+    temporary
     location="right"
     width="500"
   >
-
     <!-- HEADER -->
-    <v-toolbar density="compact">
+    <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
-      <v-toolbar-title>{{ props.itemId ? 'Edit item' : 'New item' }}</v-toolbar-title>
+      <v-toolbar-title>{{ isEditing ? 'Edit item' : 'New item' }}</v-toolbar-title>
       <v-spacer />
       <v-btn variant="text" @click="save">Save</v-btn>
     </v-toolbar>
@@ -53,6 +113,7 @@ watch(model, isOpen => {
             variant="outlined"
             density="compact"
             hide-details="auto"
+            :rules="nameRules"
           />
           <v-textarea
             v-model="draft.description"
@@ -72,20 +133,22 @@ watch(model, isOpen => {
             <v-divider />
             <v-card-text class="d-flex flex-column ga-2">
               <v-text-field
-                v-model="draft['start-date']"
+                v-model="startDateDraft"
                 label="Start date"
                 type="date"
                 variant="outlined"
                 density="compact"
                 hide-details="auto"
+                :rules="startDateRules"
               />
               <v-text-field
-                v-model="draft['end-date']"
+                v-model="endDateDraft"
                 label="End date"
                 type="date"
                 variant="outlined"
                 density="compact"
                 hide-details="auto"
+                :rules="endDateRules"
               />
             </v-card-text>
           </v-card>
@@ -113,7 +176,8 @@ watch(model, isOpen => {
     <!-- FOOTER -->
     <template #append>
       <v-divider />
-      <div class="pa-2">
+      <div class="pa-2 d-flex flex-column ga-2">
+        <v-btn v-if="isEditing" block color="red" @click="deleteItem">Delete</v-btn>
         <v-btn block variant="text" @click="cancel">Cancel</v-btn>
       </div>
     </template>
@@ -122,4 +186,9 @@ watch(model, isOpen => {
 </template>
 
 <style scoped>
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
 </style>

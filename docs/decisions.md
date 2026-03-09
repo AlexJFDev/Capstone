@@ -11,7 +11,7 @@ When created the item panels, Claude generated a proposal with two approaches. D
 Details are found in `item-panels-merge-proposal.md`.
 I have decided to NOT merge the item panels as recommended by Claude because of the complexity introduced by v-form.
 
-## Roadmap Pane
+## Roadmap Pane Implementation
 
 ### Decision 1
 
@@ -24,3 +24,20 @@ I will use divs for rows on the right side. Furthermore, I will avoid using any 
 ### Decision 3
 
 I will use a prop to control scale. The value of this prop will represent the pixel width of a day. The default value will be 80, which gives one week a width of 560 pixels.
+
+## Workspace Items overflow
+
+Details found in `workspace-overflow-proposal.md`.
+Currently, if a workspace has more than X (default 10) items the item list component will truncate to the first X and include a "View X more" item at the bottom.
+
+I will make clicking the "View X more" item simply show the full list. There will then be a way to re-truncate. I am adopting this approach because it would be easier to reverse in the future if a more complex approach is needed.
+
+## Backlog List
+
+Details found in `backlog-list-proposal.md`.
+I will accept the recommendation of creating this component using the `v-data-table`. The hyphenation issue will be addressed by updating the Item interface to use `startDate` and `endDate` rather than `start-date` and `end-date`.
+
+## Key or id
+
+This decision has no other documentation.
+Throughout the app, I use key and id interchangeably. I should pick one or the other. I chose to use id because its meaning, as an identifier for a workspace or item is clear, and it does not overlap with as much.

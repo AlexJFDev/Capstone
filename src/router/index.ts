@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import WorkspacesView from '../views/WorkspacesView.vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { isValidWorkspaceId } from '@/types'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +9,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView,
+      component: WorkspacesView,
+    },
+    {
+      path: '/workspace/:workspaceId',
+      name: 'workspace',
+      component: WorkspacesView,
+    },
+    {
+      path: '/items',
+      name: 'items',
+      component: () => import('../views/ItemsView.vue'),
     },
     ...(import.meta.env.DEV ? [{
       path: '/test',
@@ -15,6 +27,16 @@ const router = createRouter({
       component: () => import('../views/TestView.vue'),
     }] : []),
   ],
+})
+
+router.beforeEach((to) => {
+  if (to.name === 'workspace') {
+    const workspaceId = to.params.workspaceId as string
+    const workspacesStore = useWorkspacesStore()
+    if (!isValidWorkspaceId(workspaceId) || !workspacesStore.workspaceIds.includes(workspaceId)) {
+      return { name: 'home' }
+    }
+  }
 })
 
 export default router

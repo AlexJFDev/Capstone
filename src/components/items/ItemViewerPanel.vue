@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { items } from '@/testing/dummy-items'
 import DateChip from '@/components/DateChip.vue'
+import { useItemsStore } from '@/stores/items'
+import { constructEmptyItem } from '@/types'
 import { computed } from 'vue'
 
 const model = defineModel<boolean>()
 
 const props = defineProps<{
-  itemId: string
+  itemId?: string
 }>()
 
-const item = computed(() => items[props.itemId])
+const itemsStore = useItemsStore()
+
+const item = computed(
+  () => props.itemId ? 
+    itemsStore.getItem(props.itemId) : 
+    constructEmptyItem()
+)
 
 </script>
 
@@ -23,7 +30,7 @@ const item = computed(() => items[props.itemId])
   >
 
     <!-- HEADER -->
-    <v-toolbar density="compact">
+    <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
       <v-toolbar-title>{{ item.name }}</v-toolbar-title>
     </v-toolbar>
@@ -47,11 +54,11 @@ const item = computed(() => items[props.itemId])
             <v-card-text class="d-flex flex-column ga-1">
               <div class="d-flex align-center ga-2">
                 <span class="text-caption text-medium-emphasis date-label">Start</span>
-                <DateChip :date="item['start-date']" />
+                <DateChip :date="item.startDate" />
               </div>
               <div class="d-flex align-center ga-2">
                 <span class="text-caption text-medium-emphasis date-label">End</span>
-                <DateChip :date="item['end-date']" />
+                <DateChip :date="item.endDate" />
               </div>
             </v-card-text>
           </v-card>
@@ -75,5 +82,11 @@ const item = computed(() => items[props.itemId])
 <style scoped>
 .date-label {
   min-width: 2.5rem;
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 </style>

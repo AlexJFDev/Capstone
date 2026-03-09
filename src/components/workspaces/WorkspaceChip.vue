@@ -1,0 +1,25 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { isLightColor } from '@/utils/colors'
+
+const props = defineProps<{
+  workspaceId: string
+}>()
+
+const workspacesStore = useWorkspacesStore()
+
+const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const showBorder = computed(() => isLightColor(workspace.value.color))
+</script>
+
+<template>
+  <v-chip
+    :color="workspace.color"
+    size="small"
+    variant="flat"
+    :style="showBorder ? { border: '1px solid rgba(0,0,0,0.2)' } : {}"
+  >
+    {{ workspace.name }}
+  </v-chip>
+</template>

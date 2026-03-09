@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { workspaces } from '@/testing/dummy-workspaces';
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { constructEmptyWorkspace } from '@/types'
+import { useInterfaceStore } from '@/stores/interface';
 
 const props = defineProps<{
   workspaceId: string
 }>()
 
-const workspace = workspaces[props.workspaceId]!
+const router = useRouter()
+const workspacesStore = useWorkspacesStore()
+const userInterface = useInterfaceStore()
+
+const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+
 const hovered = ref(false)
 </script>
 
@@ -21,8 +29,18 @@ const hovered = ref(false)
   >
     <template #append>
       <div class="actions" :class="{ visible: hovered }">
-        <v-btn icon="mdi-pencil" density="compact" variant="text" />
-        <v-btn icon="mdi-open-in-new" density="compact" variant="text" />
+        <v-btn
+          icon="mdi-pencil"
+          density="compact"
+          variant="text" 
+          @click="userInterface.openWorkspaceEditor(workspaceId)"
+        />
+        <v-btn 
+          icon="mdi-open-in-new"
+          density="compact"
+          variant="text"
+          @click="router.push({ name: 'workspace', params: { workspaceId } })"
+        />
       </div>
     </template>
 

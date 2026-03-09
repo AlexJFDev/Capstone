@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import type { RoadmapScale } from './types'
-import { items as dummyItems } from '@/testing/dummy-items'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
-import { CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants';
-import { formatDate } from '../utils';
+import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
+import { formatDate } from '@/utils/dates'
+import { useItemsStore } from '@/stores/items'
 
 const props = defineProps<{
   itemIds: string[]
   scale: RoadmapScale
 }>()
+
+const itemsStore = useItemsStore()
 
 const rootRef = useTemplateRef('root')
 const width = ref(0)
@@ -22,7 +23,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
+const items = computed(() => itemsStore.getItems(props.itemIds))
 
 const dateRange = computed(() => computeDateRange(items.value))
 

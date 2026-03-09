@@ -3,7 +3,7 @@
  * RoadmapChart
  *
  * Renders a horizontally-scrollable SVG Gantt-style chart for a list of roadmap items.
- * Each item is drawn as a colored bar spanning its start-date to end-date, aligned to a
+ * Each item is drawn as a colored bar spanning its startDate to endDate, aligned to a
  * shared timeline. The timeline always starts on a Sunday and ends on a Sunday so that
  * the week grid lines fall cleanly on column boundaries.
  *
@@ -17,7 +17,6 @@
  * Props
  * -----
  *  itemIds  – Ordered list of item IDs to display (top-to-bottom).
- *             Each ID must exist in the `items` record imported from dummy-items.
  *  scale    – Controls zoom level and (future) header labelling.
  *             `pixelsPerDay` is the only field used for rendering here; the other
  *             fields (`headerLabel`, `gridInterval`) are reserved for a header bar component.
@@ -30,10 +29,10 @@
  */
 
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { items as dummyItems } from '@/testing/dummy-items'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
-import type { RoadmapScale } from './types'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate } from './utils'
+import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { useItemsStore } from '@/stores/items'
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -41,6 +40,9 @@ const props = defineProps<{
   /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
   scale: RoadmapScale
 }>()
+
+const itemsStore = useItemsStore()
+const interfaceStore = useInterfaceStore()
 
 const rootRef = useTemplateRef('root')
 const width = ref(0)
@@ -53,7 +55,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => resizeObserver?.disconnect())
 
-const items = computed(() => props.itemIds.map((itemId) => dummyItems[itemId]!))
+const items = computed(() => itemsStore.getItems(props.itemIds))
 
 const dateRange = computed(() => computeDateRange(items.value))
 
@@ -74,8 +76,8 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
  *  - id     → item identifier (used as Vue key)
- *  - x      → left edge pixel position (from item start-date)
- *  - width  → bar width in pixels  (end-date x − start-date x)
+ *  - x      → left edge pixel position (from item startDate)
+ *  - width  → bar width in pixels  (endDate x − startDate x)
  *  - color  → fill color from the item definition
  *  - y      → top edge of the row (before CHART_BAR_PADDING is applied in the template)
  *
@@ -84,10 +86,10 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
 const bars = computed(() =>
   props.itemIds
     .map((id, index) => {
-      const item = dummyItems[id]
+      const item = itemsStore.getItem(id)
       if (!item) return null
-      const x = xForDate(item['start-date'], dateRange.value, props.scale.pixelsPerDay)
-      const width = xForDate(item['end-date'], dateRange.value, props.scale.pixelsPerDay) - x
+      const x = xForDate(item.startDate, dateRange.value, props.scale.pixelsPerDay)
+      const width = xForDate(item.endDate, dateRange.value, props.scale.pixelsPerDay) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)
@@ -129,6 +131,17 @@ const bars = computed(() =>
       />
       <!-- Bottom border of last row. -->
 
+      <!-- Row hover backgrounds -->
+      <rect
+        v-for="(itemId, index) in itemIds"
+        :key="`bg-${itemId}`"
+        x="0"
+        :y="index * ROW_HEIGHT"
+        :width="svgWidth"
+        :height="ROW_HEIGHT"
+        class="row-bg"
+      />
+
       <!-- Item bars -->
       <rect
         v-for="bar in bars"
@@ -139,6 +152,8 @@ const bars = computed(() =>
         :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
         :fill="bar.color"
         rx="3"
+        class="bar"
+        @click="interfaceStore.openItemViewer(bar.id)"
       />
     </svg>
   </div>
@@ -151,5 +166,21 @@ svg {
 
 .roadmap-chart {
   height: max-content;
+}
+
+.row-bg {
+  fill: transparent;
+
+  &:hover {
+    fill: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.bar {
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 </style>

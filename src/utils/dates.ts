@@ -1,4 +1,40 @@
+
+// === TYPES ===
+
 export type DateStyle = 'long-american' | 'short-american' | 'long-european' | 'short-european'
+
+/**
+ * Simple range of dates.
+ * 
+ * @property start   The Beginning of the range
+ * @property end     The end of the range
+ */
+export interface DateRange {
+  start: Date
+  end: Date
+}
+
+// === VALIDATION ===
+/** True if the end date is after the start date. */
+export function isValidRange(range: DateRange): boolean {
+  const { start, end } = range
+  return (
+    isNaN(start.getTime()) ||
+    isNaN(end.getTime()) ||
+    end >= start
+  )
+}
+/** Throws if range is invalid. */
+export function validateRange(range: DateRange) {
+  if (!isValidRange(range)) {
+    throw new Error(`Invalid date range: ${range}`)
+  }
+}
+
+// === CONSTANTS ===
+
+/** Number of milliseconds in one day. */
+export const MSEC_IN_DAY = 86400000
 
 function ordinalSuffix(day: number): string {
   if (day >= 11 && day <= 13) return `${day}th`
@@ -10,6 +46,10 @@ function ordinalSuffix(day: number): string {
   }
 }
 
+/**
+ * Formats a date value into a human-readable string using the given style.
+ * All calculations use UTC to avoid timezone-related off-by-one-day errors.
+ */
 export function formatDate(date: string | number | Date, style: DateStyle) {
   const d = new Date(date)
   const year = d.getUTCFullYear()
@@ -34,4 +74,9 @@ export function formatDate(date: string | number | Date, style: DateStyle) {
     case 'short-european':
       return `${dd}-${mm}-${year}`
   }
+}
+
+/** Returns the date as a `YYYY-MM-DD` string, suitable for use with `<input type="date">`. */
+export function dateToShortISOString(date: Date): string {
+  return date.toISOString().slice(0, 10)
 }

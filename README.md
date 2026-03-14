@@ -12,7 +12,7 @@ Based on discussions I have had with co-workers in my actual job (I do web devel
 
 ## Current state
 
-Currently, the UI of the app works, but it is not in a functional state. The Pinia store is still in development and there is no persistence. If the page is reloaded, all changes are lost.
+Currently, the UI of the app is fully functional,however changes are not persistent. If the page is reloaded, all changes are lost and the store is filled with pre-written dummy data.
 
 ## Long-term Plans
 

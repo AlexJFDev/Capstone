@@ -15,7 +15,9 @@ app.use(createPinia())
 app.use(router)
 app.use(vuetify)
 
-useWorkspacesStore().initializeWorkspaces()
-useItemsStore().initializeItems()
+await Promise.all([
+  useWorkspacesStore().initializeWorkspaces(),
+  useItemsStore().initializeItems(),
+])
 
 app.mount('#app')

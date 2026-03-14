@@ -1,4 +1,4 @@
-import { workspaces as dummyWorkspaces } from "@/testing/dummy-workspaces"
+import { getAllWorkspaces, putWorkspace, removeWorkspace } from "@/db"
 import { validateWorkspaceId, type Workspace } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { defineStore } from "pinia"
@@ -10,11 +10,10 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   const workspaceIds = computed(() => Object.keys(workspaces.value))
   const hasWorkspaces = computed(() => workspaceIds.value.length > 0)
 
-  function initializeWorkspaces() {
-    // Will need to be updated when IndexedDB is added
-    // For now, basically simulating loading
-    Object.entries(dummyWorkspaces).forEach(([id, workspace]) => {
-      addWorkspace(id, workspace)
+  async function initializeWorkspaces() {
+    const storedWorkspaces = await getAllWorkspaces()
+    Object.entries(storedWorkspaces).forEach(([id, workspace]) => {
+      workspaces.value[id] = workspace
     })
   }
 
@@ -32,6 +31,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   function addWorkspace(id: string, workspace: Workspace) {
     validateWorkspaceId(id)
     workspaces.value[id] = workspace
+    putWorkspace(id, workspaces.value[id]!)
   }
 
   function getWorkspace(id: string): Workspace {
@@ -41,7 +41,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
 
   function updateWorkspace(id: string, updates: Partial<Workspace>) {
     validateWorkspaceExists(id)
-    
+
     if (updates.color) {
       validateColor(updates.color)
     }
@@ -51,6 +51,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     }
 
     Object.assign(workspaces.value[id]!, updates)
+    putWorkspace(id, getWorkspace(id))
   }
 
   function getWorkspaceName(id: string): string {
@@ -79,6 +80,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
 
     items.splice(index, 1)
     items.splice(newIndex, 0, itemId)
+    putWorkspace(workspaceId, getWorkspace(workspaceId))
   }
 
   function removeItemFromWorkspace(itemId: string, workspaceId: string) {
@@ -93,12 +95,14 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     if (index === -1) return
 
     workspace.items.splice(index, 1)
+    putWorkspace(workspaceId, getWorkspace(workspaceId))
   }
 
   function deleteWorkspace(workspaceId: string) {
     validateWorkspaceExists(workspaceId)
 
     delete workspaces.value[workspaceId]
+    removeWorkspace(workspaceId)
   }
 
   return {

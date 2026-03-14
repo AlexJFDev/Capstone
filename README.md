@@ -12,7 +12,7 @@ Based on discussions I have had with co-workers in my actual job (I do web devel
 
 ## Current state
 
-Currently, the UI of the app is fully functional,however changes are not persistent. If the page is reloaded, all changes are lost and the store is filled with pre-written dummy data.
+Currently, the UI of the app is fully functional, however changes are not persistent. If the page is reloaded, all changes are lost and the store is filled with pre-written dummy data.
 
 ## Long-term Plans
 
@@ -28,7 +28,7 @@ Team collaboration is built around access control rather than a rigid hierarchy.
 
 ## Architecture
 
-The core of this project are two datatypes representing "Workspaces" and "Items". These are stored as JSON. The rest of the site is simply a way to visualize this information. Workspaces act as containers for items, but items are still first class items stored separately. Workspaces just contain a list of item-ids as references. This allows for flexibility and having one item in multiple workspaces. "Views" will be another datatype but are not going to be added for some time.
+The core of this project are two datatypes representing "Workspaces" and "Items". These are stored as TypeScript interfaces in Pinia. The rest of the site is simply a way to visualize this information. Workspaces act as containers for items, but items are still first class items stored separately. Workspaces just contain a list of item-ids as references. This allows for flexibility and having one item in multiple workspaces. "Views" will be another datatype but will not be added for some time.
 
 ## Tech Stack
 

@@ -45,4 +45,4 @@ Throughout the app, I use key and id interchangeably. I should pick one or the o
 ## Persistence
 
 Details found in `persistence-proposal.md`.
-I need to decide how I will implement persistence so that data can be saved between sessions. I can either write my own IndexedDB wrapper or I can use an NPM package called `idb`. I will use the package because it reduces workload.
+I need to decide how I will implement persistence so that data can be saved between sessions. I can either write my own IndexedDB wrapper (option A) or I can use an NPM package called `idb` (option B). I will go with option B because it reduces workload.

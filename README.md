@@ -8,6 +8,8 @@ This repository contains my capstone project for my computer science major at CN
 
 Like Excalidraw, this tool will store all data locally. I will use IndexedDB for this. This simplifies development for me because I don't need to develop a backend server. It also eliminates any cost that a server might have.
 
+Based on discussions I have had with co-workers in my actual job (I do web development), this project is also intended to be an exercise in AI-powered app development. The details of this can be found in the `/docs` folder. The folder contains various AI-assisted proposals for features and a file called `decisions.md`. Decisions contains final development decisions based on those proposals. All decisions are ultimately made by a human.
+
 ## Current state
 
 Currently, the UI of the app works, but it is not in a functional state. The Pinia store is still in development and there is no persistence. If the page is reloaded, all changes are lost.

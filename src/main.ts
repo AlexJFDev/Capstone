@@ -12,7 +12,6 @@ import { useItemsStore } from './stores/items'
 const app = createApp(App)
 
 app.use(createPinia())
-app.use(router)
 app.use(vuetify)
 
 await Promise.all([
@@ -20,4 +19,5 @@ await Promise.all([
   useItemsStore().initializeItems(),
 ])
 
+app.use(router)
 app.mount('#app')

@@ -12,12 +12,13 @@ import BacklogList from '@/components/backlog/BacklogList.vue'
 import { useItemsStore } from '@/stores/items'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { workspaces as dummyWorkspaces } from '@/testing/dummy-workspaces'
+import { clearDatabase } from '@/db'
 
 const workspacesStore = useWorkspacesStore()
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
 
-const TEST_ITEM_ID = itemsStore.itemIds[0]
+const test_item_id = itemsStore.itemIds[0]
 
 const workspaceIds = workspacesStore.workspaceIds
 
@@ -26,13 +27,16 @@ const itemViewerOpen = ref(false)
 const workspaceEditorOpen = ref(false)
 const workspacesOpen = ref(false)
 
-const WORKSPACE_IDS = workspacesStore.workspaceIds
-
 const workspaceIndex = ref(1)
-const workspaceId = computed(() => WORKSPACE_IDS[workspaceIndex.value]!)
+const workspaceId = computed(() => workspaceIds[workspaceIndex.value]!)
 
 function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % WORKSPACE_IDS.length
+  workspaceIndex.value = (workspaceIndex.value + 1) % workspaceIds.length
+}
+
+async function clearAll() {
+  await clearDatabase()
+  window.location.reload()
 }
 
 function loadDummyData() {
@@ -74,15 +78,18 @@ function loadDummyData() {
         <v-col cols="auto">
           <v-btn @click="loadDummyData">Load Dummy Data</v-btn>
         </v-col>
+        <v-col cols="auto">
+          <v-btn @click="clearAll">Clear Database</v-btn>
+        </v-col>
       </v-row>
     </v-container>
 
     <div class="pane">
-      <RoadmapPane :workspaceId="workspaceId" />
+      <RoadmapPane v-if="workspaceId" :workspaceId="workspaceId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
-    <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
+    <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :itemId="test_item_id" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
     <SpeedbumpDialog />

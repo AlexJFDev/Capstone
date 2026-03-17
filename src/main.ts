@@ -8,6 +8,7 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { useWorkspacesStore } from './stores/workspaces'
 import { useItemsStore } from './stores/items'
+import { useInterfaceStore } from './stores/interface'
 
 const app = createApp(App)
 
@@ -17,6 +18,7 @@ app.use(vuetify)
 await Promise.all([
   useWorkspacesStore().initializeWorkspaces(),
   useItemsStore().initializeItems(),
+  useInterfaceStore().initializeInterface()
 ])
 
 app.use(router)

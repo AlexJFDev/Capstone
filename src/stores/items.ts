@@ -12,11 +12,7 @@ export const useItemsStore = defineStore('items', () => {
 
   async function initializeItems() {
     const storedItems = await getAllItems()
-    Object.entries(storedItems).forEach(([id, item]) => {
-      item.startDate = new Date(item.startDate)
-      item.endDate = new Date(item.endDate)
-      items.value[id] = item
-    })
+    Object.entries(storedItems).forEach(([id, item]) => items.value[id] = item)
   }
 
   function doesItemExist(id: string): boolean {

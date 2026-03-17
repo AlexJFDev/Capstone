@@ -97,11 +97,12 @@ export async function removeWorkspace(id: string): Promise<void> {
 
 // === Clear ===
 
-/** Clears all items and workspaces from the database. */
+/** Clears all items, workspaces, and settings from the database. */
 export async function clearDatabase(): Promise<void> {
   const db = await getDatabase()
   await db.clear('items')
   await db.clear('workspaces')
+  await db.clear('settings')
 }
 
 // === Settings ===

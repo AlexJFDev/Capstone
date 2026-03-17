@@ -18,7 +18,7 @@ const workspacesStore = useWorkspacesStore()
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
 
-const test_item_id = itemsStore.itemIds[0]
+const test_item_id = computed(() => itemsStore.itemIds[0])
 
 const workspaceIds = workspacesStore.workspaceIds
 

@@ -23,7 +23,7 @@ const workspaceParam = computed(() => route.params.workspaceId as string)
 
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
 
-watch(workspaceParam, id => {
+watch(activeWorkspace, id => {
   if (id) putSettings({ lastViewedWorkspaceId: id })
 })
 const workspaceName = computed(() => activeWorkspace.value ?

@@ -1,5 +1,5 @@
 import { getAllWorkspaces, putWorkspace, removeWorkspace } from "@/db"
-import { validateWorkspaceId, type Workspace } from "@/types"
+import { isValidWorkspaceId, validateWorkspaceId, type Workspace } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
@@ -18,7 +18,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   }
 
   function doesWorkspaceExist(id: string): boolean {
-    validateWorkspaceId(id)
+    isValidWorkspaceId(id)
     return id in workspaces.value
   }
 

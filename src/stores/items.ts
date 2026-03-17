@@ -1,5 +1,5 @@
 import { getAllItems, putItem, removeItem } from "@/db"
-import { validateItemId, type Item } from "@/types"
+import { isValidItemId, validateItemId, type Item } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { validateRange } from "@/utils/dates"
 import { defineStore } from "pinia"
@@ -20,7 +20,7 @@ export const useItemsStore = defineStore('items', () => {
   }
 
   function doesItemExist(id: string): boolean {
-    validateItemId(id)
+    isValidItemId(id)
     return id in items.value
   }
 

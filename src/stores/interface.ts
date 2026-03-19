@@ -1,4 +1,4 @@
-import { getSettings } from "@/db"
+import { getSettings, putSettings } from "@/db"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 import { useWorkspacesStore } from "./workspaces"
@@ -21,6 +21,10 @@ export const useInterfaceStore = defineStore('interface', () => {
   async function initializeInterface() {
     const settings = await getSettings()
     restoredWorkspaceId = settings?.lastViewedWorkspaceId
+  }
+
+  async function persistLastViewedWorkspace(id: string) {
+    await putSettings({ lastViewedWorkspaceId: id })
   }
 
   const workspacesOpen = ref(false)
@@ -124,7 +128,8 @@ export const useInterfaceStore = defineStore('interface', () => {
     speedbumpMessage,
     confirm,
     resolveSpeedbump,
-    initializeInterface
+    initializeInterface,
+    persistLastViewedWorkspace
   }
 
 })

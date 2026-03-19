@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
-import { putSettings } from '@/db'
 
 const route = useRoute()
 const router = useRouter()
@@ -24,7 +23,7 @@ const workspaceParam = computed(() => route.params.workspaceId as string)
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
 
 watch(activeWorkspace, id => {
-  if (id) putSettings({ lastViewedWorkspaceId: id })
+  if (id) userInterface.persistLastViewedWorkspace(id)
 })
 const workspaceName = computed(() => activeWorkspace.value ?
     workspacesStore.getWorkspaceName(activeWorkspace.value) :

@@ -4,23 +4,23 @@ import { computed, ref } from "vue"
 import { useWorkspacesStore } from "./workspaces"
 
 export const useInterfaceStore = defineStore('interface', () => {
-  const lastViewedWorkspaceId = ref<string | undefined | null>()
+  let restoredWorkspaceId: string | undefined | null
   const defaultWorkspaceId = computed(() => {
     const workspacesStore = useWorkspacesStore()
 
     if (!workspacesStore.hasWorkspaces) return undefined
     if (
-      !lastViewedWorkspaceId.value ||
-      !workspacesStore.doesWorkspaceExist(lastViewedWorkspaceId.value)
+      !restoredWorkspaceId||
+      !workspacesStore.doesWorkspaceExist(restoredWorkspaceId)
     ) {
       return workspacesStore.workspaceIds[0]
     } else {
-      return lastViewedWorkspaceId.value
+      return restoredWorkspaceId
     }
   })
   async function initializeInterface() {
     const settings = await getSettings()
-    lastViewedWorkspaceId.value = settings?.lastViewedWorkspaceId
+    restoredWorkspaceId = settings?.lastViewedWorkspaceId
   }
 
   const workspacesOpen = ref(false)

@@ -1,5 +1,5 @@
-import { items as dummyItems } from "@/testing/dummy-items"
-import { validateItemId, type Item } from "@/types"
+import { getAllItems, putItem, removeItem } from "@/db"
+import { isValidItemId, validateItemId, type Item } from "@/types"
 import { validateColor } from "@/utils/colors"
 import { validateRange } from "@/utils/dates"
 import { defineStore } from "pinia"
@@ -10,19 +10,13 @@ export const useItemsStore = defineStore('items', () => {
   const items = ref<Record<string, Item>>({})
   const itemIds = computed(() => Object.keys(items.value))
 
-  function initializeItems() {
-    // Will need to be updated when IndexedDB is added
-    // For now, basically simulating loading
-    Object.entries(dummyItems).forEach(([id, item]) => {
-      item.startDate = new Date(item.startDate)
-      item.endDate = new Date(item.endDate)
-
-      addItem(id, item)
-    })
+  async function initializeItems() {
+    const storedItems = await getAllItems()
+    Object.entries(storedItems).forEach(([id, item]) => items.value[id] = item)
   }
 
   function doesItemExist(id: string): boolean {
-    validateItemId(id)
+    isValidItemId(id)
     return id in items.value
   }
 
@@ -35,6 +29,7 @@ export const useItemsStore = defineStore('items', () => {
   function addItem(id: string, item: Item) {
     validateItemId(id)
     items.value[id] = item
+    putItem(id, items.value[id]!)
   }
 
   function getItem(id: string): Item {
@@ -64,7 +59,7 @@ export const useItemsStore = defineStore('items', () => {
 
   function updateItem(id: string, updates: Partial<Item>) {
     validateItemExists(id)
-    
+
     if (updates.color) {
       validateColor(updates.color)
     }
@@ -90,6 +85,7 @@ export const useItemsStore = defineStore('items', () => {
     }
 
     Object.assign(getItem(id), updates)
+    putItem(id, getItem(id))
   }
 
   function deleteItem(id: string) {
@@ -97,11 +93,12 @@ export const useItemsStore = defineStore('items', () => {
 
     const workspacesStore = useWorkspacesStore()
 
-    workspacesStore.workspaceIds.forEach((workspaceId) => {
+    for (const workspaceId of workspacesStore.workspaceIds) {
       workspacesStore.removeItemFromWorkspace(id, workspaceId)
-    })
+    }
 
     delete items.value[id]
+    removeItem(id)
   }
 
   return {

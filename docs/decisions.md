@@ -41,3 +41,8 @@ I will accept the recommendation of creating this component using the `v-data-ta
 
 This decision has no other documentation.
 Throughout the app, I use key and id interchangeably. I should pick one or the other. I chose to use id because its meaning, as an identifier for a workspace or item is clear, and it does not overlap with as much.
+
+## Persistence
+
+Details found in `persistence-proposal.md`.
+I need to decide how I will implement persistence so that data can be saved between sessions. I can either write my own IndexedDB wrapper (option A) or I can use an NPM package called `idb` (option B). I will go with option B because it reduces workload.

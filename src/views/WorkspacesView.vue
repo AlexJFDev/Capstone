@@ -18,22 +18,17 @@ watch(() => workspacesStore.workspaceIds, (ids) => {
   }
 })
 
-// Falls back to the first workspace when at '/'. In the future this should
-// open the last viewed workspace instead, which will require persistence logic.
-const activeWorkspace = computed(() => {
-  if (workspacesStore.hasWorkspaces) {
-    return (route.params.workspaceId as string) || workspacesStore.workspaceIds[0]
-  } else {
-    return undefined
-  }
+const workspaceParam = computed(() => route.params.workspaceId as string)
+
+const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
+
+watch(activeWorkspace, id => {
+  if (id) userInterface.persistLastViewedWorkspace(id)
 })
-const workspaceName = computed(() => {
-  if (activeWorkspace.value) {
-    return workspacesStore.getWorkspaceName(activeWorkspace.value)
-  } else {
-    return ''
-  }
-})
+const workspaceName = computed(() => activeWorkspace.value ?
+    workspacesStore.getWorkspaceName(activeWorkspace.value) :
+    ''
+)
 
 </script>
 

@@ -32,6 +32,14 @@ const workspacesStore = useWorkspacesStore()
         >
           Workspaces
         </v-btn>
+        <v-btn
+          v-if="router.hasRoute('test')"
+          prepend-icon="mdi-flask-outline"
+          variant="text"
+          @click="router.push({ name: 'test' })"
+        >
+          Test
+        </v-btn>
       </template>
     </v-app-bar>
     <RouterView />

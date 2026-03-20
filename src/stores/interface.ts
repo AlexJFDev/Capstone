@@ -10,7 +10,7 @@ export const useInterfaceStore = defineStore('interface', () => {
 
     if (!workspacesStore.hasWorkspaces) return undefined
     if (
-      !restoredWorkspaceId||
+      !restoredWorkspaceId ||
       !workspacesStore.doesWorkspaceExist(restoredWorkspaceId)
     ) {
       return workspacesStore.workspaceIds[0]
@@ -131,5 +131,4 @@ export const useInterfaceStore = defineStore('interface', () => {
     initializeInterface,
     persistLastViewedWorkspace
   }
-
 })

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
-import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
+import { LIST_BORDER_COLOR, LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed } from 'vue'
@@ -76,6 +76,19 @@ async function newItem() {
     border: 2px solid v-bind(PANE_COLOR_PRIMARY);
     border-radius: 4px;
 
+    &::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.25);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track:horizontal {
+      border-top: 1px solid v-bind(LIST_BORDER_COLOR);
+    }
+
+    &::-webkit-scrollbar-track:vertical {
+      border-left: 1px solid v-bind(LIST_BORDER_COLOR);
+    }
+
     .header {
       display: flex;
       background-color: rgb(var(--v-theme-surface));
@@ -113,8 +126,6 @@ async function newItem() {
       display: flex;
       width: fit-content;
       min-width: 100%;
-
-      border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
 
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);

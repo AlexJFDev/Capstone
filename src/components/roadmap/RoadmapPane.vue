@@ -114,6 +114,8 @@ async function newItem() {
       width: fit-content;
       min-width: 100%;
 
+      border-bottom: 1px solid v-bind(SECTION_BORDER_COLOR);
+
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
 

@@ -3,7 +3,7 @@ import RoadmapItemList from './RoadmapItemList.vue'
 import { LIST_BORDER_COLOR, LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
-import { computed } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { constructEmptyWorkspace } from '@/types'
@@ -34,11 +34,40 @@ async function newItem() {
   if (itemId) workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
 }
 
+const paneRef = ref<HTMLElement | null>(null)
+const hasHorizontalScroll = ref(false)
+const hasVerticalScroll = ref(false)
+
+function updateScrollState() {
+  const el = paneRef.value
+  if (!el) return
+  hasHorizontalScroll.value = el.scrollWidth > el.clientWidth
+  hasVerticalScroll.value = el.scrollHeight > el.clientHeight
+}
+
+watch(() => workspace.value.items, () => nextTick(updateScrollState))
+
+let resizeObserver: ResizeObserver
+
+onMounted(() => {
+  resizeObserver = new ResizeObserver(updateScrollState)
+  if (paneRef.value) resizeObserver.observe(paneRef.value)
+  nextTick(updateScrollState)
+})
+
+onUnmounted(() => {
+  resizeObserver?.disconnect()
+})
+
 </script>
 
 <template>
   <div class="roadmap-wrapper">
-    <div class="roadmap-pane">
+    <div
+      ref="paneRef"
+      class="roadmap-pane"
+      :class="{ 'scroll-x': hasHorizontalScroll, 'scroll-y': hasVerticalScroll }"
+    >
 
       <!-- Header -->
       <div class="header">
@@ -76,17 +105,16 @@ async function newItem() {
     border: 2px solid v-bind(PANE_COLOR_PRIMARY);
     border-radius: 4px;
 
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.25);
-      border-radius: 4px;
+    &.scroll-x {
+      box-shadow: inset 0 -1px 0 v-bind(LIST_BORDER_COLOR);
     }
 
-    &::-webkit-scrollbar-track:horizontal {
-      border-top: 1px solid v-bind(LIST_BORDER_COLOR);
+    &.scroll-y {
+      box-shadow: inset -1px 0 0 v-bind(LIST_BORDER_COLOR);
     }
 
-    &::-webkit-scrollbar-track:vertical {
-      border-left: 1px solid v-bind(LIST_BORDER_COLOR);
+    &.scroll-x.scroll-y {
+      box-shadow: inset 0 -1px 0 v-bind(LIST_BORDER_COLOR), inset -1px 0 0 v-bind(LIST_BORDER_COLOR);
     }
 
     .header {

@@ -10,12 +10,15 @@ import { useInterfaceStore } from '@/stores/interface'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 import BacklogList from '@/components/backlog/BacklogList.vue'
 import { useItemsStore } from '@/stores/items'
-
-const TEST_ITEM_ID = 'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890'
+import { items as dummyItems } from '@/testing/dummy-items'
+import { workspaces as dummyWorkspaces } from '@/testing/dummy-workspaces'
+import { clearDatabase } from '@/db'
 
 const workspacesStore = useWorkspacesStore()
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
+
+const test_item_id = computed(() => itemsStore.itemIds[0])
 
 const workspaceIds = workspacesStore.workspaceIds
 
@@ -24,16 +27,29 @@ const itemViewerOpen = ref(false)
 const workspaceEditorOpen = ref(false)
 const workspacesOpen = ref(false)
 
-const WORKSPACE_IDS = [
-  'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890',
-  'w-2b3c4d5e-6f7a-4901-bcde-f12345678901',
-]
-
 const workspaceIndex = ref(1)
-const workspaceId = computed(() => WORKSPACE_IDS[workspaceIndex.value]!)
+const workspaceId = computed(() => workspaceIds[workspaceIndex.value]!)
 
 function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % WORKSPACE_IDS.length
+  workspaceIndex.value = (workspaceIndex.value + 1) % workspaceIds.length
+}
+
+async function clearAll() {
+  await clearDatabase()
+  window.location.reload()
+}
+
+function loadDummyData() {
+  for (const [id, item] of Object.entries(dummyItems)) {
+    if (!itemsStore.doesItemExist(id)) {
+      itemsStore.addItem(id, item)
+    }
+  }
+  for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
+    if (!workspacesStore.doesWorkspaceExist(id)) {
+      workspacesStore.addWorkspace(id, workspace)
+    }
+  }
 }
 </script>
 
@@ -59,15 +75,21 @@ function toggle() {
         <v-col cols="auto">
           <v-btn @click="interfaceStore.confirm('Are you sure?')">Speedbump</v-btn>
         </v-col>
+        <v-col cols="auto">
+          <v-btn @click="loadDummyData">Load Dummy Data</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="clearAll">Clear Database</v-btn>
+        </v-col>
       </v-row>
     </v-container>
 
     <div class="pane">
-      <RoadmapPane :workspaceId="workspaceId" />
+      <RoadmapPane v-if="workspaceId" :workspaceId="workspaceId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
-    <ItemViewerPanel v-model="itemViewerOpen" :itemId="TEST_ITEM_ID" />
+    <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :itemId="test_item_id" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
     <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
     <SpeedbumpDialog />

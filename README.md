@@ -8,9 +8,11 @@ This repository contains my capstone project for my computer science major at CN
 
 Like Excalidraw, this tool will store all data locally. I will use IndexedDB for this. This simplifies development for me because I don't need to develop a backend server. It also eliminates any cost that a server might have.
 
+Based on discussions I have had with co-workers in my actual job (I do web development), this project is also intended to be an exercise in AI-powered app development. The details of this can be found in the `/docs` folder. The folder contains various AI-assisted proposals for features and a file called `decisions.md`. Decisions contains final development decisions based on those proposals. All decisions are ultimately made by a human.
+
 ## Current state
 
-Currently, the UI of the app works, but it is not in a functional state. The Pinia store is still in development and there is no persistence. If the page is reloaded, all changes are lost.
+Currently, the UI of the app is fully functional, however changes are not persistent. If the page is reloaded, all changes are lost and the store is filled with pre-written dummy data.
 
 ## Long-term Plans
 
@@ -26,7 +28,7 @@ Team collaboration is built around access control rather than a rigid hierarchy.
 
 ## Architecture
 
-The core of this project are two datatypes representing "Workspaces" and "Items". These are stored as JSON. The rest of the site is simply a way to visualize this information. Workspaces act as containers for items, but items are still first class items stored separately. Workspaces just contain a list of item-ids as references. This allows for flexibility and having one item in multiple workspaces. "Views" will be another datatype but are not going to be added for some time.
+The core of this project are two datatypes representing "Workspaces" and "Items". These are stored as TypeScript interfaces in Pinia. The rest of the site is simply a way to visualize this information. Workspaces act as containers for items, but items are still first class items stored separately. Workspaces just contain a list of item-ids as references. This allows for flexibility and having one item in multiple workspaces. "Views" will be another datatype but will not be added for some time.
 
 ## Tech Stack
 

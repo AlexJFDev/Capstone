@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
 import { formatDate } from '@/utils/dates'
 import { useItemsStore } from '@/stores/items'
@@ -25,7 +25,7 @@ onBeforeUnmount(() => resizeObserver?.disconnect())
 
 const items = computed(() => itemsStore.getItems(props.itemIds))
 
-const dateRange = computed(() => computeDateRange(items.value))
+const dateRange = computed(() => computeDateRange(items.value, props.scale))
 
 /** Total number of calendar days spanned by the timeline window (used for SVG width). */
 const totalDays = computed(() => computeDaysInRange(dateRange.value))
@@ -35,10 +35,10 @@ const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPer
 const svgHeight = ROW_HEIGHT * 2
 
 /**
- * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
- * Used to draw the vertical grid lines in the template.
+ * Array of Dates, one per interval boundary, from timeline start to end.
+ * Used to draw the vertical grid lines and labels in the template.
  */
-const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRange.value), svgWidth.value, dateRange.value, props.scale.pixelsPerDay))
+const intervalStarts = computed(() => computeIntervalStarts(dateRange.value, svgWidth.value, props.scale))
 
 </script>
 
@@ -49,19 +49,19 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
       :height="svgHeight"
     >
       <line
-        v-for="week in weekStarts"
+        v-for="week in intervalStarts"
         :key="week.getTime()"
-        :x1="xForDate(week, dateRange, scale.pixelsPerDay)"
-        :x2="xForDate(week, dateRange, scale.pixelsPerDay)"
+        :x1="xForDate(week, dateRange, scale)"
+        :x2="xForDate(week, dateRange, scale)"
         y1="0"
         :y2="svgHeight"
         :stroke="CHART_BORDER_COLOR_PRIMARY"
         stroke-width="1"
       />
       <text
-        v-for="week in weekStarts"
+        v-for="week in intervalStarts"
         :key="week.getTime()"
-        :x="xForDate(week, dateRange, scale.pixelsPerDay) + 4"
+        :x="xForDate(week, dateRange, scale) + 4"
         y="40"
       >
         {{ scale.headerLabel(week) }}

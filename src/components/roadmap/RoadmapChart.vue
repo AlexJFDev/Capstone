@@ -30,7 +30,7 @@
 
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 
@@ -57,7 +57,7 @@ onBeforeUnmount(() => resizeObserver?.disconnect())
 
 const items = computed(() => itemsStore.getItems(props.itemIds))
 
-const dateRange = computed(() => computeDateRange(items.value))
+const dateRange = computed(() => computeDateRange(items.value, props.scale))
 
 /** Total number of calendar days spanned by the timeline window (used for SVG width). */
 const totalDays = computed(() => computeDaysInRange(dateRange.value))
@@ -68,10 +68,10 @@ const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPer
 const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
 
 /**
- * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
+ * Array of Dates, one per interval boundary, from timeline start to end.
  * Used to draw the vertical grid lines in the template.
  */
-const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRange.value), svgWidth.value, dateRange.value, props.scale.pixelsPerDay))
+const intervalStarts = computed(() => computeIntervalStarts(dateRange.value, svgWidth.value, props.scale))
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
@@ -88,8 +88,8 @@ const bars = computed(() =>
     .map((id, index) => {
       const item = itemsStore.getItem(id)
       if (!item) return null
-      const x = xForDate(item.startDate, dateRange.value, props.scale.pixelsPerDay)
-      const width = xForDate(item.endDate, dateRange.value, props.scale.pixelsPerDay) - x
+      const x = xForDate(item.startDate, dateRange.value, props.scale)
+      const width = xForDate(item.endDate, dateRange.value, props.scale) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)
@@ -103,12 +103,12 @@ const bars = computed(() =>
       :height="svgHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <!-- Vertical grid lines at each week boundary -->
+      <!-- Vertical grid lines at each interval boundary -->
       <line
-        v-for="week in weekStarts"
+        v-for="week in intervalStarts"
         :key="week.getTime()"
-        :x1="xForDate(week, dateRange, scale.pixelsPerDay)"
-        :x2="xForDate(week, dateRange, scale.pixelsPerDay)"
+        :x1="xForDate(week, dateRange, scale)"
+        :x2="xForDate(week, dateRange, scale)"
         y1="0"
         :y2="svgHeight"
         :stroke="CHART_BORDER_COLOR_PRIMARY"

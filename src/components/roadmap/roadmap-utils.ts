@@ -4,6 +4,11 @@ import { MSEC_IN_DAY, type DateRange } from '@/utils/dates'
 // === TYPES ===
 
 /**
+ * Interval for the vertical lines on a roadmap
+ */
+export type RoadmapInterval = 'day' | 'week' | 'month'
+
+/**
  * Describes the current zoom / display scale of the roadmap timeline.
  *
  * @property pixelsPerDay   How many SVG pixels represent one calendar day.
@@ -16,13 +21,13 @@ import { MSEC_IN_DAY, type DateRange } from '@/utils/dates'
 export interface RoadmapScale {
   pixelsPerDay: number
   headerLabel: (date: Date) => string
-  gridInterval: 'day' | 'week' | 'month'
+  gridInterval: RoadmapInterval
 }
 
 // === HELPERS ===
 
 /** Advances a date in-place by one interval step. */
-function advanceByInterval(date: Date, gridInterval: RoadmapScale['gridInterval']): void {
+function advanceByInterval(date: Date, gridInterval: RoadmapInterval): void {
   if (gridInterval === 'day') date.setDate(date.getDate() + 1)
   else if (gridInterval === 'week') date.setDate(date.getDate() + 7)
   else date.setMonth(date.getMonth() + 1)
@@ -34,7 +39,7 @@ function advanceByInterval(date: Date, gridInterval: RoadmapScale['gridInterval'
  * Snaps a date back to the start of its interval boundary:
  * midnight for 'day', the preceding Sunday for 'week', the 1st of the month for 'month'.
  */
-export function snapIntervalStart(date: Date, gridInterval: RoadmapScale['gridInterval']): Date {
+export function snapIntervalStart(date: Date, gridInterval: RoadmapInterval): Date {
   const d = new Date(date)
   if (gridInterval === 'week') d.setDate(d.getDate() - d.getDay())
   else if (gridInterval === 'month') d.setDate(1)
@@ -46,7 +51,7 @@ export function snapIntervalStart(date: Date, gridInterval: RoadmapScale['gridIn
  * Snaps a date forward to the next interval boundary:
  * the following midnight for 'day', the following Sunday for 'week', the 1st of the next month for 'month'.
  */
-export function snapIntervalEnd(date: Date, gridInterval: RoadmapScale['gridInterval']): Date {
+export function snapIntervalEnd(date: Date, gridInterval: RoadmapInterval): Date {
   const d = new Date(date)
   if (gridInterval === 'day') {
     d.setDate(d.getDate() + 1)

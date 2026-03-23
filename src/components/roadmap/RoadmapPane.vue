@@ -21,8 +21,8 @@ const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId)
 
 const scale: RoadmapScale = {
   pixelsPerDay: 30,
-  headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-  gridInterval: 'week',
+  headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+  gridInterval: 'week'
 }
 
 function addItem(itemId: string) {

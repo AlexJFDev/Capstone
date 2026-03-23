@@ -64,7 +64,7 @@ const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRang
         :x="xForDate(week, dateRange, scale.pixelsPerDay) + 4"
         y="40"
       >
-        {{ formatDate(week, 'short-american') }}
+        {{ scale.headerLabel(week) }}
       </text>
     </svg>
   </div>

@@ -28,52 +28,32 @@
  *  y positions are simply `rowIndex * ROW_HEIGHT`.
  */
 
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
+import { computed, toRef, useTemplateRef } from 'vue'
+import { storeToRefs } from 'pinia'
 import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
-import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { xForDate } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import { MSEC_IN_DAY } from '@/utils/dates'
+import { useRoadmapTimeline } from './useRoadmapTimeline'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
   itemIds: string[]
-  /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
-  scale: RoadmapScale
-  listWidth: number
 }>()
 
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
+const { roadmapScale: scale } = storeToRefs(interfaceStore)
 
 const rootRef = useTemplateRef('root')
-const width = ref(0)
-let resizeObserver: ResizeObserver | null = null
-onMounted(() => {
-  resizeObserver = new ResizeObserver(entries => {
-    width.value = entries[0]?.contentRect.width ?? 0
-  })
-  resizeObserver.observe(rootRef.value!.parentElement!.parentElement!)
-})
-onBeforeUnmount(() => resizeObserver?.disconnect())
+const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
+  toRef(() => props.itemIds),
+  rootRef,
+)
 
-const items = computed(() => itemsStore.getItems(props.itemIds))
-
-const dateRange = computed(() => computeDateRange(items.value, props.scale))
-
-/** Total number of calendar days spanned by the timeline window (used for SVG width). */
-const totalDays = computed(() => computeDaysInRange(dateRange.value))
-
-/** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
-const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - props.listWidth))
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
 const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
-
-/**
- * Array of Dates, one per interval boundary, from timeline start to end.
- * Used to draw the vertical grid lines in the template.
- */
-const intervalStarts = computed(() => computeIntervalStarts(dateRange.value, svgWidth.value, props.scale))
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
@@ -90,8 +70,8 @@ const bars = computed(() =>
     .map((id, index) => {
       const item = itemsStore.getItem(id)
       if (!item) return null
-      const x = xForDate(item.startDate, dateRange.value, props.scale)
-      const width = xForDate(item.endDate, dateRange.value, props.scale) - x
+      const x = xForDate(item.startDate, dateRange.value, scale.value)
+      const width = xForDate(item.endDate, dateRange.value, scale.value) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)
@@ -110,7 +90,7 @@ function startBarEdgeDrag(event: MouseEvent, itemId: string, side: 'start' | 'en
   document.body.style.cursor = 'ew-resize'
 
   function onMouseMove(e: MouseEvent) {
-    const deltaDays = Math.round((e.clientX - startX) / props.scale.pixelsPerDay)
+    const deltaDays = Math.round((e.clientX - startX) / scale.value.pixelsPerDay)
     const newDate = new Date(originalDate.getTime() + deltaDays * MSEC_IN_DAY)
     const current = itemsStore.getItem(itemId)
     if (side === 'start') {

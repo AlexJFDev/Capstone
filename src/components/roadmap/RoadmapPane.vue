@@ -18,10 +18,9 @@ const userInterface = useInterfaceStore()
 
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
-const { 
-  roadmapScale: scale,
+const {
   roadmapListWidth: listWidth,
-  roadmapListWidthPx: listWidthPx 
+  roadmapListWidthPx: listWidthPx
 } = storeToRefs(userInterface)
 
 function addItem(itemId: string) {
@@ -49,7 +48,7 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" :scale="scale" :listWidth="listWidth"/>
+        <RoadmapHeader :itemIds="workspace.items" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
@@ -58,7 +57,7 @@ async function newItem() {
         <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" :listWidth="listWidth"/>
+        <RoadmapChart class="chart" :itemIds="workspace.items" />
       </div>
     </div>
   </div>

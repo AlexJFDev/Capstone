@@ -1,44 +1,24 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { toRef, useTemplateRef } from 'vue'
+import { storeToRefs } from 'pinia'
+import { xForDate } from './roadmap-utils'
 import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
-import { useItemsStore } from '@/stores/items'
+import { useRoadmapTimeline } from './useRoadmapTimeline'
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
   itemIds: string[]
-  scale: RoadmapScale
-  listWidth: number
 }>()
 
-const itemsStore = useItemsStore()
+const { roadmapScale: scale } = storeToRefs(useInterfaceStore())
 
 const rootRef = useTemplateRef('root')
-const width = ref(0)
-let resizeObserver: ResizeObserver | null = null
-onMounted(() => {
-  resizeObserver = new ResizeObserver(entries => {
-    width.value = entries[0]?.contentRect.width ?? 0
-  })
-  resizeObserver.observe(rootRef.value!.parentElement!.parentElement!)
-})
-onBeforeUnmount(() => resizeObserver?.disconnect())
+const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
+  toRef(() => props.itemIds),
+  rootRef,
+)
 
-const items = computed(() => itemsStore.getItems(props.itemIds))
-
-const dateRange = computed(() => computeDateRange(items.value, props.scale))
-
-/** Total number of calendar days spanned by the timeline window (used for SVG width). */
-const totalDays = computed(() => computeDaysInRange(dateRange.value))
-
-/** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
-const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - props.listWidth))
 const svgHeight = ROW_HEIGHT * 2
-
-/**
- * Array of Dates, one per interval boundary, from timeline start to end.
- * Used to draw the vertical grid lines and labels in the template.
- */
-const intervalStarts = computed(() => computeIntervalStarts(dateRange.value, svgWidth.value, props.scale))
 
 </script>
 

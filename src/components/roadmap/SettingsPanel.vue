@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useInterfaceStore } from '@/stores/interface'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
+import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/components/roadmap/constants'
 
 const model = defineModel<boolean>()
 const userInterface = useInterfaceStore()
@@ -17,6 +18,13 @@ function updatePixelsPerDay(value: number) {
 
 function updateGridInterval(value: RoadmapInterval) {
   userInterface.updateRoadmapScale({ ...userInterface.roadmapScale, gridInterval: value })
+}
+
+async function reset() {
+  if (await userInterface.confirm('Reset all settings to their defaults?')) {
+    userInterface.updateRoadmapScale({ ...userInterface.roadmapScale, pixelsPerDay: DEFAULT_PIXELS_PER_DAY, gridInterval: DEFAULT_INTERVAL })
+    userInterface.updateRoadmapListWidth(DEFAULT_LIST_WIDTH)
+  }
 }
 </script>
 
@@ -101,6 +109,15 @@ function updateGridInterval(value: RoadmapInterval) {
       </v-card>
 
     </div>
+
+    <!-- FOOTER -->
+    <template #append>
+      <v-divider />
+      <div class="pa-2">
+        <v-btn block color="red" @click="reset">Reset to defaults</v-btn>
+      </div>
+    </template>
+
   </v-navigation-drawer>
 </template>
 

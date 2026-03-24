@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
-import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
+import { LIST_BORDER_COLOR, ROW_HEIGHT_PX } from './constants'
 import { computed } from 'vue';
 import { useWorkspacesStore } from '@/stores/workspaces';
 
 
 const props = defineProps<{
   workspaceId: string
+  listWidth: number
 }>()
+
+const listWidthPx = computed(() => `${props.listWidth}px`)
 
 const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
@@ -47,8 +50,8 @@ function moveDown(itemId: string) {
 
 <style scoped>
 .items-list-wrapper {
-  width: v-bind(LIST_WIDTH_PX);
-  min-width: v-bind(LIST_WIDTH_PX);
+  width: v-bind(listWidthPx);
+  min-width: v-bind(listWidthPx);
   height: 100%;
   background-color: rgb(var(--v-theme-surface));
 }

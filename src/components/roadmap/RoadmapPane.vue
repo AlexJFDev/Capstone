@@ -55,7 +55,7 @@ async function newItem() {
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
 
         <!-- Roadmap Chart -->
         <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" :listWidth="listWidth"/>

@@ -7,6 +7,7 @@ import ItemViewerPanel from './components/items/ItemViewerPanel.vue'
 import WorkspaceEditorPanel from './components/workspaces/WorkspaceEditorPanel.vue'
 import WorkspacesPanel from './components/workspaces/WorkspacesPanel.vue'
 import SpeedbumpDialog from './SpeedbumpDialog.vue'
+import SettingsPanel from './components/roadmap/SettingsPanel.vue'
 
 const router = useRouter()
 const userInterface = useInterfaceStore()
@@ -48,6 +49,7 @@ const workspacesStore = useWorkspacesStore()
     <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
     <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
     <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspaceIds="workspacesStore.workspaceIds" />
+    <SettingsPanel v-model="userInterface.settingsOpen" />
     <SpeedbumpDialog />
   </v-app>
 </template>

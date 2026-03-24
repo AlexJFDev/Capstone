@@ -48,7 +48,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
           <v-icon>mdi-chart-gantt</v-icon>
           <span class="text-h6">{{ workspaceName }}</span>
         </div>
-        <v-btn prepend-icon="mdi-cog" flat>Settings</v-btn>
+        <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
       </div>
 
       <div class="roadmap-container">

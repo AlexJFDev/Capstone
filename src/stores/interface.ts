@@ -64,6 +64,10 @@ export const useInterfaceStore = defineStore('interface', () => {
 
 
   /* === PANEL STATES ===*/
+  // Settings
+  const settingsOpen = ref(false)
+  function openSettings() { settingsOpen.value = true }
+  function closeSettings() { settingsOpen.value = false }
   // Workspaces list
   const workspacesOpen = ref(false)
   function openWorkspaces() {
@@ -172,6 +176,9 @@ export const useInterfaceStore = defineStore('interface', () => {
     roadmapListWidthPx,
     roadmapListWidth,
     updateRoadmapScale,
-    updateRoadmapListWidth
+    updateRoadmapListWidth,
+    settingsOpen,
+    openSettings,
+    closeSettings,
   }
 })

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
 import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
-import { CHART_BORDER_COLOR_PRIMARY, DEFAULT_LIST_WIDTH, ROW_HEIGHT } from './constants'
-import { formatDate } from '@/utils/dates'
+import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import { useItemsStore } from '@/stores/items'
 
 const props = defineProps<{
   itemIds: string[]
   scale: RoadmapScale
+  listWidth: number
 }>()
 
 const itemsStore = useItemsStore()
@@ -31,7 +31,7 @@ const dateRange = computed(() => computeDateRange(items.value, props.scale))
 const totalDays = computed(() => computeDaysInRange(dateRange.value))
 
 /** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
-const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - DEFAULT_LIST_WIDTH))
+const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - props.listWidth))
 const svgHeight = ROW_HEIGHT * 2
 
 /**

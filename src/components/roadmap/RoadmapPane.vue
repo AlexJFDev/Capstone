@@ -3,7 +3,7 @@ import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
@@ -23,8 +23,10 @@ const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId)
 //   headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
 //   gridInterval: 'week'
 // }
-const scale: RoadmapScale = userInterface.roadmapScale
-const listWidthPx = userInterface.roadmapListWidthPx
+
+const scale = ref<RoadmapScale>(userInterface.roadmapScale)
+const listWidth = ref(userInterface.roadmapListWidth)
+const listWidthPx = ref(userInterface.roadmapListWidthPx)
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
@@ -51,7 +53,7 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
+        <RoadmapHeader :itemIds="workspace.items" :scale="scale" :listWidth="listWidth"/>
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
@@ -60,7 +62,7 @@ async function newItem() {
         <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />
+        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" :listWidth="listWidth"/>
       </div>
     </div>
   </div>

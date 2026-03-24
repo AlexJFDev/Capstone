@@ -29,7 +29,7 @@
  */
 
 import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, DEFAULT_LIST_WIDTH, ROW_HEIGHT } from './constants'
+import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
@@ -39,6 +39,7 @@ const props = defineProps<{
   itemIds: string[]
   /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
   scale: RoadmapScale
+  listWidth: number
 }>()
 
 const itemsStore = useItemsStore()
@@ -63,7 +64,7 @@ const dateRange = computed(() => computeDateRange(items.value, props.scale))
 const totalDays = computed(() => computeDaysInRange(dateRange.value))
 
 /** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
-const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - DEFAULT_LIST_WIDTH))
+const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - props.listWidth))
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
 const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
 

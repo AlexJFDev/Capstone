@@ -3,11 +3,11 @@ import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
-import type { RoadmapScale } from './roadmap-utils'
 
 const props = defineProps<{
   workspaceId: string,
@@ -24,9 +24,7 @@ const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId)
 //   gridInterval: 'week'
 // }
 
-const scale = ref<RoadmapScale>(userInterface.roadmapScale)
-const listWidth = ref(userInterface.roadmapListWidth)
-const listWidthPx = ref(userInterface.roadmapListWidthPx)
+const { roadmapScale: scale, roadmapListWidth: listWidth, roadmapListWidthPx: listWidthPx } = storeToRefs(userInterface)
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })

@@ -48,6 +48,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
           <v-icon>mdi-chart-gantt</v-icon>
           <span class="text-h6">{{ workspaceName }}</span>
         </div>
+        <v-btn prepend-icon="mdi-cog" flat>Settings</v-btn>
       </div>
 
       <div class="roadmap-container">
@@ -70,6 +71,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  justify-content: space-between;
 }
 
 .roadmap-container {

@@ -2,7 +2,7 @@ import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item, Workspace } from '@/types'
 import { toRaw } from 'vue'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { DEFAULT_LIST_WIDTH } from '@/components/roadmap/constants'
+import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/components/roadmap/constants'
 
 /**
  * Application-level settings persisted across sessions.
@@ -121,11 +121,11 @@ export async function getSettings(): Promise<AppSettings | undefined> {
   return db.get('settings', 'app')
 }
 
-function makeDefaultSettings(): AppSettings {
+export function makeDefaultSettings(): AppSettings {
   return {
     lastViewedWorkspaceId: null,
-    pixelsPerDay: 30,
-    gridInterval: 'week',
+    pixelsPerDay: DEFAULT_PIXELS_PER_DAY,
+    gridInterval: DEFAULT_INTERVAL,
     roadmapListWidth: DEFAULT_LIST_WIDTH
   }
 }

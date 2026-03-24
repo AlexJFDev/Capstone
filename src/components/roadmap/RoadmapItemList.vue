@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
-import { LIST_BORDER_COLOR, ROW_HEIGHT_PX } from './constants'
-import { computed } from 'vue';
+import { LIST_BORDER_COLOR, ROW_HEIGHT, ROW_HEIGHT_PX } from './constants'
+import { computed, ref } from 'vue';
 import { useWorkspacesStore } from '@/stores/workspaces';
 
 
@@ -19,12 +19,42 @@ const interfaceStore = useInterfaceStore()
 
 const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
 
-function moveUp(itemId: string) {
-  workspacesStore.moveItem(props.workspaceId, itemId, -1)
-}
+const draggingItemId = ref<string | null>(null)
 
-function moveDown(itemId: string) {
-  workspacesStore.moveItem(props.workspaceId, itemId, 1)
+function startDrag(event: MouseEvent, itemId: string) {
+  event.preventDefault()
+  draggingItemId.value = itemId
+
+  let startY = event.clientY
+  let accumulatedDelta = 0
+
+  function onMouseMove(e: MouseEvent) {
+    accumulatedDelta += e.clientY - startY
+    startY = e.clientY
+
+    const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
+    if (steps === 0) return
+
+    const items = workspacesStore.getWorkspace(props.workspaceId).items
+    const currentIndex = items.indexOf(itemId)
+    const newIndex = currentIndex + steps
+
+    if (newIndex >= 0 && newIndex < items.length) {
+      workspacesStore.moveItem(props.workspaceId, itemId, steps)
+      accumulatedDelta -= steps * ROW_HEIGHT
+    } else {
+      accumulatedDelta = 0
+    }
+  }
+
+  function onMouseUp() {
+    draggingItemId.value = null
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
 }
 
 </script>
@@ -36,9 +66,12 @@ function moveDown(itemId: string) {
       :key="itemId"
       class="item-row"
     >
-      <div class="move-buttons">
+      <!-- <div class="move-buttons">
         <v-icon class="move-button" :class="{ invisible: index === 0 }" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
         <v-icon class="move-button" :class="{ invisible: index === itemIds.length - 1 }" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
+      </div> -->
+      <div class="drag-bar" @mousedown="startDrag($event, itemId)">
+        <v-icon>mdi-drag-horizontal</v-icon>
       </div>
       <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
       <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
@@ -110,6 +143,21 @@ function moveDown(itemId: string) {
     }
   }
 
+  .drag-bar {
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: v-bind(ROW_HEIGHT_PX);
+    height: 100%;
+    cursor: row-resize;
+    border-radius: 2px;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
   .settings-button {
     visibility: hidden;
     display: flex;
@@ -131,6 +179,7 @@ function moveDown(itemId: string) {
 
   &:hover {
     .move-buttons,
+    .drag-bar,
     .settings-button {
       visibility: visible;
     }

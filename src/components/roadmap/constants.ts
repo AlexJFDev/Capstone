@@ -9,6 +9,8 @@ export const PANE_COLOR_PRIMARY = BORDER_COLOR_LIGHT
 
 // Item List Values
 export const DEFAULT_LIST_WIDTH = 400
+export const MAX_LIST_WIDTH = 500
+export const MIN_LIST_WIDTH = 100
 export const LIST_WIDTH_PX = `${DEFAULT_LIST_WIDTH}px`
 export const LIST_BORDER_COLOR = BORDER_COLOR_LIGHT
 

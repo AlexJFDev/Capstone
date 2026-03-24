@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
-import { LIST_BORDER_COLOR, ROW_HEIGHT, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
-import { computed, ref } from 'vue';
-import { useWorkspacesStore } from '@/stores/workspaces';
-
+import { LIST_BORDER_COLOR, MAX_LIST_WIDTH, MIN_LIST_WIDTH, ROW_HEIGHT, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
+import { computed, ref } from 'vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
 
 const props = defineProps<{
   workspaceId: string
@@ -22,6 +21,27 @@ const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).i
 const draggingItemId = ref<string | null>(null)
 const ghostX = ref(0)
 const ghostY = ref(0)
+
+function startResizeDrag(event: MouseEvent) {
+  event.preventDefault()
+  const startX = event.clientX
+  const startWidth = props.listWidth
+
+  function onMouseMove(e: MouseEvent) {
+    const newWidth = Math.min(MAX_LIST_WIDTH, Math.max(MIN_LIST_WIDTH, startWidth + (e.clientX - startX)))
+    interfaceStore.updateRoadmapListWidth(newWidth)
+  }
+
+  function onMouseUp() {
+    document.body.style.cursor = ''
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+
+  document.body.style.cursor = 'col-resize'
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+}
 
 // Position ghost so the drag-bar icon center sits under the cursor
 const ghostStyle = computed(() => ({
@@ -78,6 +98,7 @@ function startDrag(event: MouseEvent, itemId: string) {
 
 <template>
   <div class="items-list-wrapper">
+    <div class="resize-handle" @mousedown="startResizeDrag" />
     <div
       v-for="(itemId, index) in itemIds"
       :key="itemId"
@@ -108,6 +129,7 @@ function startDrag(event: MouseEvent, itemId: string) {
 
 <style scoped>
 .items-list-wrapper {
+  position: relative;
   width: v-bind(listWidthPx);
   min-width: v-bind(listWidthPx);
   height: 100%;
@@ -234,6 +256,20 @@ function startDrag(event: MouseEvent, itemId: string) {
   width: v-bind(ROW_HEIGHT_PX);
   height: 100%;
   flex-shrink: 0;
+}
+
+.resize-handle {
+  position: absolute;
+  top: calc(v-bind(ROW_HEIGHT_PX) * -2);
+  right: -3px;
+  width: 6px;
+  height: calc(100% + v-bind(ROW_HEIGHT_PX) * 2);
+  cursor: col-resize;
+  z-index: 10;
+
+  &:hover {
+    background-color: rgba(var(--v-theme-primary), 0.4);
+  }
 }
 
 .item-name-ghost {

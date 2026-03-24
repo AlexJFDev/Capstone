@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInterfaceStore } from '@/stores/interface'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/components/roadmap/constants'
+import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY, MAX_LIST_WIDTH, MIN_LIST_WIDTH } from '@/components/roadmap/constants'
 
 const model = defineModel<boolean>()
 const userInterface = useInterfaceStore()
@@ -99,8 +99,8 @@ async function reset() {
             <v-slider
               :model-value="userInterface.roadmapListWidth"
               @update:model-value="userInterface.updateRoadmapListWidth"
-              :min="100"
-              :max="500"
+              :min="MIN_LIST_WIDTH"
+              :max="MAX_LIST_WIDTH"
               :step="1"
               hide-details
             />

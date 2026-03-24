@@ -33,6 +33,7 @@ import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './con
 import { computeDateRange, computeDaysInRange, computeIntervalStarts, xForDate, type RoadmapScale } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
+import { MSEC_IN_DAY } from '@/utils/dates'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -95,6 +96,43 @@ const bars = computed(() =>
     })
     .filter(b => b !== null)
 )
+
+const HANDLE_WIDTH = 8
+
+function startBarEdgeDrag(event: MouseEvent, itemId: string, side: 'start' | 'end') {
+  event.preventDefault()
+  event.stopPropagation()
+
+  const startX = event.clientX
+  const item = itemsStore.getItem(itemId)
+  const originalDate = side === 'start' ? new Date(item.startDate) : new Date(item.endDate)
+
+  document.body.style.cursor = 'ew-resize'
+
+  function onMouseMove(e: MouseEvent) {
+    const deltaDays = Math.round((e.clientX - startX) / props.scale.pixelsPerDay)
+    const newDate = new Date(originalDate.getTime() + deltaDays * MSEC_IN_DAY)
+    const current = itemsStore.getItem(itemId)
+    if (side === 'start') {
+      if (newDate < current.endDate) {
+        itemsStore.updateItem(itemId, { startDate: newDate })
+      }
+    } else {
+      if (newDate > current.startDate) {
+        itemsStore.updateItem(itemId, { endDate: newDate })
+      }
+    }
+  }
+
+  function onMouseUp() {
+    document.body.style.cursor = ''
+    document.removeEventListener('mousemove', onMouseMove)
+    document.removeEventListener('mouseup', onMouseUp)
+  }
+
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('mouseup', onMouseUp)
+}
 </script>
 
 <template>
@@ -144,18 +182,38 @@ const bars = computed(() =>
       />
 
       <!-- Item bars -->
-      <rect
-        v-for="bar in bars"
-        :key="bar.id"
-        :x="bar.x"
-        :y="bar.y + CHART_BAR_PADDING"
-        :width="bar.width"
-        :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
-        :fill="bar.color"
-        rx="3"
-        class="bar"
-        @click="interfaceStore.openItemViewer(bar.id)"
-      />
+      <g v-for="bar in bars" :key="bar.id" class="bar-group">
+        <rect
+          :x="bar.x"
+          :y="bar.y + CHART_BAR_PADDING"
+          :width="bar.width"
+          :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
+          :fill="bar.color"
+          rx="3"
+          class="bar"
+          @click="interfaceStore.openItemViewer(bar.id)"
+        />
+        <!-- Left (start date) resize handle -->
+        <rect
+          :x="bar.x"
+          :y="bar.y + CHART_BAR_PADDING"
+          :width="HANDLE_WIDTH"
+          :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
+          fill="transparent"
+          class="bar-edge-handle"
+          @mousedown="startBarEdgeDrag($event, bar.id, 'start')"
+        />
+        <!-- Right (end date) resize handle -->
+        <rect
+          :x="bar.x + bar.width - HANDLE_WIDTH"
+          :y="bar.y + CHART_BAR_PADDING"
+          :width="HANDLE_WIDTH"
+          :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
+          fill="transparent"
+          class="bar-edge-handle"
+          @mousedown="startBarEdgeDrag($event, bar.id, 'end')"
+        />
+      </g>
     </svg>
   </div>
 </template>
@@ -183,5 +241,9 @@ svg {
   &:hover {
     opacity: 0.85;
   }
+}
+
+.bar-edge-handle {
+  cursor: ew-resize;
 }
 </style>

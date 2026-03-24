@@ -18,13 +18,11 @@ const userInterface = useInterfaceStore()
 
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
-// const scale: RoadmapScale = {
-//   pixelsPerDay: 30,
-//   headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
-//   gridInterval: 'week'
-// }
-
-const { roadmapScale: scale, roadmapListWidth: listWidth, roadmapListWidthPx: listWidthPx } = storeToRefs(userInterface)
+const { 
+  roadmapScale: scale,
+  roadmapListWidth: listWidth,
+  roadmapListWidthPx: listWidthPx 
+} = storeToRefs(userInterface)
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })

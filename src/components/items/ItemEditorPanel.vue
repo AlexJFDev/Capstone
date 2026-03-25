@@ -38,7 +38,7 @@ function setDraft(item: Item) {
 
 watch(model, isOpen => {
   if (isOpen) {
-    setDraft(editingItem.value)
+    setDraft(isEditing.value ? editingItem.value : constructEmptyItem())
   } else {
     formRef.value?.resetValidation()
   }

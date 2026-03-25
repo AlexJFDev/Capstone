@@ -34,7 +34,7 @@ function setDraft(workspace: Workspace) {
 
 watch(model, isOpen => {
   if (isOpen) {
-    setDraft(editingWorkspace.value)
+    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyWorkspace())
   } else {
     formRef.value?.resetValidation()
   }

@@ -7,19 +7,18 @@ import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from "@/
 
 export const useInterfaceStore = defineStore('interface', () => {
 
-  let restoredWorkspaceId: string | undefined | null
+  const favoriteWorkspaceId = ref<string | null>(null)
   const defaultWorkspaceId = computed(() => {
     const workspacesStore = useWorkspacesStore()
 
     if (!workspacesStore.hasWorkspaces) return undefined
     if (
-      !restoredWorkspaceId ||
-      !workspacesStore.doesWorkspaceExist(restoredWorkspaceId)
+      favoriteWorkspaceId.value &&
+      workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)
     ) {
-      return workspacesStore.workspaceIds[0]
-    } else {
-      return restoredWorkspaceId
+      return favoriteWorkspaceId.value
     }
+    return workspacesStore.workspaceIds[0]
   })
 
   const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)
@@ -38,14 +37,15 @@ export const useInterfaceStore = defineStore('interface', () => {
   async function initializeInterface() {
     const settings = (await getSettings()) || makeDefaultSettings()
 
-    restoredWorkspaceId = settings.lastViewedWorkspaceId
+    favoriteWorkspaceId.value = settings.favoriteWorkspaceId
     pixelsPerDay.value = settings.pixelsPerDay
     gridInterval.value = settings.gridInterval
     roadmapListWidth.value = settings.roadmapListWidth
   }
 
-  async function persistLastViewedWorkspace(id: string) {
-    await putSettings({ lastViewedWorkspaceId: id })
+  async function setFavoriteWorkspace(id: string | null) {
+    favoriteWorkspaceId.value = id
+    await putSettings({ favoriteWorkspaceId: id })
   }
 
   async function updateRoadmapScale(scale: RoadmapScale) {
@@ -147,6 +147,7 @@ export const useInterfaceStore = defineStore('interface', () => {
   }
 
   return {
+    favoriteWorkspaceId,
     defaultWorkspaceId,
     workspacesOpen,
     openWorkspaces,
@@ -171,7 +172,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     confirm,
     resolveSpeedbump,
     initializeInterface,
-    persistLastViewedWorkspace,
+    setFavoriteWorkspace,
     roadmapScale,
     roadmapListWidthPx,
     roadmapListWidth,

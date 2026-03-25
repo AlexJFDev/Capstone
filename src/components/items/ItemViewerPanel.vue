@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
+import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 import { useItemsStore } from '@/stores/items'
 import { constructEmptyItem } from '@/types'
 import { computed } from 'vue'
@@ -13,10 +14,11 @@ const props = defineProps<{
 const itemsStore = useItemsStore()
 
 const item = computed(
-  () => props.itemId ? 
-    itemsStore.getItem(props.itemId) : 
+  () => props.itemId ?
+    itemsStore.getItem(props.itemId) :
     constructEmptyItem()
 )
+
 
 </script>
 
@@ -42,7 +44,7 @@ const item = computed(
         <v-card-title class="text-subtitle-2">Details</v-card-title>
         <v-divider />
         <v-card-text>
-          <p class="text-body-2">{{ item.description }}</p>
+          <MarkdownRenderer class="text-body-2" :content="item.description" />
         </v-card-text>
       </v-card>
 

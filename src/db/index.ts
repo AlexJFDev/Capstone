@@ -9,7 +9,7 @@ import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/
  * Stored as a single record in the `settings` object store under the key `"app"`.
  */
 export interface AppSettings {
-  lastViewedWorkspaceId: string | null
+  favoriteWorkspaceId: string | null
   pixelsPerDay: number
   gridInterval: RoadmapInterval
   roadmapListWidth: number
@@ -123,7 +123,7 @@ export async function getSettings(): Promise<AppSettings | undefined> {
 
 export function makeDefaultSettings(): AppSettings {
   return {
-    lastViewedWorkspaceId: null,
+    favoriteWorkspaceId: null,
     pixelsPerDay: DEFAULT_PIXELS_PER_DAY,
     gridInterval: DEFAULT_INTERVAL,
     roadmapListWidth: DEFAULT_LIST_WIDTH

@@ -52,7 +52,10 @@ async function newItem() {
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
-      <div class="body">
+      <div v-if="workspace.items.length === 0" class="empty-state text-medium-emphasis">
+        No items
+      </div>
+      <div v-else class="body">
         <!-- Item List -->
         <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
 
@@ -115,6 +118,12 @@ async function newItem() {
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
       }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 0;
+      font-size: 0.875rem;
     }
   }
 }

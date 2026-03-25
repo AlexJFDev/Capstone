@@ -63,12 +63,21 @@ function toggleFavorite() {
 
     <v-card-text class="d-flex ga-8 flex-column">
       <MarkdownRenderer :content="workspace.description" />
-      <ItemList v-model="workspace.items"/>
+      <div v-if="workspace.items.length === 0" class="empty-state text-medium-emphasis">
+        No items
+      </div>
+      <ItemList v-else v-model="workspace.items"/>
     </v-card-text>
   </v-card>
 </template>
 
 <style scoped>
+.empty-state {
+  text-align: center;
+  padding: 12px 0;
+  font-size: 0.875rem;
+}
+
 .actions {
   display: flex;
   gap: 4px;

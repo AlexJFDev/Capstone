@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
-import { LIST_BORDER_COLOR, LIST_WIDTH_PX, ROW_HEIGHT_PX } from './constants'
-import { computed } from 'vue';
-import { useWorkspacesStore } from '@/stores/workspaces';
-
+import { LIST_BORDER_COLOR, MAX_LIST_WIDTH, MIN_LIST_WIDTH, ROW_HEIGHT, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
+import { computed, ref } from 'vue'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{
   workspaceId: string
+  listWidth: number
 }>()
+
+const listWidthPx = computed(() => `${props.listWidth}px`)
 
 const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
@@ -16,41 +19,103 @@ const interfaceStore = useInterfaceStore()
 
 const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
 
-function moveUp(itemId: string) {
-  workspacesStore.moveItem(props.workspaceId, itemId, -1)
+const draggingItemId = ref<string | null>(null)
+const ghostX = ref(0)
+const ghostY = ref(0)
+
+function startResizeDrag(event: MouseEvent) {
+  const startX = event.clientX
+  const startWidth = props.listWidth
+  startDragGesture(event, (e) => {
+    const newWidth = Math.min(MAX_LIST_WIDTH, Math.max(MIN_LIST_WIDTH, startWidth + (e.clientX - startX)))
+    interfaceStore.updateRoadmapListWidth(newWidth)
+  }, { cursor: 'col-resize' })
 }
 
-function moveDown(itemId: string) {
-  workspacesStore.moveItem(props.workspaceId, itemId, 1)
+// Position ghost so the drag-bar icon center sits under the cursor
+const ghostStyle = computed(() => ({
+  left: `${ghostX.value - ROW_HEIGHT / 2}px`,
+  top: `${ghostY.value - ROW_HEIGHT / 2}px`,
+  width: `${props.listWidth}px`,
+  height: ROW_HEIGHT_PX,
+}))
+
+function startDrag(event: MouseEvent, itemId: string) {
+  draggingItemId.value = itemId
+  ghostX.value = event.clientX
+  ghostY.value = event.clientY
+
+  let startY = event.clientY
+  let accumulatedDelta = 0
+
+  startDragGesture(event, (e) => {
+    ghostX.value = e.clientX
+    ghostY.value = e.clientY
+
+    accumulatedDelta += e.clientY - startY
+    startY = e.clientY
+
+    const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
+    if (steps === 0) return
+
+    const items = workspacesStore.getWorkspace(props.workspaceId).items
+    const currentIndex = items.indexOf(itemId)
+    const newIndex = currentIndex + steps
+
+    if (newIndex >= 0 && newIndex < items.length) {
+      workspacesStore.moveItem(props.workspaceId, itemId, steps)
+      accumulatedDelta -= steps * ROW_HEIGHT
+    } else {
+      accumulatedDelta = 0
+    }
+  }, {
+    cursor: 'grabbing',
+    onEnd: () => { draggingItemId.value = null },
+  })
 }
 
 </script>
 
 <template>
   <div class="items-list-wrapper">
+    <div class="resize-handle" @mousedown="startResizeDrag" />
     <div
       v-for="(itemId, index) in itemIds"
       :key="itemId"
       class="item-row"
+      :class="{ 'drag-target': itemId === draggingItemId }"
     >
-      <div class="move-buttons">
-        <v-icon class="move-button" :class="{ invisible: index === 0 }" size="x-small" @click="moveUp(itemId)">mdi-menu-up</v-icon>
-        <v-icon class="move-button" :class="{ invisible: index === itemIds.length - 1 }" size="x-small" @click="moveDown(itemId)">mdi-menu-down</v-icon>
-      </div>
-      <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
-      <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
-        <v-icon>mdi-cog</v-icon>
-      </div>
+      <template v-if="itemId !== draggingItemId">
+        <div class="drag-bar" @mousedown="startDrag($event, itemId)">
+          <v-icon>mdi-drag-horizontal</v-icon>
+        </div>
+        <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
+        <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
+          <v-icon>mdi-cog</v-icon>
+        </div>
+      </template>
     </div>
   </div>
+
+  <Teleport to="body">
+    <div v-if="draggingItemId" class="drag-ghost" :style="ghostStyle">
+      <div class="drag-bar-ghost">
+        <v-icon>mdi-drag-horizontal</v-icon>
+      </div>
+      <div class="item-name-ghost">{{ itemsStore.getName(draggingItemId) }}</div>
+    </div>
+  </Teleport>
 </template>
 
 <style scoped>
 .items-list-wrapper {
-  width: v-bind(LIST_WIDTH_PX);
-  min-width: v-bind(LIST_WIDTH_PX);
+  position: sticky;
+  left: 0;
+  width: v-bind(listWidthPx);
+  min-width: v-bind(listWidthPx);
   height: 100%;
   background-color: rgb(var(--v-theme-surface));
+  border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
 }
 
 .item-row {
@@ -107,6 +172,17 @@ function moveDown(itemId: string) {
     }
   }
 
+  .drag-bar {
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: v-bind(ROW_HEIGHT_PX);
+    height: 100%;
+    cursor: move;
+    border-radius: 2px;
+  }
+
   .settings-button {
     visibility: hidden;
     display: flex;
@@ -128,10 +204,59 @@ function moveDown(itemId: string) {
 
   &:hover {
     .move-buttons,
+    .drag-bar,
     .settings-button {
       visibility: visible;
     }
   }
 
+  &.drag-target {
+    box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.35);
+  }
+
+}
+
+.drag-ghost {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgb(var(--v-theme-surface));
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.9;
+  overflow: hidden;
+}
+
+.drag-bar-ghost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: v-bind(ROW_HEIGHT_PX);
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.resize-handle {
+  position: absolute;
+  top: calc(v-bind(ROW_HEIGHT_PX) * -2);
+  right: -3px;
+  width: 6px;
+  height: calc(100% + v-bind(ROW_HEIGHT_PX) * 2);
+  cursor: col-resize;
+  z-index: 10;
+
+  &:hover {
+    background-color: rgba(var(--v-theme-primary), 0.4);
+  }
+}
+
+.item-name-ghost {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 </style>

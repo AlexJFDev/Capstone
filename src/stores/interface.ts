@@ -1,9 +1,12 @@
-import { getSettings, putSettings } from "@/db"
+import { getSettings, makeDefaultSettings, putSettings } from "@/db"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 import { useWorkspacesStore } from "./workspaces"
+import type { RoadmapInterval, RoadmapScale } from "@/components/roadmap/roadmap-utils"
+import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from "@/components/roadmap/constants"
 
 export const useInterfaceStore = defineStore('interface', () => {
+
   let restoredWorkspaceId: string | undefined | null
   const defaultWorkspaceId = computed(() => {
     const workspacesStore = useWorkspacesStore()
@@ -18,15 +21,54 @@ export const useInterfaceStore = defineStore('interface', () => {
       return restoredWorkspaceId
     }
   })
+
+  const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)
+  const gridInterval = ref<RoadmapInterval>(DEFAULT_INTERVAL)
+  const roadmapScale = computed<RoadmapScale>(() => {
+    return {
+      pixelsPerDay: pixelsPerDay.value,
+      headerLabel: (date: Date) => 
+        date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+      gridInterval: gridInterval.value
+    }
+  })
+  const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
+  const roadmapListWidthPx = computed(() => `${roadmapListWidth.value}px`)
+
   async function initializeInterface() {
-    const settings = await getSettings()
-    restoredWorkspaceId = settings?.lastViewedWorkspaceId
+    const settings = (await getSettings()) || makeDefaultSettings()
+
+    restoredWorkspaceId = settings.lastViewedWorkspaceId
+    pixelsPerDay.value = settings.pixelsPerDay
+    gridInterval.value = settings.gridInterval
+    roadmapListWidth.value = settings.roadmapListWidth
   }
 
   async function persistLastViewedWorkspace(id: string) {
     await putSettings({ lastViewedWorkspaceId: id })
   }
 
+  async function updateRoadmapScale(scale: RoadmapScale) {
+    pixelsPerDay.value = scale.pixelsPerDay
+    gridInterval.value = scale.gridInterval
+    await putSettings({
+      pixelsPerDay: scale.pixelsPerDay,
+      gridInterval: scale.gridInterval
+    })
+  }
+
+  async function updateRoadmapListWidth(width: number) {
+    roadmapListWidth.value = width
+    await putSettings({ roadmapListWidth: width })
+  }
+
+
+  /* === PANEL STATES ===*/
+  // Settings
+  const settingsOpen = ref(false)
+  function openSettings() { settingsOpen.value = true }
+  function closeSettings() { settingsOpen.value = false }
+  // Workspaces list
   const workspacesOpen = ref(false)
   function openWorkspaces() {
     workspacesOpen.value = true
@@ -34,7 +76,7 @@ export const useInterfaceStore = defineStore('interface', () => {
   function closeWorkspaces() {
     workspacesOpen.value = false
   }
-
+  // Workspace editor
   const workspaceEditorOpen = ref(false)
   const editingWorkspaceId = ref<string | undefined>()
   function openWorkspaceEditor(workspaceId: string) {
@@ -49,7 +91,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     editingWorkspaceId.value = undefined
     workspaceEditorOpen.value = false
   }
-
+  // Item viewer
   const itemViewerOpen = ref(false)
   const viewingItemId = ref<string | undefined>()
   function openItemViewer(itemId: string) {
@@ -60,7 +102,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     viewingItemId.value = undefined
     itemViewerOpen.value = false
   }
-
+  // Item editor
   const itemEditorOpen = ref(false)
   const editingItemId = ref<string | undefined>()
   function openItemEditor(itemId: string) {
@@ -85,7 +127,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     itemCreatorResolve?.(id)
     itemCreatorResolve = null
   }
-
+  // Speedbump
   const speedbumpOpen = ref(false)
   const speedbumpMessage = ref('')
   let speedbumpResolve: ((confirmed: boolean) => void) | null = null
@@ -129,6 +171,14 @@ export const useInterfaceStore = defineStore('interface', () => {
     confirm,
     resolveSpeedbump,
     initializeInterface,
-    persistLastViewedWorkspace
+    persistLastViewedWorkspace,
+    roadmapScale,
+    roadmapListWidthPx,
+    roadmapListWidth,
+    updateRoadmapScale,
+    updateRoadmapListWidth,
+    settingsOpen,
+    openSettings,
+    closeSettings,
   }
 })

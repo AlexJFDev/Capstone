@@ -2,8 +2,9 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
+import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import { useInterfaceStore } from '@/stores/interface';
+import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
   workspaceId: string
@@ -61,7 +62,7 @@ function toggleFavorite() {
     </template>
 
     <v-card-text class="d-flex ga-8 flex-column">
-      {{ workspace.description }}
+      <MarkdownRenderer :content="workspace.description" />
       <ItemList v-model="workspace.items"/>
     </v-card-text>
   </v-card>

@@ -1,6 +1,6 @@
 # Chronicle
 
-This project is called "Chronicle". I chose this name because of its connotations of permanent, time-ordered record-keeping, reflecting the app's role as a lasting record of your work, plans, and events across time. The app is accessible at [https://alexjfdev.github.io/Capstone/](https://alexjfdev.github.io/Capstone/).
+This project is called "Chronicle". I chose this name because of its connotations of permanent, time-ordered record-keeping, reflecting the app's role as a lasting record of your work, plans, and events across time. The app is accessible at [https://alexjfdev.github.io/Chronicle/](https://alexjfdev.github.io/Chronicle/).
 
 ## Objective
 

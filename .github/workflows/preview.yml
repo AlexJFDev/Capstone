@@ -1,0 +1,65 @@
+name: Deploy Preview
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: preview-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    # Only deploy previews for PRs from within this repository (not forks)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:preview -- --base /Chronicle/previews/pr-${{ github.event.pull_request.number }}/
+
+      - name: Deploy Preview
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          target-folder: previews/pr-${{ github.event.pull_request.number }}
+          clean: true
+
+      - name: Find existing preview comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '<!-- deploy-preview -->'
+
+      - name: Post preview URL comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          edit-mode: replace
+          body: |
+            <!-- deploy-preview -->
+            ## Deploy Preview
+
+            | Status | URL |
+            |--------|-----|
+            | ✅ Ready | https://alexjfdev.github.io/Chronicle/previews/pr-${{ github.event.pull_request.number }}/ |
+
+            > Built from commit ${{ github.event.pull_request.head.sha }}

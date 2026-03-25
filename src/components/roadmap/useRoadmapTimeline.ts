@@ -1,7 +1,8 @@
-import { computed, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
+import { computed, type Ref } from 'vue'
 import { computeDateRange, computeDaysInRange, computeIntervalStarts } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
+import { useContainerWidth } from './useContainerWidth'
 
 /**
  * Shared timeline computations for roadmap SVG components.
@@ -22,17 +23,7 @@ export function useRoadmapTimeline(
 ) {
   const itemsStore = useItemsStore()
   const interfaceStore = useInterfaceStore()
-
-  const containerWidth = ref(0)
-  let resizeObserver: ResizeObserver | null = null
-
-  onMounted(() => {
-    resizeObserver = new ResizeObserver(entries => {
-      containerWidth.value = entries[0]?.contentRect.width ?? 0
-    })
-    resizeObserver.observe(rootRef.value!.parentElement!.parentElement!)
-  })
-  onBeforeUnmount(() => resizeObserver?.disconnect())
+  const containerWidth = useContainerWidth(() => rootRef.value?.parentElement?.parentElement ?? null)
 
   const items = computed(() => itemsStore.getItems(itemIds.value))
   const dateRange = computed(() => computeDateRange(items.value, interfaceStore.roadmapScale))

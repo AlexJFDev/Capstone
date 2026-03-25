@@ -114,9 +114,6 @@ async function newItem() {
 
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-
-        position: sticky;
-        left: 0;
       }
     }
   }

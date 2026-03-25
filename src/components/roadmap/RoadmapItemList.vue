@@ -129,7 +129,8 @@ function startDrag(event: MouseEvent, itemId: string) {
 
 <style scoped>
 .items-list-wrapper {
-  position: relative;
+  position: sticky;
+  left: 0;
   width: v-bind(listWidthPx);
   min-width: v-bind(listWidthPx);
   height: 100%;

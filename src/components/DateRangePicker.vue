@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { type DateRange, dateToShortISOString } from '@/utils/dates'
+import { type DateRange, dateToShortISOString, makeDateRange } from '@/utils/dates'
 import { ref, useTemplateRef, watch } from 'vue'
 
-const model = defineModel<DateRange>()
+const model = defineModel<DateRange>({
+  default: makeDateRange
+})
 
 const props = defineProps<{
   hideDetails?: boolean | 'auto'
-  rules?: ((value: DateRange | undefined) => string | boolean)[]
+  rules?: ((value: DateRange) => string | boolean)[]
 }>()
 
 const inputRef = useTemplateRef('inputRef')
@@ -16,31 +18,26 @@ watch(() => (inputRef.value as any)?.isValid, (isValid) => {
   hasError.value = isValid === false
 })
 
-function toDateStr(date: Date | undefined): string {
-  if (!date || isNaN(date.getTime())) return ''
-  return dateToShortISOString(date)
-}
-
-const startStr = ref(toDateStr(model.value?.start))
-const endStr = ref(toDateStr(model.value?.end))
+const startStr = ref(dateToShortISOString(model.value.start))
+const endStr = ref(dateToShortISOString(model.value.end))
 
 watch(startStr, (val) => {
   model.value = {
-    start: val ? new Date(val) : new Date(NaN),
-    end: model.value?.end ?? new Date(NaN)
+    start: val ? new Date(val) : new Date(),
+    end: model.value.end
   }
 })
 
 watch(endStr, (val) => {
   model.value = {
-    start: model.value?.start ?? new Date(NaN),
-    end: val ? new Date(val) : new Date(NaN)
+    start: model.value.start,
+    end: val ? new Date(val) : new Date()
   }
 })
 
 watch(model, (val) => {
-  const newStart = toDateStr(val?.start)
-  const newEnd = toDateStr(val?.end)
+  const newStart = dateToShortISOString(val.start)
+  const newEnd = dateToShortISOString(val.end)
   if (newStart !== startStr.value) startStr.value = newStart
   if (newEnd !== endStr.value) endStr.value = newEnd
 }, { deep: true })

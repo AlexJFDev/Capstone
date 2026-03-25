@@ -1,0 +1,79 @@
+<script setup lang="ts">
+import { type DateRange, dateToShortISOString } from '@/utils/dates'
+import { ref, useTemplateRef, watch } from 'vue'
+
+const model = defineModel<DateRange>()
+
+const props = defineProps<{
+  hideDetails?: boolean | 'auto'
+  rules?: ((value: DateRange | undefined) => string | boolean)[]
+}>()
+
+const inputRef = useTemplateRef('inputRef')
+const hasError = ref(false)
+
+watch(() => (inputRef.value as any)?.isValid, (isValid) => {
+  hasError.value = isValid === false
+})
+
+function toDateStr(date: Date | undefined): string {
+  if (!date || isNaN(date.getTime())) return ''
+  return dateToShortISOString(date)
+}
+
+const startStr = ref(toDateStr(model.value?.start))
+const endStr = ref(toDateStr(model.value?.end))
+
+watch(startStr, (val) => {
+  model.value = {
+    start: val ? new Date(val) : new Date(NaN),
+    end: model.value?.end ?? new Date(NaN)
+  }
+})
+
+watch(endStr, (val) => {
+  model.value = {
+    start: model.value?.start ?? new Date(NaN),
+    end: val ? new Date(val) : new Date(NaN)
+  }
+})
+
+watch(model, (val) => {
+  const newStart = toDateStr(val?.start)
+  const newEnd = toDateStr(val?.end)
+  if (newStart !== startStr.value) startStr.value = newStart
+  if (newEnd !== endStr.value) endStr.value = newEnd
+}, { deep: true })
+</script>
+
+<template>
+  <v-input
+    ref="inputRef"
+    :model-value="model"
+    :rules="rules"
+    :hide-details="hideDetails"
+  >
+    <template #default>
+      <div class="d-flex flex-column ga-2 w-100">
+        <v-text-field
+          v-model="startStr"
+          label="Start date"
+          type="date"
+          variant="outlined"
+          density="compact"
+          hide-details
+          :error="hasError"
+        />
+        <v-text-field
+          v-model="endStr"
+          label="End date"
+          type="date"
+          variant="outlined"
+          density="compact"
+          hide-details
+          :error="hasError"
+        />
+      </div>
+    </template>
+  </v-input>
+</template>

@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
-import { LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
+import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
-import { constructEmptyWorkspace } from '@/types'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
-import type { RoadmapScale } from './roadmap-utils'
 
 const props = defineProps<{
   workspaceId: string,
@@ -19,11 +18,10 @@ const userInterface = useInterfaceStore()
 
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
-const scale: RoadmapScale = {
-  pixelsPerDay: 30,
-  headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-  gridInterval: 'week',
-}
+const {
+  roadmapListWidth: listWidth,
+  roadmapListWidthPx: listWidthPx
+} = storeToRefs(userInterface)
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
@@ -50,16 +48,16 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
+        <RoadmapHeader :itemIds="workspace.items" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />
+        <RoadmapChart class="chart" :itemIds="workspace.items" />
       </div>
     </div>
   </div>
@@ -89,7 +87,7 @@ async function newItem() {
       z-index: 1;
 
       .list-header {
-        width: v-bind(LIST_WIDTH_PX);
+        width: v-bind(listWidthPx);
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
         position: sticky;
         left: 0;
@@ -102,7 +100,7 @@ async function newItem() {
         }
 
         .add-button {
-          width: v-bind(LIST_WIDTH_PX);
+          width: v-bind(listWidthPx);
           height: v-bind(ROW_HEIGHT_PX);
           border-radius: 0;
         }
@@ -116,9 +114,6 @@ async function newItem() {
 
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-
-        position: sticky;
-        left: 0;
       }
     }
   }

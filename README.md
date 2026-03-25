@@ -12,7 +12,7 @@ Based on discussions I have had with co-workers in my actual job (I do web devel
 
 ## Current state
 
-Currently, the UI of the app is fully functional, however changes are not persistent. If the page is reloaded, all changes are lost and the store is filled with pre-written dummy data.
+The app is fully functional with persistent storage. All items, workspaces, and settings are saved to IndexedDB and restored on reload. The roadmap chart supports interactive bar resizing (drag the left or right edge of a bar to adjust its start or end date), a draggable divider to resize the item list column, and a settings panel for adjusting zoom level, grid interval, and list width.
 
 ## Long-term Plans
 
@@ -36,6 +36,7 @@ The core of this project are two datatypes representing "Workspaces" and "Items"
 - [Vite](https://vite.dev/)
 - [Pinia](https://pinia.vuejs.org/) — state management
 - [Vuetify](https://vuetifyjs.com/) — UI components
+- [idb](https://github.com/jakearchibald/idb) — IndexedDB wrapper for persistent local storage
 
 ## Setup
 

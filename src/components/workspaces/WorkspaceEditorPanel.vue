@@ -123,7 +123,8 @@ const nameRules = [ required ]
             variant="outlined"
             density="compact"
             rows="3"
-            hide-details="auto"
+            hint="Markdown is supported"
+            persistent-hint
           />
         </v-card-text>
       </v-card>

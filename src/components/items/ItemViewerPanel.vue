@@ -3,6 +3,7 @@ import DateChip from '@/components/DateChip.vue'
 import { useItemsStore } from '@/stores/items'
 import { constructEmptyItem } from '@/types'
 import { computed } from 'vue'
+import { renderMarkdown } from '@/utils/markdown'
 
 const model = defineModel<boolean>()
 
@@ -13,10 +14,12 @@ const props = defineProps<{
 const itemsStore = useItemsStore()
 
 const item = computed(
-  () => props.itemId ? 
-    itemsStore.getItem(props.itemId) : 
+  () => props.itemId ?
+    itemsStore.getItem(props.itemId) :
     constructEmptyItem()
 )
+
+const renderedDescription = computed(() => renderMarkdown(item.value.description))
 
 </script>
 
@@ -42,7 +45,7 @@ const item = computed(
         <v-card-title class="text-subtitle-2">Details</v-card-title>
         <v-divider />
         <v-card-text>
-          <p class="text-body-2">{{ item.description }}</p>
+          <div class="text-body-2 markdown-body" v-html="renderedDescription" />
         </v-card-text>
       </v-card>
 
@@ -88,5 +91,61 @@ const item = computed(
   position: sticky;
   top: 0;
   z-index: 1;
+}
+
+.markdown-body :deep(> *:first-child) {
+  margin-top: 0;
+}
+
+.markdown-body :deep(> *:last-child) {
+  margin-bottom: 0;
+}
+
+.markdown-body :deep(h1),
+.markdown-body :deep(h2),
+.markdown-body :deep(h3),
+.markdown-body :deep(h4),
+.markdown-body :deep(h5),
+.markdown-body :deep(h6) {
+  margin: 0.5em 0;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.markdown-body :deep(p) {
+  margin: 0.5em 0;
+}
+
+.markdown-body :deep(ul),
+.markdown-body :deep(ol) {
+  padding-left: 1.5em;
+  margin: 0.5em 0;
+}
+
+.markdown-body :deep(code) {
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 3px;
+  padding: 0.1em 0.3em;
+}
+
+.markdown-body :deep(pre) {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 0.75em 1em;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+
+.markdown-body :deep(pre code) {
+  background: none;
+  padding: 0;
+}
+
+.markdown-body :deep(blockquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.2);
+  margin: 0.5em 0;
+  padding-left: 1em;
+  color: rgba(0, 0, 0, 0.6);
 }
 </style>

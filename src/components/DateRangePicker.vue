@@ -18,12 +18,16 @@ watch(() => (inputRef.value as any)?.isValid, (isValid) => {
   hasError.value = isValid === false
 })
 
-const startStr = ref(dateToShortISOString(model.value.start))
-const endStr = ref(dateToShortISOString(model.value.end))
+function toDateStr(date: Date): string {
+  return isNaN(date.getTime()) ? '' : dateToShortISOString(date)
+}
+
+const startStr = ref(toDateStr(model.value.start))
+const endStr = ref(toDateStr(model.value.end))
 
 watch(startStr, (val) => {
   model.value = {
-    start: val ? new Date(val) : new Date(),
+    start: new Date(val),
     end: model.value.end
   }
 })
@@ -31,13 +35,13 @@ watch(startStr, (val) => {
 watch(endStr, (val) => {
   model.value = {
     start: model.value.start,
-    end: val ? new Date(val) : new Date()
+    end: new Date(val)
   }
 })
 
 watch(model, (val) => {
-  const newStart = dateToShortISOString(val.start)
-  const newEnd = dateToShortISOString(val.end)
+  const newStart = toDateStr(val.start)
+  const newEnd = toDateStr(val.end)
   if (newStart !== startStr.value) startStr.value = newStart
   if (newEnd !== endStr.value) endStr.value = newEnd
 }, { deep: true })

@@ -3,7 +3,6 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import { constructEmptyWorkspace } from '@/types'
 import { useInterfaceStore } from '@/stores/interface';
 
 const props = defineProps<{
@@ -17,6 +16,12 @@ const userInterface = useInterfaceStore()
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
 const hovered = ref(false)
+
+const isFavorite = computed(() => userInterface.favoriteWorkspaceId === props.workspaceId)
+
+function toggleFavorite() {
+  userInterface.setFavoriteWorkspace(isFavorite.value ? null : props.workspaceId)
+}
 </script>
 
 <template>
@@ -28,18 +33,25 @@ const hovered = ref(false)
     @mouseleave="hovered = false"
   >
     <template #append>
-      <div class="actions" :class="{ visible: hovered }">
+      <div class="actions" :class="{ visible: hovered || isFavorite }">
         <v-btn
           icon="mdi-pencil"
           density="compact"
-          variant="text" 
+          variant="text"
           @click="userInterface.openWorkspaceEditor(workspaceId)"
         />
-        <v-btn 
+        <v-btn
           icon="mdi-open-in-new"
           density="compact"
           variant="text"
           @click="router.push({ name: 'workspace', params: { workspaceId } })"
+        />
+        <v-btn
+          :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
+          :color="isFavorite ? 'yellow' : undefined"
+          density="compact"
+          variant="text"
+          @click="toggleFavorite"
         />
       </div>
     </template>

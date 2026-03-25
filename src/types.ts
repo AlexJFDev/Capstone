@@ -1,3 +1,7 @@
+function randomColor(): string {
+  return `#${Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0')}`
+}
+
 // === WORKSPACES ===
 export interface Workspace {
   name: string;
@@ -10,7 +14,7 @@ export function constructEmptyWorkspace(): Workspace {
   return {
     name: '',
     description: '',
-    color: '#000000',
+    color: randomColor(),
     items: []
   }
 }
@@ -57,7 +61,7 @@ export function constructEmptyItem(): Item {
     description: '',
     startDate: today,
     endDate: today,
-    color: '#000000',
+    color: randomColor(),
   }
 }
 

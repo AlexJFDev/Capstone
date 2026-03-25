@@ -4,6 +4,7 @@ import { useInterfaceStore } from '@/stores/interface'
 import { LIST_BORDER_COLOR, MAX_LIST_WIDTH, MIN_LIST_WIDTH, ROW_HEIGHT, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import { computed, ref } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
+import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{
   workspaceId: string
@@ -23,24 +24,12 @@ const ghostX = ref(0)
 const ghostY = ref(0)
 
 function startResizeDrag(event: MouseEvent) {
-  event.preventDefault()
   const startX = event.clientX
   const startWidth = props.listWidth
-
-  function onMouseMove(e: MouseEvent) {
+  startDragGesture(event, (e) => {
     const newWidth = Math.min(MAX_LIST_WIDTH, Math.max(MIN_LIST_WIDTH, startWidth + (e.clientX - startX)))
     interfaceStore.updateRoadmapListWidth(newWidth)
-  }
-
-  function onMouseUp() {
-    document.body.style.cursor = ''
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
-  }
-
-  document.body.style.cursor = 'col-resize'
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', onMouseUp)
+  }, { cursor: 'col-resize' })
 }
 
 // Position ghost so the drag-bar icon center sits under the cursor
@@ -52,16 +41,14 @@ const ghostStyle = computed(() => ({
 }))
 
 function startDrag(event: MouseEvent, itemId: string) {
-  event.preventDefault()
   draggingItemId.value = itemId
   ghostX.value = event.clientX
   ghostY.value = event.clientY
-  document.body.style.cursor = 'grabbing'
 
   let startY = event.clientY
   let accumulatedDelta = 0
 
-  function onMouseMove(e: MouseEvent) {
+  startDragGesture(event, (e) => {
     ghostX.value = e.clientX
     ghostY.value = e.clientY
 
@@ -81,17 +68,10 @@ function startDrag(event: MouseEvent, itemId: string) {
     } else {
       accumulatedDelta = 0
     }
-  }
-
-  function onMouseUp() {
-    draggingItemId.value = null
-    document.body.style.cursor = ''
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
-  }
-
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', onMouseUp)
+  }, {
+    cursor: 'grabbing',
+    onEnd: () => { draggingItemId.value = null },
+  })
 }
 
 </script>

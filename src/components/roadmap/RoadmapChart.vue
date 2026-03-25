@@ -36,6 +36,7 @@ import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import { MSEC_IN_DAY } from '@/utils/dates'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
+import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -80,38 +81,22 @@ const bars = computed(() =>
 const HANDLE_WIDTH = 8
 
 function startBarEdgeDrag(event: MouseEvent, itemId: string, side: 'start' | 'end') {
-  event.preventDefault()
   event.stopPropagation()
 
   const startX = event.clientX
   const item = itemsStore.getItem(itemId)
   const originalDate = side === 'start' ? new Date(item.startDate) : new Date(item.endDate)
 
-  document.body.style.cursor = 'ew-resize'
-
-  function onMouseMove(e: MouseEvent) {
+  startDragGesture(event, (e) => {
     const deltaDays = Math.round((e.clientX - startX) / scale.value.pixelsPerDay)
     const newDate = new Date(originalDate.getTime() + deltaDays * MSEC_IN_DAY)
     const current = itemsStore.getItem(itemId)
     if (side === 'start') {
-      if (newDate < current.endDate) {
-        itemsStore.updateItem(itemId, { startDate: newDate })
-      }
+      if (newDate < current.endDate) itemsStore.updateItem(itemId, { startDate: newDate })
     } else {
-      if (newDate > current.startDate) {
-        itemsStore.updateItem(itemId, { endDate: newDate })
-      }
+      if (newDate > current.startDate) itemsStore.updateItem(itemId, { endDate: newDate })
     }
-  }
-
-  function onMouseUp() {
-    document.body.style.cursor = ''
-    document.removeEventListener('mousemove', onMouseMove)
-    document.removeEventListener('mouseup', onMouseUp)
-  }
-
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('mouseup', onMouseUp)
+  }, { cursor: 'ew-resize' })
 }
 </script>
 

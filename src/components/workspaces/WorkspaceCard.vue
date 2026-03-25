@@ -33,22 +33,26 @@ function toggleFavorite() {
     @mouseleave="hovered = false"
   >
     <template #append>
-      <div class="actions" :class="{ visible: hovered || isFavorite }">
-        <v-btn
-          icon="mdi-pencil"
-          density="compact"
-          variant="text"
-          @click="userInterface.openWorkspaceEditor(workspaceId)"
-        />
-        <v-btn
-          icon="mdi-open-in-new"
-          density="compact"
-          variant="text"
-          @click="router.push({ name: 'workspace', params: { workspaceId } })"
-        />
+      <div class="d-flex align-center">
+        <div class="actions" :class="{ visible: hovered }">
+          <v-btn
+            icon="mdi-pencil"
+            density="compact"
+            variant="text"
+            @click="userInterface.openWorkspaceEditor(workspaceId)"
+          />
+          <v-btn
+            icon="mdi-open-in-new"
+            density="compact"
+            variant="text"
+            @click="router.push({ name: 'workspace', params: { workspaceId } })"
+          />
+        </div>
         <v-btn
           :icon="isFavorite ? 'mdi-star' : 'mdi-star-outline'"
           :color="isFavorite ? 'yellow' : undefined"
+          class="star-btn"
+          :class="{ visible: isFavorite || hovered }"
           density="compact"
           variant="text"
           @click="toggleFavorite"
@@ -71,6 +75,14 @@ function toggleFavorite() {
 }
 
 .actions.visible {
+  visibility: visible;
+}
+
+.star-btn {
+  visibility: hidden;
+}
+
+.star-btn.visible {
   visibility: visible;
 }
 </style>

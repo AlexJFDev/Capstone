@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceId, type Workspace } from '@/types'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
@@ -32,10 +32,10 @@ function setDraft(workspace: Workspace) {
   draft.value = { ...workspace, items: [...workspace.items] }
 }
 
-watch(model, isOpen => {
+watch(model, async isOpen => {
   if (isOpen) {
     setDraft(editingWorkspace.value)
-  } else {
+    await nextTick()
     formRef.value?.resetValidation()
   }
 })

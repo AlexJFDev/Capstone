@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
@@ -38,10 +38,10 @@ function setDraft(item: Item) {
   }
 }
 
-watch(model, isOpen => {
+watch(model, async isOpen => {
   if (isOpen) {
     setDraft(editingItem.value)
-  } else {
+    await nextTick()
     formRef.value?.resetValidation()
   }
 })

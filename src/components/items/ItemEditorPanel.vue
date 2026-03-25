@@ -26,11 +26,13 @@ const editingItem = computed(
 
 // Draft State
 const draft = ref<Item>(constructEmptyItem())
+const original = ref<Item>(constructEmptyItem())
 const dateRangeDraft = ref<DateRange>(makeDateRange())
-const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value))
+const changesMade = computed(() => !areItemsEqual(draft.value, original.value))
 
 // Draft Management
 function setDraft(item: Item) {
+  original.value = item
   draft.value = { ...item }
   dateRangeDraft.value = {
     start: item.startDate,
@@ -40,7 +42,7 @@ function setDraft(item: Item) {
 
 watch(model, async isOpen => {
   if (isOpen) {
-    setDraft(editingItem.value)
+    setDraft(isEditing.value ? editingItem.value : constructEmptyItem())
     await nextTick()
     formRef.value?.resetValidation()
   }

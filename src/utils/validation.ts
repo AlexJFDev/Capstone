@@ -1,5 +1,5 @@
 import { isValidColor } from './colors'
-import { isValidRange } from './dates'
+import { isValidRange, type DateRange } from './dates'
 
 /** Vuetify rule: field must not be empty. */
 export const required = (value: string) =>
@@ -13,12 +13,19 @@ export const validColor = (value: string) =>
 export const validDate = (value: string) =>
   !isNaN(new Date(value).getTime()) || 'Must be a valid date'
 
-/**
- * Vuetify rule factory: end date must not be before start date.
- * @param getStartDate  Getter for the current start date string to compare against.
- */
-export const endDateAfterStart = (getStartDate: () => string) => (value: string) => {
-  const start = new Date(getStartDate())
-  const end = new Date(value)
-  return isValidRange({ start, end }) || 'End date must not be before start date'
+/** Vuetify rule: end date must not be before start date. */
+export const endDateAfterStart = (range: DateRange) => {
+  return isValidRange(range) || 'End date must not be before start date'
+}
+
+/** Vuetify rule: range dates must be valid */
+export const rangeDatesValid = (range: DateRange) => {
+  const startValid = !isNaN(range.start.getTime())
+  const endValid = !isNaN(range.end.getTime())
+
+  if (!startValid && !endValid) return 'Both dates are invalid'
+  if (!startValid) return 'Start date is invalid'
+  if (!endValid) return 'End date is invalid'
+  
+  return true
 }

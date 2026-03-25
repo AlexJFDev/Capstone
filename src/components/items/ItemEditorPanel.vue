@@ -25,12 +25,14 @@ const editingItem = computed(
 
 // Draft State
 const draft = ref<Item>(constructEmptyItem())
+const original = ref<Item>(constructEmptyItem())
 const startDateDraft = ref('')
 const endDateDraft = ref('')
-const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value))
+const changesMade = computed(() => !areItemsEqual(draft.value, original.value))
 
 // Draft Management
 function setDraft(item: Item) {
+  original.value = item
   draft.value = { ...item }
   startDateDraft.value = dateToShortISOString(item.startDate)
   endDateDraft.value = dateToShortISOString(item.endDate)

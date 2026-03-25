@@ -25,10 +25,12 @@ const editingWorkspace = computed(
 
 // Draft state
 const draft = ref<Workspace>(constructEmptyWorkspace())
-const changesMade = computed(() => !areWorkspacesEqual(draft.value, editingWorkspace.value))
+const original = ref<Workspace>(constructEmptyWorkspace())
+const changesMade = computed(() => !areWorkspacesEqual(draft.value, original.value))
 
 // Draft management
 function setDraft(workspace: Workspace) {
+  original.value = { ...workspace, items: [...workspace.items] }
   draft.value = { ...workspace, items: [...workspace.items] }
 }
 

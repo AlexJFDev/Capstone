@@ -32,6 +32,7 @@ import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
 import { xForDate } from './roadmap-utils'
+import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
@@ -87,16 +88,7 @@ const bars = computed(() =>
       xmlns="http://www.w3.org/2000/svg"
     >
       <!-- Vertical grid lines at each interval boundary -->
-      <line
-        v-for="week in intervalStarts"
-        :key="week.getTime()"
-        :x1="xForDate(week, dateRange, scale)"
-        :x2="xForDate(week, dateRange, scale)"
-        y1="0"
-        :y2="svgHeight"
-        :stroke="CHART_BORDER_COLOR_PRIMARY"
-        stroke-width="1"
-      />
+      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
 
       <!-- 
         Horizontal row dividers matching the item list borders. 

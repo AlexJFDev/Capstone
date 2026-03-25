@@ -2,7 +2,8 @@
 import { toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { xForDate } from './roadmap-utils'
-import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
+import { ROW_HEIGHT } from './constants'
+import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
 import { useInterfaceStore } from '@/stores/interface'
 
@@ -28,16 +29,7 @@ const svgHeight = ROW_HEIGHT * 2
       :width="svgWidth"
       :height="svgHeight"
     >
-      <line
-        v-for="week in intervalStarts"
-        :key="week.getTime()"
-        :x1="xForDate(week, dateRange, scale)"
-        :x2="xForDate(week, dateRange, scale)"
-        y1="0"
-        :y2="svgHeight"
-        :stroke="CHART_BORDER_COLOR_PRIMARY"
-        stroke-width="1"
-      />
+      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
       <text
         v-for="week in intervalStarts"
         :key="week.getTime()"

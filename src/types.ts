@@ -7,7 +7,8 @@ export interface Workspace {
   name: string;
   description: string;
   color: string;
-  items: string[]; // List of item IDs
+  // List of item IDs
+  items: string[];
 }
 
 export function constructEmptyWorkspace(): Workspace {

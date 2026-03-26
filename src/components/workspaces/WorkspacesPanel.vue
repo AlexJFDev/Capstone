@@ -39,7 +39,7 @@ function addWorkspace() {
       <WorkspaceCard
         v-for="workspaceId in sortedWorkspaceIds"
         :key="workspaceId"
-        :workspaceId="workspaceId"
+        :workspace-id="workspaceId"
       />
 
       <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">

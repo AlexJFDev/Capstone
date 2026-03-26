@@ -30,7 +30,7 @@
 
 import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
-import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
+import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
 import { xForDate } from './roadmap-utils'
 import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
@@ -81,17 +81,20 @@ const bars = computed(() =>
     .filter(b => b !== null)
 )
 
+const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
+const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
+
 </script>
 
 <template>
-  <div class="roadmap-chart" ref="root">
+  <div ref="root" class="roadmap-chart">
     <svg
       :width="svgWidth"
       :height="svgHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
       <!-- Vertical grid lines at each interval boundary -->
-      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
 
       <!--
         Horizontal row dividers matching the item list borders.
@@ -123,12 +126,23 @@ const bars = computed(() =>
       <!-- Item bars -->
       <RoadmapBar
         v-for="bar in bars"
-        :key="bar.id"
         :id="bar.id"
+        :key="bar.id"
         :x="bar.x"
         :y="bar.y"
         :width="bar.width"
         :color="bar.color"
+      />
+
+      <!-- Today vertical line -->
+      <line
+        v-if="showTodayLine"
+        :x1="todayX"
+        :x2="todayX"
+        y1="0"
+        :y2="svgHeight"
+        :stroke="TODAY_LINE_COLOR"
+        stroke-width="1"
       />
     </svg>
   </div>

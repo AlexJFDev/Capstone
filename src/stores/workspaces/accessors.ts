@@ -1,0 +1,18 @@
+import type { Workspace } from "@/types"
+import type { Ref } from "vue"
+
+export function useWorkspacesAccessors(
+  workspaces: Ref<Record<string, Workspace>>,
+  validateWorkspaceExists: (id: string) => void
+) {
+  function getWorkspace(id: string): Workspace {
+    validateWorkspaceExists(id)
+    return workspaces.value[id]!
+  }
+
+  function getWorkspaceName(id: string): string {
+    return getWorkspace(id).name
+  }
+
+  return { getWorkspace, getWorkspaceName }
+}

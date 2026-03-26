@@ -7,6 +7,7 @@ import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
+import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
@@ -15,13 +16,33 @@ const props = defineProps<{
 
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
+const itemsStore = useItemsStore()
 
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
 const {
   roadmapListWidth: listWidth,
-  roadmapListWidthPx: listWidthPx
+  roadmapListWidthPx: listWidthPx,
+  sortOption,
+  sortDirection,
 } = storeToRefs(userInterface)
+
+const sortedItemIds = computed(() => {
+  const ids = [...workspace.value.items]
+  if (sortOption.value === 'custom') return ids
+
+  return ids.toSorted((a, b) => {
+    let comparison = 0
+    if (sortOption.value === 'name') {
+      comparison = itemsStore.getName(a).localeCompare(itemsStore.getName(b))
+    } else if (sortOption.value === 'startDate') {
+      comparison = itemsStore.getStartDate(a).getTime() - itemsStore.getStartDate(b).getTime()
+    } else if (sortOption.value === 'endDate') {
+      comparison = itemsStore.getEndDate(a).getTime() - itemsStore.getEndDate(b).getTime()
+    }
+    return sortDirection.value === 'asc' ? comparison : -comparison
+  })
+})
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
@@ -48,16 +69,16 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" />
+        <RoadmapHeader :item-ids="sortedItemIds" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" />
+        <RoadmapChart class="chart" :item-ids="sortedItemIds" />
       </div>
     </div>
   </div>

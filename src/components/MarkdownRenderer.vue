@@ -10,6 +10,7 @@ const rendered = computed(() => renderMarkdown(props.content))
 </script>
 
 <template>
+  <!-- eslint-disable-next-line vue/no-v-html -->
   <div class="markdown-body" v-html="rendered" />
 </template>
 

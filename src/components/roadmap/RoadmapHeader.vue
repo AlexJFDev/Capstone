@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { toRef, useTemplateRef } from 'vue'
+import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
 import { xForDate } from './roadmap-utils'
-import { ROW_HEIGHT } from './constants'
+import { ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
 import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
 import { useInterfaceStore } from '@/stores/interface'
@@ -21,22 +21,33 @@ const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
 
 const svgHeight = ROW_HEIGHT * 2
 
+const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
+const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
+
 </script>
 
 <template>
-  <div class="roadmap-header" ref="root">
+  <div ref="root" class="roadmap-header">
     <svg
       :width="svgWidth"
       :height="svgHeight"
     >
-      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
       <text
         v-for="week in intervalStarts"
         :key="week.getTime()"
         :x="xForDate(week, dateRange, scale) + 4"
-        y="40"
+        y="20"
       >
         {{ scale.headerLabel(week) }}
+      </text>
+      <text
+        v-if="showTodayLine"
+        :x="todayX + 4"
+        :y="svgHeight - 5"
+        :fill="TODAY_LINE_COLOR"
+      >
+        Today
       </text>
     </svg>
   </div>

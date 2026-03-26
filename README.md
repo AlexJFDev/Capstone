@@ -12,7 +12,7 @@ Based on discussions I have had with co-workers in my actual job (I do web devel
 
 ## Current state
 
-The app is fully functional with persistent storage. All items, workspaces, and settings are saved to IndexedDB and restored on reload. The roadmap chart supports interactive bar resizing (drag the left or right edge of a bar to adjust its start or end date), a draggable divider to resize the item list column, and a settings panel for adjusting zoom level, grid interval, and list width.
+The app is fully functional with persistent storage. All items, workspaces, and settings are saved to IndexedDB and restored on reload. The roadmap chart supports interactive bar resizing (drag the left or right edge of a bar to adjust its start or end date), a draggable divider to resize the item list column, and a settings panel for adjusting zoom level, grid interval, and list width. A vertical line marks today's date on the roadmap for quick reference. Workspaces can be sorted by name, start date, or end date. Empty workspaces display a placeholder state rather than a blank area.
 
 ## Long-term Plans
 

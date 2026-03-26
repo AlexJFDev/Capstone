@@ -5,6 +5,8 @@
     "browser": true
   },
   "categories": {
-    "correctness": "error"
+    "correctness": "error",
+    "suspicious": "warn",
+    "pedantic": "warn"
   }
 }

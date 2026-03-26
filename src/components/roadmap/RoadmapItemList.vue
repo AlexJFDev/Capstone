@@ -9,6 +9,7 @@ import { startDragGesture } from './useDragGesture'
 const props = defineProps<{
   workspaceId: string
   listWidth: number
+  itemIds: string[]
 }>()
 
 const listWidthPx = computed(() => `${props.listWidth}px`)
@@ -17,7 +18,7 @@ const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
 const interfaceStore = useInterfaceStore()
 
-const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
+const isDraggable = computed(() => interfaceStore.sortingIsCustom)
 
 const draggingItemId = ref<string | null>(null)
 const ghostX = ref(0)
@@ -41,6 +42,7 @@ const ghostStyle = computed(() => ({
 }))
 
 function startDrag(event: MouseEvent, itemId: string) {
+  if (!isDraggable.value) return
   draggingItemId.value = itemId
   ghostX.value = event.clientX
   ghostY.value = event.clientY
@@ -79,14 +81,21 @@ function startDrag(event: MouseEvent, itemId: string) {
 <template>
   <div class="items-list-wrapper">
     <div class="resize-handle" @mousedown="startResizeDrag" />
+    <div v-if="itemIds.length === 0" class="empty-row">No items</div>
     <div
-      v-for="(itemId, index) in itemIds"
+      v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
       :class="{ 'drag-target': itemId === draggingItemId }"
     >
       <template v-if="itemId !== draggingItemId">
-        <div class="drag-bar" @mousedown="startDrag($event, itemId)">
+        <div
+          :class="{
+            'drag-bar' : true,
+            'invisible' : interfaceStore.sortOption !== 'custom'
+          }"
+          @mousedown="startDrag($event, itemId)"
+        >
           <v-icon>mdi-drag-horizontal</v-icon>
         </div>
         <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
@@ -116,6 +125,15 @@ function startDrag(event: MouseEvent, itemId: string) {
   height: 100%;
   background-color: rgb(var(--v-theme-surface));
   border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+}
+
+.empty-row {
+  height: v-bind(ROW_HEIGHT_PX);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
 }
 
 .item-row {
@@ -181,6 +199,10 @@ function startDrag(event: MouseEvent, itemId: string) {
     height: 100%;
     cursor: move;
     border-radius: 2px;
+
+    &.invisible {
+      visibility: hidden !important;
+    }
   }
 
   .settings-button {

@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { type DateRange, dateToShortISOString, makeDateRange } from '@/utils/dates'
 import { ref, useTemplateRef, watch } from 'vue'
+import { VInput } from 'vuetify/components';
 
 const model = defineModel<DateRange>({
   default: makeDateRange
 })
 
-const props = defineProps<{
+defineProps<{
   hideDetails?: boolean | 'auto'
   rules?: ((value: DateRange) => string | boolean)[]
 }>()
 
-const inputRef = useTemplateRef('inputRef')
+const inputRef = useTemplateRef<VInput>('inputRef')
 const hasError = ref(false)
 
-watch(() => (inputRef.value as any)?.isValid, (isValid) => {
+watch(() => inputRef.value?.isValid, (isValid) => {
   hasError.value = isValid === false
 })
 

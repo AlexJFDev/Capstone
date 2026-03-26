@@ -93,9 +93,9 @@ const nameRules = [ required ]
 <template>
   <v-navigation-drawer
     :model-value="model"
-    @update:model-value="val => { if (!val) cancel() }"
     temporary
     width="500"
+    @update:model-value="val => { if (!val) cancel() }"
   >
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">

@@ -70,7 +70,10 @@ export function snapIntervalEnd(date: Date, gridInterval: RoadmapInterval): Date
  * across all visible items. Boundaries are snapped to the interval via snapIntervalStart/End.
  */
 export function computeDateRange(items: Item[], scale: RoadmapScale): DateRange {
-  if (items.length === 0) return { start: new Date(0), end: new Date(0) }
+  if (items.length === 0) return { 
+    start: snapIntervalStart(new Date(), scale.gridInterval), 
+    end: snapIntervalEnd(new Date(), scale.gridInterval)
+  }
   let min = Infinity
   let max = -Infinity
   items.forEach((item) => {

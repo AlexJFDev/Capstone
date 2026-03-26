@@ -51,3 +51,9 @@ I need to decide how I will implement persistence so that data can be saved betw
 
 Details in `settings-proposal.md`.
 Adopted proposal A. A navigation drawer will be better long term. Also, these settings will eventually grow in the "view" feature mentioned in the README.
+
+## Linting
+
+Details in `linting-proposal.md`.
+Adopting proposal A. The addition of additional packages to run linting automatically seems unnecessary. It is a good habit for developers to run linting on a regular basis. Automated linting running with a GitHub action will be enough.
+I will also adopt the recommendations about lint rule changes.

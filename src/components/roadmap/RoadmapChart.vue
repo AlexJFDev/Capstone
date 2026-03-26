@@ -30,7 +30,7 @@
 
 import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
-import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
+import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
 import { xForDate } from './roadmap-utils'
 import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
@@ -53,8 +53,11 @@ const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
   rootRef,
 )
 
+/** Number of rows to display — at least 1 when empty so the chart isn't invisible. */
+const rowCount = computed(() => Math.max(props.itemIds.length, 1))
+
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
-const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
+const svgHeight = computed(() => rowCount.value * ROW_HEIGHT)
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
@@ -78,24 +81,27 @@ const bars = computed(() =>
     .filter(b => b !== null)
 )
 
+const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
+const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
+
 </script>
 
 <template>
-  <div class="roadmap-chart" ref="root">
+  <div ref="root" class="roadmap-chart">
     <svg
       :width="svgWidth"
       :height="svgHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
       <!-- Vertical grid lines at each interval boundary -->
-      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
 
-      <!-- 
-        Horizontal row dividers matching the item list borders. 
+      <!--
+        Horizontal row dividers matching the item list borders.
         Increments of .5 ensure SVG renders lines in a single pixel and not between two pixels.
       -->
       <line
-        v-for="(_, index) in itemIds"
+        v-for="(_, index) in rowCount"
         :key="index"
         x1="0"
         :x2="svgWidth"
@@ -108,8 +114,8 @@ const bars = computed(() =>
 
       <!-- Row hover backgrounds -->
       <rect
-        v-for="(itemId, index) in itemIds"
-        :key="`bg-${itemId}`"
+        v-for="(_, index) in rowCount"
+        :key="`bg-${index}`"
         x="0"
         :y="index * ROW_HEIGHT"
         :width="svgWidth"
@@ -120,12 +126,23 @@ const bars = computed(() =>
       <!-- Item bars -->
       <RoadmapBar
         v-for="bar in bars"
-        :key="bar.id"
         :id="bar.id"
+        :key="bar.id"
         :x="bar.x"
         :y="bar.y"
         :width="bar.width"
         :color="bar.color"
+      />
+
+      <!-- Today vertical line -->
+      <line
+        v-if="showTodayLine"
+        :x1="todayX"
+        :x2="todayX"
+        y1="0"
+        :y2="svgHeight"
+        :stroke="TODAY_LINE_COLOR"
+        stroke-width="1"
       />
     </svg>
   </div>

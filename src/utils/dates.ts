@@ -70,7 +70,8 @@ function ordinalSuffix(day: number): string {
 export function formatDate(date: string | number | Date, style: DateStyle) {
   const d = new Date(date)
   const year = d.getUTCFullYear()
-  const month = d.getUTCMonth() // 0-indexed
+  // Months 0-indexed
+  const month = d.getUTCMonth()
   const day = d.getUTCDate()
 
   const monthNames = [

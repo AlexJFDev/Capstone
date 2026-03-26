@@ -63,15 +63,24 @@ const workspaceName = computed(() => activeWorkspace.value ?
               hide-details
               variant="outlined"
               style="min-width: 160px;"
+              label="Sort"
               @update:model-value="userInterface.setSortOption($event)"
             />
-            <v-btn
-              :style="userInterface.sortOption === 'custom' ? 'visibility: hidden' : ''"
-              :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
-              flat
-              density="compact"
-              @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
-            />
+            <v-tooltip 
+              :text="userInterface.sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+              location="bottom"
+            >
+              <template #activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  :style="userInterface.sortOption === 'custom' ? 'visibility: hidden' : ''"
+                  :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+                  flat
+                  density="compact"
+                  @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
+                />
+              </template>
+            </v-tooltip>
           </div>
           <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
         </div>

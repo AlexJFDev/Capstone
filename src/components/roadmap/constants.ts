@@ -19,3 +19,4 @@ export const CHART_BAR_PADDING = 6 // Vertical space on top and bottom of roadma
 export const CHART_BORDER_COLOR_PRIMARY = BORDER_COLOR_LIGHT
 export const DEFAULT_PIXELS_PER_DAY = 30
 export const DEFAULT_INTERVAL = 'week'
+export const TODAY_LINE_COLOR = '#f44336'

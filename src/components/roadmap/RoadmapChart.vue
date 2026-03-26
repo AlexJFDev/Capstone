@@ -30,7 +30,7 @@
 
 import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'
-import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT } from './constants'
+import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
 import { xForDate } from './roadmap-utils'
 import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
@@ -81,6 +81,9 @@ const bars = computed(() =>
     .filter(b => b !== null)
 )
 
+const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
+const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
+
 </script>
 
 <template>
@@ -129,6 +132,17 @@ const bars = computed(() =>
         :y="bar.y"
         :width="bar.width"
         :color="bar.color"
+      />
+
+      <!-- Today vertical line -->
+      <line
+        v-if="showTodayLine"
+        :x1="todayX"
+        :x2="todayX"
+        y1="0"
+        :y2="svgHeight"
+        :stroke="TODAY_LINE_COLOR"
+        stroke-width="1"
       />
     </svg>
   </div>

@@ -52,27 +52,29 @@ const workspaceName = computed(() => activeWorkspace.value ?
           <v-icon>mdi-chart-gantt</v-icon>
           <span class="text-h6">{{ workspaceName }}</span>
         </div>
-        <div class="d-flex align-center ga-2">
-          <v-select
-            :model-value="userInterface.sortOption"
-            :items="sortOptions"
-            item-title="label"
-            item-value="value"
-            density="compact"
-            hide-details
-            variant="outlined"
-            style="min-width: 160px;"
-            @update:model-value="userInterface.setSortOption($event)"
-          />
-          <v-btn
-            v-if="userInterface.sortOption !== 'custom'"
-            :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
-            flat
-            density="compact"
-            @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
-          />
+        <div class="d-flex">
+          <div class="d-flex align-center ga-2">
+            <v-select
+              :model-value="userInterface.sortOption"
+              :items="sortOptions"
+              item-title="label"
+              item-value="value"
+              density="compact"
+              hide-details
+              variant="outlined"
+              style="min-width: 160px;"
+              @update:model-value="userInterface.setSortOption($event)"
+            />
+            <v-btn
+              v-if="userInterface.sortOption !== 'custom'"
+              :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+              flat
+              density="compact"
+              @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
+            />
+          </div>
+          <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
         </div>
-        <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
       </div>
 
       <div class="roadmap-container">

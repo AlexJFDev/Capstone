@@ -11,7 +11,7 @@ export const useInterfaceStore = defineStore('interface', () => {
   const defaultWorkspaceId = computed(() => {
     const workspacesStore = useWorkspacesStore()
 
-    if (!workspacesStore.hasWorkspaces) return undefined
+    if (!workspacesStore.hasWorkspaces) return
     if (
       favoriteWorkspaceId.value &&
       workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)

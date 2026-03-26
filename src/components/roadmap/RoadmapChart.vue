@@ -84,14 +84,14 @@ const bars = computed(() =>
 </script>
 
 <template>
-  <div class="roadmap-chart" ref="root">
+  <div ref="root" class="roadmap-chart">
     <svg
       :width="svgWidth"
       :height="svgHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
       <!-- Vertical grid lines at each interval boundary -->
-      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
 
       <!--
         Horizontal row dividers matching the item list borders.
@@ -123,8 +123,8 @@ const bars = computed(() =>
       <!-- Item bars -->
       <RoadmapBar
         v-for="bar in bars"
-        :key="bar.id"
         :id="bar.id"
+        :key="bar.id"
         :x="bar.x"
         :y="bar.y"
         :width="bar.width"

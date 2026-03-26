@@ -24,12 +24,12 @@ const svgHeight = ROW_HEIGHT * 2
 </script>
 
 <template>
-  <div class="roadmap-header" ref="root">
+  <div ref="root" class="roadmap-header">
     <svg
       :width="svgWidth"
       :height="svgHeight"
     >
-      <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
       <text
         v-for="week in intervalStarts"
         :key="week.getTime()"

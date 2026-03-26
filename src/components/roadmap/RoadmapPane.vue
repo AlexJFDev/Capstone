@@ -48,7 +48,7 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" />
+        <RoadmapHeader :item-ids="workspace.items" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
@@ -57,7 +57,7 @@ async function newItem() {
         <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" />
+        <RoadmapChart class="chart" :item-ids="workspace.items" />
       </div>
     </div>
   </div>

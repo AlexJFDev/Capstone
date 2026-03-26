@@ -36,9 +36,9 @@ const sortedItemIds = computed(() => {
     if (sortOption.value === 'name') {
       comparison = itemsStore.getName(a).localeCompare(itemsStore.getName(b))
     } else if (sortOption.value === 'startDate') {
-      comparison = itemsStore.getStartDate(a).getTime() - itemsStore.getStartDate(b).getTime()
+      comparison = itemsStore.getItem(a).startDate.getTime() - itemsStore.getItem(b).startDate.getTime()
     } else if (sortOption.value === 'endDate') {
-      comparison = itemsStore.getEndDate(a).getTime() - itemsStore.getEndDate(b).getTime()
+      comparison = itemsStore.getItem(a).endDate.getTime() - itemsStore.getItem(b).endDate.getTime()
     }
     return sortDirection.value === 'asc' ? comparison : -comparison
   })

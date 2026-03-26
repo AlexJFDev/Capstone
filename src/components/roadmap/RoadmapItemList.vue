@@ -89,7 +89,13 @@ function startDrag(event: MouseEvent, itemId: string) {
       :class="{ 'drag-target': itemId === draggingItemId }"
     >
       <template v-if="itemId !== draggingItemId">
-        <div v-if="isDraggable" class="drag-bar" @mousedown="startDrag($event, itemId)">
+        <div
+          :class="{
+            'drag-bar' : true,
+            'invisible' : interfaceStore.sortOption !== 'custom'
+          }"
+          @mousedown="startDrag($event, itemId)"
+        >
           <v-icon>mdi-drag-horizontal</v-icon>
         </div>
         <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
@@ -193,6 +199,10 @@ function startDrag(event: MouseEvent, itemId: string) {
     height: 100%;
     cursor: move;
     border-radius: 2px;
+
+    &.invisible {
+      visibility: hidden !important;
+    }
   }
 
   .settings-button {

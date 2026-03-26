@@ -66,7 +66,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
               @update:model-value="userInterface.setSortOption($event)"
             />
             <v-btn
-              v-if="userInterface.sortOption !== 'custom'"
+              :style="userInterface.sortOption === 'custom' ? 'visibility: hidden' : ''"
               :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
               flat
               density="compact"

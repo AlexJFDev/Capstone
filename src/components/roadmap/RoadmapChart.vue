@@ -53,8 +53,8 @@ const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
   rootRef,
 )
 
-/** Number of rows to display — at least 2 when empty so the chart isn't invisible. */
-const rowCount = computed(() => Math.max(props.itemIds.length, 2))
+/** Number of rows to display — at least 1 when empty so the chart isn't invisible. */
+const rowCount = computed(() => Math.max(props.itemIds.length, 1))
 
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
 const svgHeight = computed(() => rowCount.value * ROW_HEIGHT)

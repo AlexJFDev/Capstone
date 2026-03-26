@@ -31,7 +31,7 @@ const sortedItemIds = computed(() => {
   const ids = [...workspace.value.items]
   if (sortOption.value === 'custom') return ids
 
-  return ids.sort((a, b) => {
+  return ids.toSorted((a, b) => {
     let comparison = 0
     if (sortOption.value === 'name') {
       comparison = itemsStore.getName(a).localeCompare(itemsStore.getName(b))

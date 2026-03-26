@@ -83,7 +83,7 @@ function startDrag(event: MouseEvent, itemId: string) {
     <div class="resize-handle" @mousedown="startResizeDrag" />
     <div v-if="itemIds.length === 0" class="empty-row">No items</div>
     <div
-      v-for="(itemId, index) in itemIds"
+      v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
       :class="{ 'drag-target': itemId === draggingItemId }"

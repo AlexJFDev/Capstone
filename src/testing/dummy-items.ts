@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import type { Item } from "@/types"
 
 export const items: Record<string, Item> = {
@@ -601,4 +602,4 @@ export const items: Record<string, Item> = {
     endDate: new Date('2026-02-26T00:00:00Z'),
     color: '#2ECC71',
   },
-};
+}

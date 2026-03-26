@@ -87,7 +87,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :workspaceId="activeWorkspace" />
+        <RoadmapPane :workspace-id="activeWorkspace" />
       </div>
     </div>
   </v-main>

@@ -47,7 +47,7 @@ async function deleteItem(id: string) {
 </script>
 
 <template>
-  <v-data-table :headers="headers" :items="rows" item-value="id" @click:row="(_: Event, { item }: { item: { id: string } }) => userInterface.openItemViewer(item.id)" class="clickable-rows">
+  <v-data-table :headers="headers" :items="rows" item-value="id" class="clickable-rows" @click:row="(_: Event, { item }: { item: { id: string } }) => userInterface.openItemViewer(item.id)">
     <template #top>
       <v-btn prepend-icon="mdi-plus" variant="text" @click="createItem">New item</v-btn>
     </template>
@@ -64,7 +64,7 @@ async function deleteItem(id: string) {
       <DateChip :date="item.endDate" />
     </template>
     <template #item.workspaces="{ item }">
-      <WorkspaceChip v-for="wid in workspaceIdsFor(item.id)" :key="wid" :workspaceId="wid" class="mr-1" />
+      <WorkspaceChip v-for="wid in workspaceIdsFor(item.id)" :key="wid" :workspace-id="wid" class="mr-1" />
     </template>
     <template #item.actions="{ item }">
       <v-menu>

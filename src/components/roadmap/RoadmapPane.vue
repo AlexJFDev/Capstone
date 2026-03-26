@@ -31,7 +31,7 @@ const sortedItemIds = computed(() => {
   const ids = [...workspace.value.items]
   if (sortOption.value === 'custom') return ids
 
-  return ids.sort((a, b) => {
+  return ids.toSorted((a, b) => {
     let comparison = 0
     if (sortOption.value === 'name') {
       comparison = itemsStore.getName(a).localeCompare(itemsStore.getName(b))
@@ -69,7 +69,7 @@ async function newItem() {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="sortedItemIds" />
+        <RoadmapHeader :item-ids="sortedItemIds" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
@@ -78,7 +78,7 @@ async function newItem() {
         <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="sortedItemIds" />
+        <RoadmapChart class="chart" :item-ids="sortedItemIds" />
       </div>
     </div>
   </div>

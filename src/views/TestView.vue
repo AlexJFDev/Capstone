@@ -85,13 +85,13 @@ function loadDummyData() {
     </v-container>
 
     <div class="pane">
-      <RoadmapPane v-if="workspaceId" :workspaceId="workspaceId" />
+      <RoadmapPane v-if="workspaceId" :workspace-id="workspaceId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
-    <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :itemId="test_item_id" />
+    <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
     <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
-    <WorkspacesPanel v-model="workspacesOpen" :workspaceIds="workspaceIds" />
+    <WorkspacesPanel v-model="workspacesOpen" :workspace-ids="workspaceIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

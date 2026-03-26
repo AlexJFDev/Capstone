@@ -38,7 +38,7 @@ export const useItemsStore = defineStore('items', () => {
   }
 
   function getItems(ids: string[]): Item[] {
-    return ids.map(getItem)
+    return ids.map(id => getItem(id))
   }
 
   function getName(id: string): string {

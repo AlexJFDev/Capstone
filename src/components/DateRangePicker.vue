@@ -6,7 +6,7 @@ const model = defineModel<DateRange>({
   default: makeDateRange
 })
 
-const props = defineProps<{
+defineProps<{
   hideDetails?: boolean | 'auto'
   rules?: ((value: DateRange) => string | boolean)[]
 }>()

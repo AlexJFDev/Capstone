@@ -79,6 +79,10 @@ function startDrag(event: MouseEvent, itemId: string) {
 <template>
   <div class="items-list-wrapper">
     <div class="resize-handle" @mousedown="startResizeDrag" />
+    <template v-if="itemIds.length === 0">
+      <div class="empty-row" />
+      <div class="empty-row" />
+    </template>
     <div
       v-for="(itemId, index) in itemIds"
       :key="itemId"
@@ -116,6 +120,15 @@ function startDrag(event: MouseEvent, itemId: string) {
   height: 100%;
   background-color: rgb(var(--v-theme-surface));
   border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
+}
+
+.empty-row {
+  height: v-bind(ROW_HEIGHT_PX);
+  border-top: 1px solid v-bind(LIST_BORDER_COLOR);
+
+  &:first-of-type {
+    border-top: none;
+  }
 }
 
 .item-row {

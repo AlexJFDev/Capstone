@@ -53,8 +53,11 @@ const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
   rootRef,
 )
 
+/** Number of rows to display — at least 2 when empty so the chart isn't invisible. */
+const rowCount = computed(() => Math.max(props.itemIds.length, 2))
+
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
-const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
+const svgHeight = computed(() => rowCount.value * ROW_HEIGHT)
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
@@ -90,12 +93,12 @@ const bars = computed(() =>
       <!-- Vertical grid lines at each interval boundary -->
       <SvgVerticalGridLines :intervalStarts="intervalStarts" :dateRange="dateRange" :scale="scale" :height="svgHeight" />
 
-      <!-- 
-        Horizontal row dividers matching the item list borders. 
+      <!--
+        Horizontal row dividers matching the item list borders.
         Increments of .5 ensure SVG renders lines in a single pixel and not between two pixels.
       -->
       <line
-        v-for="(_, index) in itemIds"
+        v-for="(_, index) in rowCount"
         :key="index"
         x1="0"
         :x2="svgWidth"
@@ -108,8 +111,8 @@ const bars = computed(() =>
 
       <!-- Row hover backgrounds -->
       <rect
-        v-for="(itemId, index) in itemIds"
-        :key="`bg-${itemId}`"
+        v-for="(_, index) in rowCount"
+        :key="`bg-${index}`"
         x="0"
         :y="index * ROW_HEIGHT"
         :width="svgWidth"

@@ -121,11 +121,11 @@ function startDrag(event: MouseEvent, itemId: string) {
 
 .empty-row {
   height: v-bind(ROW_HEIGHT_PX);
-  border-top: 1px solid v-bind(LIST_BORDER_COLOR);
-
-  &:first-of-type {
-    border-top: none;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
 }
 
 .item-row {

@@ -53,11 +53,11 @@ async function reset() {
             <div class="text-caption text-medium-emphasis mb-1">Grid interval</div>
             <v-btn-toggle
               :model-value="userInterface.roadmapScale.gridInterval"
-              @update:model-value="updateGridInterval"
               mandatory
               variant="outlined"
               density="compact"
               divided
+              @update:model-value="updateGridInterval"
             >
               <v-btn
                 v-for="option in intervalOptions"
@@ -76,11 +76,11 @@ async function reset() {
             </div>
             <v-slider
               :model-value="userInterface.roadmapScale.pixelsPerDay"
-              @update:model-value="updatePixelsPerDay"
               :min="5"
               :max="100"
               :step="1"
               hide-details
+              @update:model-value="updatePixelsPerDay"
             />
           </div>
 
@@ -98,11 +98,11 @@ async function reset() {
             </div>
             <v-slider
               :model-value="userInterface.roadmapListWidth"
-              @update:model-value="userInterface.updateRoadmapListWidth"
               :min="MIN_LIST_WIDTH"
               :max="MAX_LIST_WIDTH"
               :step="1"
               hide-details
+              @update:model-value="userInterface.updateRoadmapListWidth"
             />
           </div>
         </v-card-text>

@@ -92,10 +92,10 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
 <template>
   <v-navigation-drawer
     :model-value="model"
-    @update:model-value="val => { if (!val) cancel() }"
     temporary
     location="right"
     width="500"
+    @update:model-value="val => { if (!val) cancel() }"
   >
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">

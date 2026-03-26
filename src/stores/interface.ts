@@ -5,13 +5,16 @@ import { useWorkspacesStore } from "./workspaces"
 import type { RoadmapInterval, RoadmapScale } from "@/components/roadmap/roadmap-utils"
 import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from "@/components/roadmap/constants"
 
+export type SortOption = 'custom' | 'startDate' | 'endDate' | 'name'
+export type SortDirection = 'asc' | 'desc'
+
 export const useInterfaceStore = defineStore('interface', () => {
 
   const favoriteWorkspaceId = ref<string | null>(null)
   const defaultWorkspaceId = computed(() => {
     const workspacesStore = useWorkspacesStore()
 
-    if (!workspacesStore.hasWorkspaces) return undefined
+    if (!workspacesStore.hasWorkspaces) return
     if (
       favoriteWorkspaceId.value &&
       workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)
@@ -33,6 +36,13 @@ export const useInterfaceStore = defineStore('interface', () => {
   })
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
   const roadmapListWidthPx = computed(() => `${roadmapListWidth.value}px`)
+  // Sorting
+  const sortOption = ref<SortOption>('custom')
+  const sortDirection = ref<SortDirection>('asc')
+  function setSortOption(option: SortOption) { sortOption.value = option }
+  function setSortDirection(direction: SortDirection) { sortDirection.value = direction }
+  const sortingIsCustom = computed(() => sortOption.value === 'custom')
+  const sortDirectionIsAscending = computed(() => sortDirection.value === 'asc')
 
   async function initializeInterface() {
     const settings = (await getSettings()) || makeDefaultSettings()
@@ -181,5 +191,11 @@ export const useInterfaceStore = defineStore('interface', () => {
     settingsOpen,
     openSettings,
     closeSettings,
+    sortOption,
+    sortDirection,
+    setSortOption,
+    setSortDirection,
+    sortingIsCustom,
+    sortDirectionIsAscending
   }
 })

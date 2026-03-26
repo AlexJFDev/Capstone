@@ -3,12 +3,19 @@ import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import { useInterfaceStore } from '@/stores/interface'
+import { useInterfaceStore, type SortOption } from '@/stores/interface'
 
 const route = useRoute()
 const router = useRouter()
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
+
+const sortOptions: { label: string; value: SortOption }[] = [
+  { label: 'Custom', value: 'custom' },
+  { label: 'By start date', value: 'startDate' },
+  { label: 'By end date', value: 'endDate' },
+  { label: 'By name', value: 'name' },
+]
 
 // Handle workspace being deleted while viewing
 watch(() => workspacesStore.workspaceIds, (ids) => {
@@ -44,6 +51,26 @@ const workspaceName = computed(() => activeWorkspace.value ?
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-chart-gantt</v-icon>
           <span class="text-h6">{{ workspaceName }}</span>
+        </div>
+        <div class="d-flex align-center ga-2">
+          <v-select
+            :model-value="userInterface.sortOption"
+            :items="sortOptions"
+            item-title="label"
+            item-value="value"
+            density="compact"
+            hide-details
+            variant="outlined"
+            style="min-width: 160px;"
+            @update:model-value="userInterface.setSortOption($event)"
+          />
+          <v-btn
+            v-if="userInterface.sortOption !== 'custom'"
+            :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+            flat
+            density="compact"
+            @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
+          />
         </div>
         <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
       </div>

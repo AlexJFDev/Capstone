@@ -9,6 +9,7 @@ import { startDragGesture } from './useDragGesture'
 const props = defineProps<{
   workspaceId: string
   listWidth: number
+  itemIds: string[]
 }>()
 
 const listWidthPx = computed(() => `${props.listWidth}px`)
@@ -17,7 +18,7 @@ const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
 const interfaceStore = useInterfaceStore()
 
-const itemIds = computed(() => workspacesStore.getWorkspace(props.workspaceId).items)
+const isDraggable = computed(() => interfaceStore.sortOption === 'custom')
 
 const draggingItemId = ref<string | null>(null)
 const ghostX = ref(0)
@@ -41,6 +42,7 @@ const ghostStyle = computed(() => ({
 }))
 
 function startDrag(event: MouseEvent, itemId: string) {
+  if (!isDraggable.value) return
   draggingItemId.value = itemId
   ghostX.value = event.clientX
   ghostY.value = event.clientY
@@ -87,7 +89,7 @@ function startDrag(event: MouseEvent, itemId: string) {
       :class="{ 'drag-target': itemId === draggingItemId }"
     >
       <template v-if="itemId !== draggingItemId">
-        <div class="drag-bar" @mousedown="startDrag($event, itemId)">
+        <div v-if="isDraggable" class="drag-bar" @mousedown="startDrag($event, itemId)">
           <v-icon>mdi-drag-horizontal</v-icon>
         </div>
         <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>

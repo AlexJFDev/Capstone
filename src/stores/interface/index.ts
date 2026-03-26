@@ -31,7 +31,7 @@ export const useInterfaceStore = defineStore('interface', () => {
   const gridInterval = ref<RoadmapInterval>(DEFAULT_INTERVAL)
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
 
-  const { initializeInterface, setFavoriteWorkspace } =
+  const { initializeInterface, setFavoriteWorkspace, applyExternalSettings } =
     useInterfaceInitialization(favoriteWorkspaceId, pixelsPerDay, gridInterval, roadmapListWidth)
   const { roadmapScale, roadmapListWidthPx, updateRoadmapScale, updateRoadmapListWidth } =
     useInterfaceRoadmap(pixelsPerDay, gridInterval, roadmapListWidth)
@@ -45,6 +45,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     defaultWorkspaceId,
     initializeInterface,
     setFavoriteWorkspace,
+    applyExternalSettings,
     roadmapScale,
     roadmapListWidthPx,
     roadmapListWidth,

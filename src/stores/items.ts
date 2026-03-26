@@ -109,6 +109,8 @@ export const useItemsStore = defineStore('items', () => {
     getItems,
     getName,
     getColor,
+    getStartDate,
+    getEndDate,
     updateItem,
     doesItemExist,
     validateItemExists,

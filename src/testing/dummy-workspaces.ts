@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import type { Workspace } from "@/types"
 
 export const workspaces: Record<string, Workspace> = {
@@ -115,4 +116,4 @@ export const workspaces: Record<string, Workspace> = {
       'i-e5f6a7b8-c9d0-4234-8fab-345678901234',
     ],
   },
-};
+}

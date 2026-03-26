@@ -116,6 +116,7 @@ async function newItem() {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
       }
     }
+
   }
 }
 </style>

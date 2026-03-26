@@ -39,6 +39,12 @@ const viewLess = () => { expanded.value = false }
 <template>
   <div class="item-list bg-white text-black rounded-lg border">
 
+    <v-row v-if="model.length === 0" class="ma-0" align="center">
+      <v-col class="pa-2 text-center text-caption text-medium-emphasis">
+        No items
+      </v-col>
+    </v-row>
+
     <v-row
       v-for="(itemId, index) in visibleItems"
       :key="itemId"

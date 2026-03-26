@@ -36,11 +36,13 @@ export const useInterfaceStore = defineStore('interface', () => {
   })
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
   const roadmapListWidthPx = computed(() => `${roadmapListWidth.value}px`)
-
+  // Sorting
   const sortOption = ref<SortOption>('custom')
   const sortDirection = ref<SortDirection>('asc')
   function setSortOption(option: SortOption) { sortOption.value = option }
   function setSortDirection(direction: SortDirection) { sortDirection.value = direction }
+  const sortingIsCustom = computed(() => sortOption.value === 'custom')
+  const sortDirectionIsAscending = computed(() => sortDirection.value === 'asc')
 
   async function initializeInterface() {
     const settings = (await getSettings()) || makeDefaultSettings()
@@ -193,5 +195,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     sortDirection,
     setSortOption,
     setSortDirection,
+    sortingIsCustom,
+    sortDirectionIsAscending
   }
 })

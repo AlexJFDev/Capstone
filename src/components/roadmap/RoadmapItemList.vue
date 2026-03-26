@@ -18,7 +18,7 @@ const itemsStore = useItemsStore()
 const workspacesStore = useWorkspacesStore()
 const interfaceStore = useInterfaceStore()
 
-const isDraggable = computed(() => interfaceStore.sortOption === 'custom')
+const isDraggable = computed(() => interfaceStore.sortingIsCustom)
 
 const draggingItemId = ref<string | null>(null)
 const ghostX = ref(0)

@@ -67,17 +67,17 @@ const workspaceName = computed(() => activeWorkspace.value ?
               @update:model-value="userInterface.setSortOption($event)"
             />
             <v-tooltip 
-              :text="userInterface.sortDirection === 'asc' ? 'Ascending' : 'Descending'"
+              :text="userInterface.sortDirectionIsAscending ? 'Ascending' : 'Descending'"
               location="bottom"
             >
               <template #activator="{ props }">
                 <v-btn
                   v-bind="props"
-                  :style="userInterface.sortOption === 'custom' ? 'visibility: hidden' : ''"
-                  :icon="userInterface.sortDirection === 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+                  :style="userInterface.sortingIsCustom ? 'visibility: hidden' : ''"
+                  :icon="userInterface.sortDirectionIsAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
                   flat
                   density="compact"
-                  @click="userInterface.setSortDirection(userInterface.sortDirection === 'asc' ? 'desc' : 'asc')"
+                  @click="userInterface.setSortDirection(userInterface.sortDirectionIsAscending ? 'desc' : 'asc')"
                 />
               </template>
             </v-tooltip>

@@ -19,7 +19,7 @@ const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
   rootRef,
 )
 
-const svgHeight = ROW_HEIGHT * 3
+const svgHeight = ROW_HEIGHT * 2
 
 const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
 const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
@@ -37,7 +37,7 @@ const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWid
         v-for="week in intervalStarts"
         :key="week.getTime()"
         :x="xForDate(week, dateRange, scale) + 4"
-        y="40"
+        y="20"
       >
         {{ scale.headerLabel(week) }}
       </text>

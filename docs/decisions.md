@@ -46,3 +46,14 @@ Throughout the app, I use key and id interchangeably. I should pick one or the o
 
 Details found in `persistence-proposal.md`.
 I need to decide how I will implement persistence so that data can be saved between sessions. I can either write my own IndexedDB wrapper (option A) or I can use an NPM package called `idb` (option B). I will go with option B because it reduces workload.
+
+## Settings
+
+Details in `settings-proposal.md`.
+Adopted proposal A. A navigation drawer will be better long term. Also, these settings will eventually grow in the "view" feature mentioned in the README.
+
+## Linting
+
+Details in `linting-proposal.md`.
+Adopting proposal A. The addition of additional packages to run linting automatically seems unnecessary. It is a good habit for developers to run linting on a regular basis. Automated linting running with a GitHub action will be enough.
+I will also adopt the recommendations about lint rule changes.

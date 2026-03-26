@@ -14,6 +14,13 @@ export interface DateRange {
   end: Date
 }
 
+export function makeDateRange(): DateRange {
+  return {
+    start: new Date(),
+    end: new Date()
+  }
+}
+
 // === VALIDATION ===
 /** True if the end date is after the start date. */
 export function isValidRange(range: DateRange): boolean {
@@ -28,6 +35,16 @@ export function isValidRange(range: DateRange): boolean {
 export function validateRange(range: DateRange) {
   if (!isValidRange(range)) {
     throw new Error(`Invalid date range: ${range}`)
+  }
+}
+/** True if string can be coerced into a date */
+export function isValidDateString(value: string) {
+  return !isNaN(new Date(value).getTime())
+}
+/** Throws id date string is invalid */
+export function validateDateString(value: string) {
+  if (!isValidDateString(value)) {
+    throw new Error(`Invalid date string: ${value}`)
   }
 }
 
@@ -53,7 +70,8 @@ function ordinalSuffix(day: number): string {
 export function formatDate(date: string | number | Date, style: DateStyle) {
   const d = new Date(date)
   const year = d.getUTCFullYear()
-  const month = d.getUTCMonth() // 0-indexed
+  // Months 0-indexed
+  const month = d.getUTCMonth()
   const day = d.getUTCDate()
 
   const monthNames = [

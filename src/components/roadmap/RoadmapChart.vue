@@ -28,50 +28,36 @@
  *  y positions are simply `rowIndex * ROW_HEIGHT`.
  */
 
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue'
-import { CHART_BAR_PADDING, CHART_BORDER_COLOR_PRIMARY, LIST_WIDTH, ROW_HEIGHT } from './constants'
-import { computeDateRange, computeDaysInRange, computeStartsInRange, extendWeekStarts, xForDate, type RoadmapScale } from './roadmap-utils'
+import { computed, toRef, useTemplateRef } from 'vue'
+import { storeToRefs } from 'pinia'
+import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
+import { xForDate } from './roadmap-utils'
+import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
+import { useRoadmapTimeline } from './useRoadmapTimeline'
+import RoadmapBar from './RoadmapBar.vue'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
   itemIds: string[]
-  /** Zoom/display scale; only `pixelsPerDay` affects this component's rendering. */
-  scale: RoadmapScale
 }>()
 
 const itemsStore = useItemsStore()
 const interfaceStore = useInterfaceStore()
+const { roadmapScale: scale } = storeToRefs(interfaceStore)
 
 const rootRef = useTemplateRef('root')
-const width = ref(0)
-let resizeObserver: ResizeObserver | null = null
-onMounted(() => {
-  resizeObserver = new ResizeObserver(entries => {
-    width.value = entries[0]?.contentRect.width ?? 0
-  })
-  resizeObserver.observe(rootRef.value!.parentElement!.parentElement!)
-})
-onBeforeUnmount(() => resizeObserver?.disconnect())
+const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
+  toRef(() => props.itemIds),
+  rootRef,
+)
 
-const items = computed(() => itemsStore.getItems(props.itemIds))
+/** Number of rows to display — at least 1 when empty so the chart isn't invisible. */
+const rowCount = computed(() => Math.max(props.itemIds.length, 1))
 
-const dateRange = computed(() => computeDateRange(items.value))
-
-/** Total number of calendar days spanned by the timeline window (used for SVG width). */
-const totalDays = computed(() => computeDaysInRange(dateRange.value))
-
-/** Full pixel width of the SVG canvas. Grows/shrinks with zoom (pixelsPerDay). */
-const svgWidth = computed(() => Math.max(totalDays.value * props.scale.pixelsPerDay, width.value - LIST_WIDTH))
 /** Full pixel height of the SVG canvas — one row per item, no padding. */
-const svgHeight = computed(() => props.itemIds.length * ROW_HEIGHT)
-
-/**
- * Array of Dates, one per week boundary (every Sunday), from timeline start to end.
- * Used to draw the vertical grid lines in the template.
- */
-const weekStarts = computed(() => extendWeekStarts(computeStartsInRange(dateRange.value), svgWidth.value, dateRange.value, props.scale.pixelsPerDay))
+const svgHeight = computed(() => rowCount.value * ROW_HEIGHT)
 
 /**
  * Derived bar geometry for every visible item. Each bar object carries:
@@ -88,39 +74,34 @@ const bars = computed(() =>
     .map((id, index) => {
       const item = itemsStore.getItem(id)
       if (!item) return null
-      const x = xForDate(item.startDate, dateRange.value, props.scale.pixelsPerDay)
-      const width = xForDate(item.endDate, dateRange.value, props.scale.pixelsPerDay) - x
+      const x = xForDate(item.startDate, dateRange.value, scale.value)
+      const width = xForDate(item.endDate, dateRange.value, scale.value) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
     .filter(b => b !== null)
 )
+
+const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
+const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
+
 </script>
 
 <template>
-  <div class="roadmap-chart" ref="root">
+  <div ref="root" class="roadmap-chart">
     <svg
       :width="svgWidth"
       :height="svgHeight"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <!-- Vertical grid lines at each week boundary -->
-      <line
-        v-for="week in weekStarts"
-        :key="week.getTime()"
-        :x1="xForDate(week, dateRange, scale.pixelsPerDay)"
-        :x2="xForDate(week, dateRange, scale.pixelsPerDay)"
-        y1="0"
-        :y2="svgHeight"
-        :stroke="CHART_BORDER_COLOR_PRIMARY"
-        stroke-width="1"
-      />
+      <!-- Vertical grid lines at each interval boundary -->
+      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
 
-      <!-- 
-        Horizontal row dividers matching the item list borders. 
+      <!--
+        Horizontal row dividers matching the item list borders.
         Increments of .5 ensure SVG renders lines in a single pixel and not between two pixels.
       -->
       <line
-        v-for="(_, index) in itemIds"
+        v-for="(_, index) in rowCount"
         :key="index"
         x1="0"
         :x2="svgWidth"
@@ -133,8 +114,8 @@ const bars = computed(() =>
 
       <!-- Row hover backgrounds -->
       <rect
-        v-for="(itemId, index) in itemIds"
-        :key="`bg-${itemId}`"
+        v-for="(_, index) in rowCount"
+        :key="`bg-${index}`"
         x="0"
         :y="index * ROW_HEIGHT"
         :width="svgWidth"
@@ -143,17 +124,25 @@ const bars = computed(() =>
       />
 
       <!-- Item bars -->
-      <rect
+      <RoadmapBar
         v-for="bar in bars"
+        :id="bar.id"
         :key="bar.id"
         :x="bar.x"
-        :y="bar.y + CHART_BAR_PADDING"
+        :y="bar.y"
         :width="bar.width"
-        :height="ROW_HEIGHT - CHART_BAR_PADDING * 2"
-        :fill="bar.color"
-        rx="3"
-        class="bar"
-        @click="interfaceStore.openItemViewer(bar.id)"
+        :color="bar.color"
+      />
+
+      <!-- Today vertical line -->
+      <line
+        v-if="showTodayLine"
+        :x1="todayX"
+        :x2="todayX"
+        y1="0"
+        :y2="svgHeight"
+        :stroke="TODAY_LINE_COLOR"
+        stroke-width="1"
       />
     </svg>
   </div>
@@ -176,11 +165,4 @@ svg {
   }
 }
 
-.bar {
-  cursor: pointer;
-
-  &:hover {
-    opacity: 0.85;
-  }
-}
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceId, type Workspace } from '@/types'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
@@ -25,17 +25,19 @@ const editingWorkspace = computed(
 
 // Draft state
 const draft = ref<Workspace>(constructEmptyWorkspace())
-const changesMade = computed(() => !areWorkspacesEqual(draft.value, editingWorkspace.value))
+const original = ref<Workspace>(constructEmptyWorkspace())
+const changesMade = computed(() => !areWorkspacesEqual(draft.value, original.value))
 
 // Draft management
 function setDraft(workspace: Workspace) {
+  original.value = { ...workspace, items: [...workspace.items] }
   draft.value = { ...workspace, items: [...workspace.items] }
 }
 
-watch(model, isOpen => {
+watch(model, async isOpen => {
   if (isOpen) {
-    setDraft(editingWorkspace.value)
-  } else {
+    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyWorkspace())
+    await nextTick()
     formRef.value?.resetValidation()
   }
 })
@@ -91,9 +93,9 @@ const nameRules = [ required ]
 <template>
   <v-navigation-drawer
     :model-value="model"
-    @update:model-value="val => { if (!val) cancel() }"
     temporary
     width="500"
+    @update:model-value="val => { if (!val) cancel() }"
   >
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
@@ -123,7 +125,8 @@ const nameRules = [ required ]
             variant="outlined"
             density="compact"
             rows="3"
-            hide-details="auto"
+            hint="Markdown is supported"
+            persistent-hint
           />
         </v-card-text>
       </v-card>

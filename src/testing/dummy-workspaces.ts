@@ -1,9 +1,10 @@
+// oxlint-disable max-lines
 import type { Workspace } from "@/types"
 
 export const workspaces: Record<string, Workspace> = {
   'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890': {
     name: 'Frontend Development',
-    description: 'All tasks related to the frontend UI and client-side logic',
+    description: 'All tasks related to the **frontend UI** and client-side logic.\n\n- Component library and shared UI elements\n- Page layouts, navigation, and routing\n- Accessibility, responsiveness, and dark mode\n- State management and data fetching',
     color: '#000000',
     items: [
       'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890',
@@ -90,7 +91,7 @@ export const workspaces: Record<string, Workspace> = {
   },
   'w-2b3c4d5e-6f7a-4901-bcde-f12345678901': {
     name: 'Backend Development',
-    description: 'Server-side development including database and API work',
+    description: '**Server-side** development including database and API work.\n\n- Database schema design and migrations\n- REST API implementation and documentation\n- Authentication and session management',
     color: '#FFFFFF',
     items: [
       'i-b2c3d4e5-f6a7-4901-bcde-f12345678901',
@@ -100,7 +101,7 @@ export const workspaces: Record<string, Workspace> = {
   },
   'w-3c4d5e6f-7a8b-4012-8def-123456789012': {
     name: 'DevOps',
-    description: 'Deployment, infrastructure, and CI/CD pipeline tasks',
+    description: '**Deployment**, infrastructure, and CI/CD pipeline tasks.\n\n- Staging and production environment provisioning\n- Automated build and deploy pipelines\n- Monitoring and incident response',
     color: '#1ABC9C',
     items: [
       'i-f6a7b8c9-d0e1-4345-8abc-456789012345',
@@ -108,11 +109,11 @@ export const workspaces: Record<string, Workspace> = {
   },
   'w-4d5e6f7a-8b9c-4123-8efa-234567890123': {
     name: 'Quality Assurance',
-    description: 'Testing, code review, and documentation tasks',
+    description: '**Testing**, code review, and documentation tasks.\n\n- Unit and integration test coverage\n- End-to-end test scenarios\n- API documentation and review',
     color: '#2ECC71',
     items: [
       'i-d4e5f6a7-b8c9-4123-8efa-234567890123',
       'i-e5f6a7b8-c9d0-4234-8fab-345678901234',
     ],
   },
-};
+}

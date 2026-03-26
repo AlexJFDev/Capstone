@@ -4,96 +4,108 @@ import { MSEC_IN_DAY, type DateRange } from '@/utils/dates'
 // === TYPES ===
 
 /**
+ * Interval for the vertical lines on a roadmap
+ */
+export type RoadmapInterval = 'day' | 'week' | 'month'
+
+/**
  * Describes the current zoom / display scale of the roadmap timeline.
  *
  * @property pixelsPerDay   How many SVG pixels represent one calendar day.
  *                          Higher values zoom in; lower values zoom out.
  * @property headerLabel    Function that formats a Date for display in the (external)
- *                          timeline header row. Unused inside this component.
+ *                          timeline header row.
  * @property gridInterval   Intended granularity of the header labels ('day' | 'week' | 'month').
- *                          Unused inside this component — grid lines are always drawn weekly.
+ *
  */
 export interface RoadmapScale {
   pixelsPerDay: number
   headerLabel: (date: Date) => string
-  gridInterval: 'day' | 'week' | 'month'
+  gridInterval: RoadmapInterval
+}
+
+// === HELPERS ===
+
+/** Advances a date in-place by one interval step. */
+function advanceByInterval(date: Date, gridInterval: RoadmapInterval): void {
+  if (gridInterval === 'day') date.setDate(date.getDate() + 1)
+  else if (gridInterval === 'week') date.setDate(date.getDate() + 7)
+  else date.setMonth(date.getMonth() + 1)
 }
 
 // === FUNCTIONS ===
 
 /**
- * Derives the overall timeline window from the earliest startDate and latest endDate
- * across all visible items. Both boundaries are then snapped to Sunday midnight so the
- * week columns align perfectly with the grid lines.
- * 
- * @param items 
- * @returns 
+ * Snaps a date back to the start of its interval boundary:
+ * midnight for 'day', the preceding Sunday for 'week', the 1st of the month for 'month'.
  */
-export function computeDateRange(items: Item[]): DateRange {
-  if (items.length === 0) return { start: new Date(0), end: new Date(0) }
-  // Find the first start date and last end date in the item list
+export function snapIntervalStart(date: Date, gridInterval: RoadmapInterval): Date {
+  const d = new Date(date)
+  if (gridInterval === 'week') d.setDate(d.getDate() - d.getDay())
+  else if (gridInterval === 'month') d.setDate(1)
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+/**
+ * Snaps a date forward to the next interval boundary:
+ * the following midnight for 'day', the following Sunday for 'week', the 1st of the next month for 'month'.
+ */
+export function snapIntervalEnd(date: Date, gridInterval: RoadmapInterval): Date {
+  const d = new Date(date)
+  if (gridInterval === 'day') {
+    d.setDate(d.getDate() + 1)
+  } else if (gridInterval === 'week') {
+    const daysUntilSunday = (7 - d.getDay()) % 7
+    d.setDate(d.getDate() + (daysUntilSunday || 7))
+  } else {
+    d.setMonth(d.getMonth() + 1, 1)
+  }
+  d.setHours(0, 0, 0, 0)
+  return d
+}
+
+/**
+ * Derives the overall timeline window from the earliest startDate and latest endDate
+ * across all visible items. Boundaries are snapped to the interval via snapIntervalStart/End.
+ */
+export function computeDateRange(items: Item[], scale: RoadmapScale): DateRange {
+  if (items.length === 0) return { 
+    start: snapIntervalStart(new Date(), scale.gridInterval), 
+    end: snapIntervalEnd(new Date(), scale.gridInterval)
+  }
   let min = Infinity
   let max = -Infinity
   items.forEach((item) => {
     min = Math.min(item.startDate.getTime(), min)
     max = Math.max(item.endDate.getTime(), max)
   })
-  // Range start is the Sunday before the first item start date
-  const start = new Date(min)
-  start.setDate(start.getDate() - start.getDay())
-  start.setHours(0, 0, 0, 0)
-  // Range end is the Sunday after the final item end date
-  const end = new Date(max)
-  const daysUntilSunday = (7 - end.getDay()) % 7
-  end.setDate(end.getDate() + (daysUntilSunday || 7))
-  end.setHours(0, 0, 0, 0)
-
-  return { start, end }
+  return {
+    start: snapIntervalStart(new Date(min), scale.gridInterval),
+    end: snapIntervalEnd(new Date(max), scale.gridInterval),
+  }
 }
 
 /**
- * Computes the number of days in a DateRange
- * @param range
- * @returns 
+ * Computes the number of days in a DateRange.
  */
 export function computeDaysInRange(range: DateRange): number {
   return Math.round((range.end.getTime() - range.start.getTime()) / MSEC_IN_DAY)
 }
 
 /**
- * Computes the start date of each week in a DateRange
- * @param range 
- * @returns 
+ * Computes all interval boundary dates needed to cover both the date range and the SVG
+ * pixel width. Combines the previous computeStartsInRange + extendIntervalStarts into
+ * a single pass using advanceByInterval.
  */
-export function computeStartsInRange(range: DateRange): Date[] {
-  const weeks: Date[] = []
+export function computeIntervalStarts(range: DateRange, svgWidth: number, scale: RoadmapScale): Date[] {
+  const starts: Date[] = []
   const cur = new Date(range.start)
-  while (cur.getTime() < range.end.getTime()) {
-    weeks.push(new Date(cur))
-    cur.setDate(cur.getDate() + 7)
+  while (cur.getTime() < range.end.getTime() || xForDate(cur, range, scale) < svgWidth) {
+    starts.push(new Date(cur))
+    advanceByInterval(cur, scale.gridInterval)
   }
-  return weeks
-}
-
-/**
- * Extends a week-starts array beyond the date range to cover a given SVG pixel width.
- * Appends additional weekly dates until the next week would start past svgWidth.
- *
- * @param weekStarts  Output of computeStartsInRange — the baseline week boundaries.
- * @param svgWidth    The target pixel width that grid lines must cover.
- * @param range       The date range used to convert dates to x-coordinates.
- * @param pixelsPerDay  Zoom level; must match the value used to compute svgWidth.
- */
-export function extendWeekStarts(weekStarts: Date[], svgWidth: number, range: DateRange, pixelsPerDay: number): Date[] {
-  if (weekStarts.length === 0) return weekStarts
-  const result = [...weekStarts]
-  const next = new Date(result[result.length - 1]!)
-  next.setDate(next.getDate() + 7)
-  while (xForDate(next, range, pixelsPerDay) < svgWidth) {
-    result.push(new Date(next))
-    next.setDate(next.getDate() + 7)
-  }
-  return result
+  return starts
 }
 
 /**
@@ -104,7 +116,7 @@ export function extendWeekStarts(weekStarts: Date[], svgWidth: number, range: Da
  * @param date  The date to convert.
  * @returns     Pixel offset from the left edge of the SVG.
  */
-export function xForDate(date: Date, range: DateRange, pixelsPerDay: number): number {
+export function xForDate(date: Date, range: DateRange, scale: RoadmapScale): number {
   const days = (date.getTime() - range.start.getTime()) / MSEC_IN_DAY
-  return days * pixelsPerDay
+  return days * scale.pixelsPerDay
 }

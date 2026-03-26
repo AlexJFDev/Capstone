@@ -4,11 +4,11 @@ import { LIST_BORDER_COLOR, LIST_WIDTH_PX, PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SE
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
-import { constructEmptyWorkspace } from '@/types'
+import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
-import type { RoadmapScale } from './roadmap-utils'
 
 const props = defineProps<{
   workspaceId: string,
@@ -16,14 +16,33 @@ const props = defineProps<{
 
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
+const itemsStore = useItemsStore()
 
 const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
 
-const scale: RoadmapScale = {
-  pixelsPerDay: 30,
-  headerLabel: (date: Date) => date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-  gridInterval: 'week',
-}
+const {
+  roadmapListWidth: listWidth,
+  roadmapListWidthPx: listWidthPx,
+  sortOption,
+  sortDirection,
+} = storeToRefs(userInterface)
+
+const sortedItemIds = computed(() => {
+  const ids = [...workspace.value.items]
+  if (sortOption.value === 'custom') return ids
+
+  return ids.toSorted((a, b) => {
+    let comparison = 0
+    if (sortOption.value === 'name') {
+      comparison = itemsStore.getName(a).localeCompare(itemsStore.getName(b))
+    } else if (sortOption.value === 'startDate') {
+      comparison = itemsStore.getStartDate(a).getTime() - itemsStore.getStartDate(b).getTime()
+    } else if (sortOption.value === 'endDate') {
+      comparison = itemsStore.getEndDate(a).getTime() - itemsStore.getEndDate(b).getTime()
+    }
+    return sortDirection.value === 'asc' ? comparison : -comparison
+  })
+})
 
 function addItem(itemId: string) {
   workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
@@ -79,16 +98,16 @@ onUnmounted(() => {
             </template>
           </AddItemMenu>
         </div>
-        <RoadmapHeader :itemIds="workspace.items" :scale="scale" />
+        <RoadmapHeader :item-ids="sortedItemIds" />
       </div>
 
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :workspace-id="workspaceId" />
+        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :itemIds="workspace.items" :scale="scale" />
+        <RoadmapChart class="chart" :item-ids="sortedItemIds" />
       </div>
     </div>
   </div>
@@ -130,7 +149,7 @@ onUnmounted(() => {
       z-index: 1;
 
       .list-header {
-        width: v-bind(LIST_WIDTH_PX);
+        width: v-bind(listWidthPx);
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
         position: sticky;
         left: 0;
@@ -143,7 +162,7 @@ onUnmounted(() => {
         }
 
         .add-button {
-          width: v-bind(LIST_WIDTH_PX);
+          width: v-bind(listWidthPx);
           height: v-bind(ROW_HEIGHT_PX);
           border-radius: 0;
         }
@@ -157,11 +176,9 @@ onUnmounted(() => {
 
       .item-list {
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-
-        position: sticky;
-        left: 0;
       }
     }
+
   }
 }
 </style>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { dateToShortISOString } from '@/utils/dates'
-import { useInterfaceStore } from '@/stores/interface';
-import { endDateAfterStart, required, validDate } from '@/utils/validation';
+import { makeDateRange, type DateRange } from '@/utils/dates'
+import { useInterfaceStore } from '@/stores/interface'
+import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
+import DateRangePicker from '../DateRangePicker.vue'
 
 // External State
 const model = defineModel<boolean>()
@@ -25,27 +26,32 @@ const editingItem = computed(
 
 // Draft State
 const draft = ref<Item>(constructEmptyItem())
-const startDateDraft = ref('')
-const endDateDraft = ref('')
-const changesMade = computed(() => !areItemsEqual(draft.value, editingItem.value))
+const original = ref<Item>(constructEmptyItem())
+const dateRangeDraft = ref<DateRange>(makeDateRange())
+const changesMade = computed(() => !areItemsEqual(draft.value, original.value))
 
 // Draft Management
 function setDraft(item: Item) {
+  original.value = item
   draft.value = { ...item }
-  startDateDraft.value = dateToShortISOString(item.startDate)
-  endDateDraft.value = dateToShortISOString(item.endDate)
+  dateRangeDraft.value = {
+    start: item.startDate,
+    end: item.endDate
+  }
 }
 
-watch(model, isOpen => {
+watch(model, async isOpen => {
   if (isOpen) {
-    setDraft(editingItem.value)
-  } else {
+    setDraft(isEditing.value ? editingItem.value : constructEmptyItem())
+    await nextTick()
     formRef.value?.resetValidation()
   }
 })
 
-watch(startDateDraft, date => draft.value.startDate = new Date(date))
-watch(endDateDraft, date => draft.value.endDate = new Date(date))
+watch(dateRangeDraft, dateRange => {
+  draft.value.startDate = dateRange.start
+  draft.value.endDate = dateRange.end
+})
 
 // Action Functions
 async function save() {
@@ -79,18 +85,17 @@ async function deleteItem() {
 // Validation
 const formRef = useTemplateRef('formRef')
 const nameRules = [ required ]
-const startDateRules = [ validDate ]
-const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) ]
+const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
 
 </script>
 
 <template>
   <v-navigation-drawer
     :model-value="model"
-    @update:model-value="val => { if (!val) cancel() }"
     temporary
     location="right"
     width="500"
+    @update:model-value="val => { if (!val) cancel() }"
   >
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
@@ -121,7 +126,8 @@ const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) 
             variant="outlined"
             density="compact"
             rows="3"
-            hide-details="auto"
+            hint="Markdown is supported"
+            persistent-hint
           />
         </v-card-text>
       </v-card>
@@ -132,23 +138,9 @@ const endDateRules = [ validDate, endDateAfterStart(() => startDateDraft.value) 
             <v-card-title class="text-subtitle-2">Schedule</v-card-title>
             <v-divider />
             <v-card-text class="d-flex flex-column ga-2">
-              <v-text-field
-                v-model="startDateDraft"
-                label="Start date"
-                type="date"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-                :rules="startDateRules"
-              />
-              <v-text-field
-                v-model="endDateDraft"
-                label="End date"
-                type="date"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-                :rules="endDateRules"
+              <DateRangePicker 
+                v-model="dateRangeDraft"
+                :rules="dateRangeRules"
               />
             </v-card-text>
           </v-card>

@@ -20,7 +20,7 @@ const router = createRouter({
       name: 'items',
       component: () => import('../views/ItemsView.vue'),
     },
-    ...(import.meta.env.DEV ? [{
+    ...(import.meta.env.DEV || import.meta.env.MODE === 'preview' ? [{
       path: '/test',
       name: 'test',
       component: () => import('../views/TestView.vue'),

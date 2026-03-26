@@ -1,13 +1,18 @@
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item, Workspace } from '@/types'
 import { toRaw } from 'vue'
+import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
+import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/components/roadmap/constants'
 
 /**
  * Application-level settings persisted across sessions.
  * Stored as a single record in the `settings` object store under the key `"app"`.
  */
 export interface AppSettings {
-  lastViewedWorkspaceId: string | null
+  favoriteWorkspaceId: string | null
+  pixelsPerDay: number
+  gridInterval: RoadmapInterval
+  roadmapListWidth: number
 }
 
 /**
@@ -116,12 +121,21 @@ export async function getSettings(): Promise<AppSettings | undefined> {
   return db.get('settings', 'app')
 }
 
+export function makeDefaultSettings(): AppSettings {
+  return {
+    favoriteWorkspaceId: null,
+    pixelsPerDay: DEFAULT_PIXELS_PER_DAY,
+    gridInterval: DEFAULT_INTERVAL,
+    roadmapListWidth: DEFAULT_LIST_WIDTH
+  }
+}
+
 /**
  * Merges the provided partial settings into the existing settings record.
  * If no settings record exists yet, it is initialized with default values.
  */
 export async function putSettings(settings: Partial<AppSettings>): Promise<void> {
   const db = await getDatabase()
-  const current = (await db.get('settings', 'app')) ?? { lastViewedWorkspaceId: null }
+  const current = (await db.get('settings', 'app')) ?? makeDefaultSettings()
   await db.put('settings', { ...current, ...settings }, 'app')
 }

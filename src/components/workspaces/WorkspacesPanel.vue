@@ -1,14 +1,21 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import WorkspaceCard from './WorkspaceCard.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
-defineProps<{
+const props = defineProps<{
   workspaceIds: Array<string>
 }>()
 
 const model = defineModel<boolean>()
 
 const userInterface = useInterfaceStore()
+
+const sortedWorkspaceIds = computed(() => {
+  const favorite = userInterface.favoriteWorkspaceId
+  if (!favorite || !props.workspaceIds.includes(favorite)) return props.workspaceIds
+  return [favorite, ...props.workspaceIds.filter(id => id !== favorite)]
+})
 
 function addWorkspace() {
   userInterface.openWorkspaceCreator()
@@ -30,9 +37,9 @@ function addWorkspace() {
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
       <WorkspaceCard
-        v-for="workspaceId in workspaceIds"
+        v-for="workspaceId in sortedWorkspaceIds"
         :key="workspaceId"
-        :workspaceId="workspaceId"
+        :workspace-id="workspaceId"
       />
 
       <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">

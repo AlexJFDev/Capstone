@@ -8,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <v-row class="item-row border-b ma-0" align="center">
+  <v-row class="item-row border-b ma-0 align-center">
     <v-col cols="1" class="d-flex justify-center">
       <ColorSwatch :color="item.color" />
     </v-col>

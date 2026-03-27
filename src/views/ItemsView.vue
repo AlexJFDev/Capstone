@@ -11,7 +11,7 @@ const itemsStore = useItemsStore()
       <div class="view-header">
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-format-list-bulleted</v-icon>
-          <span class="text-h6">Items</span>
+          <span class="text-headline-small">Items</span>
         </div>
       </div>
 

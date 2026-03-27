@@ -40,7 +40,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
   <v-main style="height: 100vh; overflow: hidden;">
     <div v-if="!activeWorkspace" class="empty-state">
       <v-icon size="48" color="medium-emphasis">mdi-view-dashboard-outline</v-icon>
-      <p class="text-h6 text-medium-emphasis">No workspaces yet</p>
+      <p class="text-headline-small text-medium-emphasis">No workspaces yet</p>
       <v-btn variant="tonal" prepend-icon="mdi-plus" @click="userInterface.openWorkspaceCreator()">
         New workspace
       </v-btn>
@@ -50,7 +50,7 @@ const workspaceName = computed(() => activeWorkspace.value ?
       <div class="view-header">
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-chart-gantt</v-icon>
-          <span class="text-h6">{{ workspaceName }}</span>
+          <span class="text-headline-small">{{ workspaceName }}</span>
         </div>
         <div class="d-flex">
           <div class="d-flex align-center ga-2">

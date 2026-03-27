@@ -3,6 +3,7 @@ import type { Workspace } from "@/types"
 import type { Ref } from "vue"
 import { useItemsStore } from "../items"
 
+// oxlint-disable-next-line max-lines-per-function
 export function useWorkspacesMembership(
   workspaces: Ref<Record<string, Workspace>>,
   getWorkspace: (id: string) => Workspace,

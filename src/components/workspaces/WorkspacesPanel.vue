@@ -26,6 +26,7 @@ function addWorkspace() {
   <v-navigation-drawer
     v-model="model"
     temporary
+    touchless
     width="500"
   >
     <!-- HEADER -->

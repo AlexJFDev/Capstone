@@ -37,6 +37,7 @@ const workspaceIds = computed(() =>
     v-if="item"
     v-model="model"
     temporary
+    touchless
     location="right"
     width="500"
   >

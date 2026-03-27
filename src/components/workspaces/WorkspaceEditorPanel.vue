@@ -94,6 +94,7 @@ const nameRules = [ required ]
   <v-navigation-drawer
     :model-value="model"
     temporary
+    touchless
     width="500"
     @update:model-value="val => { if (!val) cancel() }"
   >

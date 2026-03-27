@@ -152,6 +152,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
   <v-navigation-drawer
     :model-value="model"
     temporary
+    touchless
     location="right"
     width="500"
     @update:model-value="val => { if (!val) cancel() }"

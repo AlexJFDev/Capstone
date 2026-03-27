@@ -45,12 +45,12 @@ const sortedItemIds = computed(() => {
 })
 
 function addItem(itemId: string) {
-  workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
+  workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
 async function newItem() {
   const itemId = await userInterface.openItemCreator()
-  if (itemId) workspacesStore.updateWorkspace(props.workspaceId, { items: [...workspace.value.items, itemId] })
+  if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
 </script>

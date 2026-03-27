@@ -245,7 +245,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
           <v-autocomplete
             v-if="availableWorkspaces.length > 0"
             v-model="workspaceToAdd"
-            label="Add to workspace"
+            label="Add Workspace"
             :items="availableWorkspaces"
             item-title="name"
             item-value="id"

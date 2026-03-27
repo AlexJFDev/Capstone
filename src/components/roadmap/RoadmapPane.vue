@@ -3,7 +3,7 @@ import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
@@ -53,6 +53,8 @@ async function newItem() {
   if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
+const hoveredItemId = ref<string | null>(null)
+
 </script>
 
 <template>
@@ -75,10 +77,10 @@ async function newItem() {
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
+        <RoadmapItemList v-model:hovered-item-id="hoveredItemId" class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart class="chart" :item-ids="sortedItemIds" />
+        <RoadmapChart v-model:hovered-item-id="hoveredItemId" class="chart" :item-ids="sortedItemIds" />
       </div>
     </div>
   </div>

@@ -32,6 +32,7 @@ async function reset() {
   <v-navigation-drawer
     v-model="model"
     temporary
+    touchless
     location="right"
     width="400"
   >

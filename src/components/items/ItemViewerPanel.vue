@@ -26,7 +26,8 @@ const item = computed(
   <v-navigation-drawer
     v-if="item"
     v-model="model"
-    temporary 
+    temporary
+    touchless
     location="right"
     width="500"
   >

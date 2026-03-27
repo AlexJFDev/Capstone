@@ -41,6 +41,11 @@ import RoadmapBar from './RoadmapBar.vue'
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
   itemIds: string[]
+  hoveredItemId: string | null
+}>()
+
+const emit = defineEmits<{
+  'update:hoveredItemId': [id: string | null]
 }>()
 
 const itemsStore = useItemsStore()
@@ -114,10 +119,22 @@ const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWid
 
       <!-- Row hover backgrounds -->
       <rect
-        v-for="(_, index) in rowCount"
-        :key="`bg-${index}`"
+        v-for="(itemId, index) in itemIds"
+        :key="`bg-${itemId}`"
         x="0"
         :y="index * ROW_HEIGHT"
+        :width="svgWidth"
+        :height="ROW_HEIGHT"
+        :class="{ 'row-bg': true, 'row-hovered': itemId === hoveredItemId }"
+        @mouseenter="emit('update:hoveredItemId', itemId)"
+        @mouseleave="emit('update:hoveredItemId', null)"
+      />
+      <!-- Empty-state background row (no hover) -->
+      <rect
+        v-if="itemIds.length === 0"
+        key="bg-empty"
+        x="0"
+        y="0"
         :width="svgWidth"
         :height="ROW_HEIGHT"
         class="row-bg"
@@ -160,7 +177,8 @@ svg {
 .row-bg {
   fill: transparent;
 
-  &:hover {
+  &:hover,
+  &.row-hovered {
     fill: rgba(0, 0, 0, 0.04);
   }
 }

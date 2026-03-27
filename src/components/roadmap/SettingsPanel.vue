@@ -46,12 +46,12 @@ async function reset() {
     <div class="pa-3 d-flex flex-column ga-3">
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Timeline</v-card-title>
+        <v-card-title class="text-label-large">Timeline</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-4">
 
           <div>
-            <div class="text-caption text-medium-emphasis mb-1">Grid interval</div>
+            <div class="text-body-small text-medium-emphasis mb-1">Grid interval</div>
             <v-btn-toggle
               :model-value="userInterface.roadmapScale.gridInterval"
               mandatory
@@ -72,8 +72,8 @@ async function reset() {
 
           <div>
             <div class="d-flex justify-space-between">
-              <span class="text-caption text-medium-emphasis">Zoom</span>
-              <span class="text-caption text-medium-emphasis">{{ userInterface.roadmapScale.pixelsPerDay }}px / day</span>
+              <span class="text-body-small text-medium-emphasis">Zoom</span>
+              <span class="text-body-small text-medium-emphasis">{{ userInterface.roadmapScale.pixelsPerDay }}px / day</span>
             </div>
             <v-slider
               :model-value="userInterface.roadmapScale.pixelsPerDay"
@@ -89,13 +89,13 @@ async function reset() {
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Layout</v-card-title>
+        <v-card-title class="text-label-large">Layout</v-card-title>
         <v-divider />
         <v-card-text>
           <div>
             <div class="d-flex justify-space-between">
-              <span class="text-caption text-medium-emphasis">Item list width</span>
-              <span class="text-caption text-medium-emphasis">{{ userInterface.roadmapListWidth }}px</span>
+              <span class="text-body-small text-medium-emphasis">Item list width</span>
+              <span class="text-body-small text-medium-emphasis">{{ userInterface.roadmapListWidth }}px</span>
             </div>
             <v-slider
               :model-value="userInterface.roadmapListWidth"

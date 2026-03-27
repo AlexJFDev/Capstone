@@ -49,7 +49,7 @@ const availableItems = computed(() =>
       </v-list-item>
 
       <v-list-item v-if="availableItems.length === 0" disabled>
-        <v-list-item-title class="text-medium-emphasis text-caption">All items are already added</v-list-item-title>
+        <v-list-item-title class="text-medium-emphasis text-body-small">All items are already added</v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>

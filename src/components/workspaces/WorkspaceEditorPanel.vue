@@ -109,7 +109,7 @@ const nameRules = [ required ]
     <v-form ref="formRef" class="pa-3 d-flex flex-column ga-3">
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Details</v-card-title>
+        <v-card-title class="text-label-large">Details</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
           <v-text-field
@@ -133,7 +133,7 @@ const nameRules = [ required ]
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Appearance</v-card-title>
+        <v-card-title class="text-label-large">Appearance</v-card-title>
         <v-divider />
         <v-card-text>
           <v-text-field
@@ -148,7 +148,7 @@ const nameRules = [ required ]
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Items</v-card-title>
+        <v-card-title class="text-label-large">Items</v-card-title>
         <v-divider />
         <v-card-text>
           <ItemList :model-value="draft.items" edit @remove-item="remove" @add-item="addItem" @new-item="newItem"></ItemList>

@@ -16,7 +16,7 @@ const formatted = computed(() => formatDate(props.date, props.style))
 <template>
   <div class="d-flex align-center ga-1">
     <v-icon size="small">mdi-calendar</v-icon>
-    <span class="text-body-2">{{ formatted }}</span>
+    <span class="text-body-medium">{{ formatted }}</span>
   </div>
 </template>
 

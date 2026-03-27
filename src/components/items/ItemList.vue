@@ -39,8 +39,8 @@ const viewLess = () => { expanded.value = false }
 <template>
   <div class="item-list bg-white text-black rounded-lg border">
 
-    <v-row v-if="model.length === 0" class="ma-0" align="center">
-      <v-col class="pa-2 text-center text-caption text-medium-emphasis">
+    <v-row v-if="model.length === 0" class="ma-0 align-center">
+      <v-col class="pa-2 text-center text-body-small text-medium-emphasis">
         No items
       </v-col>
     </v-row>
@@ -48,9 +48,8 @@ const viewLess = () => { expanded.value = false }
     <v-row
       v-for="(itemId, index) in visibleItems"
       :key="itemId"
-      class="ma-0"
+      class="ma-0 align-center"
       :class="{ 'border-b': edit || index < visibleItems.length - 1 || hasMore || expanded, 'item-row': !edit }"
-      align="center"
       @click="!edit && interfaceStore.openItemViewer(itemId)"
     >
       <v-col cols="1" class="d-flex justify-center">
@@ -70,37 +69,37 @@ const viewLess = () => { expanded.value = false }
       </v-col>
     </v-row>
 
-    <v-row v-if="hasMore" class="ma-0 add-row" align="center" @click="viewMore">
+    <v-row v-if="hasMore" class="ma-0 add-row align-center" @click="viewMore">
       <v-col cols="1" class="d-flex justify-center">
         <div class="add-swatch d-flex align-center justify-center">
           <v-icon size="8">mdi-chevron-down</v-icon>
         </div>
       </v-col>
-      <v-col class="pa-0 text-caption text-medium-emphasis">
+      <v-col class="pa-0 text-body-small text-medium-emphasis">
         View {{ model.length - props.maxItems }} more
       </v-col>
     </v-row>
 
-    <v-row v-if="expanded" class="ma-0 add-row" align="center" @click="viewLess">
+    <v-row v-if="expanded" class="ma-0 add-row align-center" @click="viewLess">
       <v-col cols="1" class="d-flex justify-center">
         <div class="add-swatch d-flex align-center justify-center">
           <v-icon size="8">mdi-chevron-up</v-icon>
         </div>
       </v-col>
-      <v-col class="pa-0 text-caption text-medium-emphasis">
+      <v-col class="pa-0 text-body-small text-medium-emphasis">
         Show less
       </v-col>
     </v-row>
 
     <AddItemMenu v-if="edit" :excluded-item-ids="model" @add-item="emit('addItem', $event)" @new-item="emit('newItem')">
       <template #default="menuProps">
-        <v-row class="ma-0 add-row" align="center" v-bind="menuProps">
+        <v-row class="ma-0 add-row align-center" v-bind="menuProps">
           <v-col cols="1" class="d-flex justify-center">
             <div class="add-swatch d-flex align-center justify-center">
               <v-icon size="8">mdi-plus</v-icon>
             </div>
           </v-col>
-          <v-col class="pa-0 text-caption text-medium-emphasis">
+          <v-col class="pa-0 text-body-small text-medium-emphasis">
             Add item
           </v-col>
         </v-row>

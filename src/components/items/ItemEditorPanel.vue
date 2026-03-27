@@ -169,7 +169,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
     <v-form ref="formRef" class="pa-3 d-flex flex-column ga-3">
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Details</v-card-title>
+        <v-card-title class="text-label-large">Details</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
           <v-text-field
@@ -192,10 +192,10 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
         </v-card-text>
       </v-card>
 
-      <v-row no-gutters class="ga-3">
+      <v-row gap="3">
         <v-col cols="4">
           <v-card variant="outlined">
-            <v-card-title class="text-subtitle-2">Schedule</v-card-title>
+            <v-card-title class="text-label-large">Schedule</v-card-title>
             <v-divider />
             <v-card-text class="d-flex flex-column ga-2">
               <DateRangePicker
@@ -207,7 +207,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
         </v-col>
         <v-col>
           <v-card variant="outlined" height="100%">
-            <v-card-title class="text-subtitle-2">Appearance</v-card-title>
+            <v-card-title class="text-label-large">Appearance</v-card-title>
             <v-divider />
             <v-card-text>
               <v-text-field
@@ -224,7 +224,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
       </v-row>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
+        <v-card-title class="text-label-large">Workspaces</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
           <div class="d-flex flex-wrap ga-1">
@@ -239,7 +239,7 @@ const dateRangeRules = [ endDateAfterStart, rangeDatesValid ]
             >
               {{ workspacesStore.getWorkspaceName(wid) }}
             </v-chip>
-            <span v-if="workspaceDraft.length === 0" class="text-body-2 text-medium-emphasis">
+            <span v-if="workspaceDraft.length === 0" class="text-body-medium text-medium-emphasis">
               Not in any workspaces
             </span>
           </div>

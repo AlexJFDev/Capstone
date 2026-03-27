@@ -65,6 +65,11 @@ Details in [`linting-proposal.md`](linting-proposal.md).
 Adopting proposal A. The addition of additional packages to run linting automatically seems unnecessary. It is a good habit for developers to run linting on a regular basis. Automated linting running with a GitHub action will be enough.
 I will also adopt the recommendations about lint rule changes.
 
+## Vuetify
+
+Details in [`docs/vuetify-upgrade-evaluation.md`](docs/vuetify-upgrade-evaluation.md).
+For now I will make the minimal changes to upgrade to Vuetify 4. I will evaluate use cases for other Vuetify features in a later issue.
+
 ## E2E Testing
 
 Details in [`e2e-testing-proposal.md`](e2e-testing-proposal.md).

@@ -8,6 +8,31 @@ export function useWorkspacesMembership(
   getWorkspace: (id: string) => Workspace,
   validateWorkspaceExists: (id: string) => void
 ) {
+  function moveItem(workspaceId: string, itemId: string, amount: number) {
+    validateWorkspaceExists(workspaceId)
+
+    const itemsStore = useItemsStore()
+    itemsStore.validateItemExists(itemId)
+
+    const items = workspaces.value[workspaceId]!.items
+    const index = items.indexOf(itemId)
+    if (index === -1) {
+      throw new Error(`Item "${itemId}" not found in workspace "${workspaceId}"`)
+    }
+
+    const newIndex = index + amount
+    if (newIndex < 0) {
+      throw new Error(`Cannot move item before the start of the list`)
+    }
+    if (newIndex >= items.length) {
+      throw new Error(`Cannot move item past the end of the list`)
+    }
+
+    items.splice(index, 1)
+    items.splice(newIndex, 0, itemId)
+    putWorkspace(workspaceId, getWorkspace(workspaceId))
+  }
+
   function addItemToWorkspace(itemId: string, workspaceId: string) {
     const itemsStore = useItemsStore()
 
@@ -37,5 +62,5 @@ export function useWorkspacesMembership(
     putWorkspace(workspaceId, getWorkspace(workspaceId))
   }
 
-  return { addItemToWorkspace, removeItemFromWorkspace }
+  return { moveItem, addItemToWorkspace, removeItemFromWorkspace }
 }

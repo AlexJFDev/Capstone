@@ -5,7 +5,6 @@ import { useWorkspacesInitialization } from "./initialization"
 import { useWorkspacesValidation } from "./validation"
 import { useWorkspacesAccessors } from "./accessors"
 import { useWorkspacesMutations } from "./mutations"
-import { useWorkspacesItemManagement } from "./item-management"
 import { useWorkspacesMembership } from "./workspace-membership"
 
 export const useWorkspacesStore = defineStore('workspaces', () => {
@@ -18,9 +17,7 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   const { getWorkspace, getWorkspaceName } = useWorkspacesAccessors(workspaces, validateWorkspaceExists)
   const { addWorkspace, updateWorkspace, deleteWorkspace } =
     useWorkspacesMutations(workspaces, getWorkspace, validateWorkspaceExists)
-  const { moveItem } =
-    useWorkspacesItemManagement(workspaces, getWorkspace, validateWorkspaceExists)
-  const { addItemToWorkspace, removeItemFromWorkspace } =
+  const { moveItem, addItemToWorkspace, removeItemFromWorkspace } =
     useWorkspacesMembership(workspaces, getWorkspace, validateWorkspaceExists)
 
   return {

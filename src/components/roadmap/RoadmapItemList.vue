@@ -10,6 +10,11 @@ const props = defineProps<{
   workspaceId: string
   listWidth: number
   itemIds: string[]
+  hoveredItemId: string | null
+}>()
+
+const emit = defineEmits<{
+  'update:hoveredItemId': [id: string | null]
 }>()
 
 const listWidthPx = computed(() => `${props.listWidth}px`)
@@ -86,7 +91,9 @@ function startDrag(event: MouseEvent, itemId: string) {
       v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
-      :class="{ 'drag-target': itemId === draggingItemId }"
+      :class="{ 'drag-target': itemId === draggingItemId, 'row-hovered': itemId === hoveredItemId }"
+      @mouseenter="emit('update:hoveredItemId', itemId)"
+      @mouseleave="emit('update:hoveredItemId', null)"
     >
       <template v-if="itemId !== draggingItemId">
         <div
@@ -224,7 +231,10 @@ function startDrag(event: MouseEvent, itemId: string) {
     }
   }
 
-  &:hover {
+  &:hover,
+  &.row-hovered {
+    background-color: rgba(0, 0, 0, 0.04);
+
     .move-buttons,
     .drag-bar,
     .settings-button {

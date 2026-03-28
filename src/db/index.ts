@@ -3,6 +3,7 @@ import type { Item, Workspace } from '@/types'
 import { toRaw } from 'vue'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
 import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY } from '@/components/roadmap/constants'
+import { broadcastChange } from './sync'
 
 /**
  * Application-level settings persisted across sessions.
@@ -67,12 +68,14 @@ export async function getAllItems(): Promise<Record<string, Item>> {
 export async function putItem(id: string, item: Item): Promise<void> {
   const db = await getDatabase()
   await db.put('items', toRaw(item), id)
+  broadcastChange()
 }
 
 /** Removes an item from the store by ID. */
 export async function removeItem(id: string): Promise<void> {
   const db = await getDatabase()
   await db.delete('items', id)
+  broadcastChange()
 }
 
 // === Workspaces ===
@@ -92,12 +95,14 @@ export async function getAllWorkspaces(): Promise<Record<string, Workspace>> {
 export async function putWorkspace(id: string, workspace: Workspace): Promise<void> {
   const db = await getDatabase()
   await db.put('workspaces', toRaw(workspace), id)
+  broadcastChange()
 }
 
 /** Removes a workspace from the store by ID. */
 export async function removeWorkspace(id: string): Promise<void> {
   const db = await getDatabase()
   await db.delete('workspaces', id)
+  broadcastChange()
 }
 
 // === Clear ===
@@ -138,4 +143,5 @@ export async function putSettings(settings: Partial<AppSettings>): Promise<void>
   const db = await getDatabase()
   const current = (await db.get('settings', 'app')) ?? makeDefaultSettings()
   await db.put('settings', { ...current, ...settings }, 'app')
+  broadcastChange()
 }

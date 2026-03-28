@@ -4,8 +4,7 @@ import type { Ref } from "vue"
 
 export function useItemsInitialization(items: Ref<Record<string, Item>>) {
   async function initializeItems() {
-    const storedItems = await getAllItems()
-    Object.entries(storedItems).forEach(([id, item]) => items.value[id] = item)
+    items.value = await getAllItems()
   }
 
   return { initializeItems }

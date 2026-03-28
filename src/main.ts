@@ -15,11 +15,22 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)
 
+const workspacesStore = useWorkspacesStore()
+const itemsStore = useItemsStore()
+
 await Promise.all([
-  useWorkspacesStore().initializeWorkspaces(),
-  useItemsStore().initializeItems(),
+  workspacesStore.initializeWorkspaces(),
+  itemsStore.initializeItems(),
   useInterfaceStore().initializeInterface()
 ])
+
+for (const workspaceId of workspacesStore.workspaceIds) {
+  const workspace = workspacesStore.getWorkspace(workspaceId)
+  const validItems = workspace.items.filter(id => itemsStore.doesItemExist(id))
+  if (validItems.length !== workspace.items.length) {
+    workspacesStore.updateWorkspace(workspaceId, { items: validItems })
+  }
+}
 
 app.use(router)
 app.mount('#app')

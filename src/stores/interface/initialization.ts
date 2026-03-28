@@ -1,4 +1,4 @@
-import { getSettings, makeDefaultSettings, putSettings } from "@/db"
+import { getSettings, makeDefaultSettings, putSettings, type AppSettings } from "@/db"
 import type { RoadmapInterval } from "@/components/roadmap/roadmap-utils"
 import type { Ref } from "vue"
 
@@ -22,5 +22,12 @@ export function useInterfaceInitialization(
     await putSettings({ favoriteWorkspaceId: id })
   }
 
-  return { initializeInterface, setFavoriteWorkspace }
+  function applyExternalSettings(settings: AppSettings) {
+    favoriteWorkspaceId.value = settings.favoriteWorkspaceId
+    pixelsPerDay.value = settings.pixelsPerDay
+    gridInterval.value = settings.gridInterval
+    roadmapListWidth.value = settings.roadmapListWidth
+  }
+
+  return { initializeInterface, setFavoriteWorkspace, applyExternalSettings }
 }

@@ -20,6 +20,14 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
   const { moveItem, addItemToWorkspace, removeItemFromWorkspace } =
     useWorkspacesMembership(workspaces, getWorkspace, validateWorkspaceExists)
 
+  function applyExternalPut(id: string, workspace: Workspace) {
+    workspaces.value[id] = workspace
+  }
+
+  function applyExternalRemove(id: string) {
+    delete workspaces.value[id]
+  }
+
   return {
     workspaceIds,
     hasWorkspaces,
@@ -33,6 +41,8 @@ export const useWorkspacesStore = defineStore('workspaces', () => {
     deleteWorkspace,
     addItemToWorkspace,
     moveItem,
-    removeItemFromWorkspace
+    removeItemFromWorkspace,
+    applyExternalPut,
+    applyExternalRemove
   }
 })

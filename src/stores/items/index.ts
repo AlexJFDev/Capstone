@@ -17,6 +17,14 @@ export const useItemsStore = defineStore('items', () => {
   const { addItem, updateItem, deleteItem } =
     useItemsMutations(items, getItem, validateItemExists, getStartDate, getEndDate)
 
+  function applyExternalPut(id: string, item: Item) {
+    items.value[id] = item
+  }
+
+  function applyExternalRemove(id: string) {
+    delete items.value[id]
+  }
+
   return {
     itemIds,
     initializeItems,
@@ -30,6 +38,8 @@ export const useItemsStore = defineStore('items', () => {
     updateItem,
     doesItemExist,
     validateItemExists,
-    deleteItem
+    deleteItem,
+    applyExternalPut,
+    applyExternalRemove
   }
 })

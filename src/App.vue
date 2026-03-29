@@ -18,7 +18,7 @@ const workspacesStore = useWorkspacesStore()
   <v-app>
     <v-app-bar elevation="0" border="b">
       <template #prepend>
-        <v-avatar image="/Chronicle/favicon.svg" size="32" rounded="0" class="ml-2" />
+        <v-img src="/Chronicle/favicon.svg" width="32" height="32" class="ml-2" />
       </template>
       <v-app-bar-title>Chronicle</v-app-bar-title>
       <template #append>

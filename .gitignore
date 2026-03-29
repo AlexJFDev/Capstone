@@ -44,3 +44,6 @@ playwright-report/
 
 # Claude Code
 .claude/
+
+# Other
+.env

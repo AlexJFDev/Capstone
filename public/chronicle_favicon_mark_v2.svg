@@ -1,4 +1,4 @@
-<svg width="100%" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
 <defs>
   
 </defs>
@@ -10,7 +10,24 @@
 <!-- Gap on right: from -40° to +40° (80° gap) -->
 <!-- Start: 285 + 120·cos(40°) = 285+91.9=377, 240 + 120·sin(40°) = 240+77.1=317 -->
 <!-- End:   285 + 120·cos(-40°)= 377,            240 + 120·sin(-40°)= 240-77.1=163 -->
-<path stroke-width="26" stroke-linecap="round" d="M 377,317 A 120,120 0 1 0 377,163" style="fill:none;stroke:rgb(15, 110, 86);color:rgb(0, 0, 0);stroke-width:26px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<path 
+  stroke-width="26"
+  stroke-linecap="round" 
+  d="
+    M 377,317
+    A 120,120 0 1 0 377,163
+  "
+  style="
+    fill:none;
+    stroke:rgb(15, 110, 86);
+    color:rgb(0, 0, 0);
+    stroke-width:26px;
+    stroke-linecap:round;
+    stroke-linejoin:miter;
+    opacity:1;
+    start;dominant-baseline:auto
+  "
+/>
 
 <!-- Bars start just past the arc end caps, aligned right of centre -->
 <!-- Gap centre x = 377 + small offset, gap centre y = 240 -->

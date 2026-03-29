@@ -23,16 +23,17 @@ const svgHeight = ROW_HEIGHT * 2
 
 const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
 const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
-
 </script>
 
 <template>
   <div ref="root" class="roadmap-header">
-    <svg
-      :width="svgWidth"
-      :height="svgHeight"
-    >
-      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
+    <svg :width="svgWidth" :height="svgHeight">
+      <SvgVerticalGridLines
+        :interval-starts="intervalStarts"
+        :date-range="dateRange"
+        :scale="scale"
+        :height="svgHeight"
+      />
       <text
         v-for="week in intervalStarts"
         :key="week.getTime()"
@@ -41,12 +42,7 @@ const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWid
       >
         {{ scale.headerLabel(week) }}
       </text>
-      <text
-        v-if="showTodayLine"
-        :x="todayX + 4"
-        :y="svgHeight - 5"
-        :fill="TODAY_LINE_COLOR"
-      >
+      <text v-if="showTodayLine" :x="todayX + 4" :y="svgHeight - 5" :fill="TODAY_LINE_COLOR">
         Today
       </text>
     </svg>

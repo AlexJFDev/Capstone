@@ -16,22 +16,21 @@ const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 
 const headers = [
-  { key: 'color',       title: '',             sortable: false, width: '40px' },
-  { key: 'name',        title: 'Name',         sortable: true  },
-  { key: 'description', title: 'Description',  sortable: false },
-  { key: 'startDate',   title: 'Start',        sortable: true  },
-  { key: 'endDate',     title: 'End',          sortable: true  },
-  { key: 'workspaces',  title: 'Workspaces',   sortable: false },
-  { key: 'actions',     title: '',             sortable: false, width: '40px' },
+  { key: 'color', title: '', sortable: false, width: '40px' },
+  { key: 'name', title: 'Name', sortable: true },
+  { key: 'description', title: 'Description', sortable: false },
+  { key: 'startDate', title: 'Start', sortable: true },
+  { key: 'endDate', title: 'End', sortable: true },
+  { key: 'workspaces', title: 'Workspaces', sortable: false },
+  { key: 'actions', title: '', sortable: false, width: '40px' },
 ]
 
-const rows = computed(() =>
-  props.itemIds.map(id => ({ id, ...itemsStore.getItem(id) }))
-)
+const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getItem(id) })))
 
 function workspaceIdsFor(itemId: string) {
-  return workspacesStore.workspaceIds
-    .filter(wid => workspacesStore.getWorkspace(wid).items.includes(itemId))
+  return workspacesStore.workspaceIds.filter((wid) =>
+    workspacesStore.getWorkspace(wid).items.includes(itemId),
+  )
 }
 
 function createItem() {
@@ -40,14 +39,24 @@ function createItem() {
 
 async function deleteItem(id: string) {
   const name = itemsStore.getName(id)
-  if (await userInterface.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)) {
+  if (
+    await userInterface.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)
+  ) {
     itemsStore.deleteItem(id)
   }
 }
 </script>
 
 <template>
-  <v-data-table :headers="headers" :items="rows" item-value="id" class="clickable-rows" @click:row="(_: Event, { item }: { item: { id: string } }) => userInterface.openItemViewer(item.id)">
+  <v-data-table
+    :headers="headers"
+    :items="rows"
+    item-value="id"
+    class="clickable-rows"
+    @click:row="
+      (_: Event, { item }: { item: { id: string } }) => userInterface.openItemViewer(item.id)
+    "
+  >
     <template #top>
       <v-btn prepend-icon="mdi-plus" variant="text" @click="createItem">New item</v-btn>
     </template>
@@ -64,15 +73,30 @@ async function deleteItem(id: string) {
       <DateChip :date="item.endDate" />
     </template>
     <template #item.workspaces="{ item }">
-      <WorkspaceChip v-for="wid in workspaceIdsFor(item.id)" :key="wid" :workspace-id="wid" class="mr-1" />
+      <WorkspaceChip
+        v-for="wid in workspaceIdsFor(item.id)"
+        :key="wid"
+        :workspace-id="wid"
+        class="mr-1"
+      />
     </template>
     <template #item.actions="{ item }">
       <v-menu>
         <template #activator="{ props: menuProps }">
-          <v-btn icon="mdi-dots-vertical" v-bind="menuProps" variant="text" density="compact" @click.stop />
+          <v-btn
+            icon="mdi-dots-vertical"
+            v-bind="menuProps"
+            variant="text"
+            density="compact"
+            @click.stop
+          />
         </template>
         <v-list density="compact">
-          <v-list-item title="Edit" prepend-icon="mdi-pencil" @click="userInterface.openItemEditor(item.id)" />
+          <v-list-item
+            title="Edit"
+            prepend-icon="mdi-pencil"
+            @click="userInterface.openItemEditor(item.id)"
+          />
           <v-list-item title="Delete" prepend-icon="mdi-delete" @click="deleteItem(item.id)" />
         </v-list>
       </v-menu>

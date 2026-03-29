@@ -17,13 +17,12 @@ import { useContainerWidth } from './useContainerWidth'
  * @param itemIds - Reactive list of item IDs whose date range defines the timeline window.
  * @param rootRef - Template ref for the component's root element; used to locate the scroll container.
  */
-export function useRoadmapTimeline(
-  itemIds: Ref<string[]>,
-  rootRef: Ref<HTMLElement | null>,
-) {
+export function useRoadmapTimeline(itemIds: Ref<string[]>, rootRef: Ref<HTMLElement | null>) {
   const itemsStore = useItemsStore()
   const interfaceStore = useInterfaceStore()
-  const containerWidth = useContainerWidth(() => rootRef.value?.parentElement?.parentElement ?? null)
+  const containerWidth = useContainerWidth(
+    () => rootRef.value?.parentElement?.parentElement ?? null,
+  )
 
   const items = computed(() => itemsStore.getItems(itemIds.value))
   const dateRange = computed(() => computeDateRange(items.value, interfaceStore.roadmapScale))

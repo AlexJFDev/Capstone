@@ -29,16 +29,20 @@ function startEdgeDrag(event: MouseEvent, side: 'start' | 'end') {
   const item = itemsStore.getItem(props.id)
   const originalDate = side === 'start' ? new Date(item.startDate) : new Date(item.endDate)
 
-  startDragGesture(event, (e) => {
-    const deltaDays = Math.round((e.clientX - startX) / scale.value.pixelsPerDay)
-    const newDate = new Date(originalDate.getTime() + deltaDays * MSEC_IN_DAY)
-    const current = itemsStore.getItem(props.id)
-    if (side === 'start') {
-      if (newDate < current.endDate) itemsStore.updateItem(props.id, { startDate: newDate })
-    } else if (newDate > current.startDate) {
-      itemsStore.updateItem(props.id, { endDate: newDate })
-    }
-  }, { cursor: 'ew-resize' })
+  startDragGesture(
+    event,
+    (e) => {
+      const deltaDays = Math.round((e.clientX - startX) / scale.value.pixelsPerDay)
+      const newDate = new Date(originalDate.getTime() + deltaDays * MSEC_IN_DAY)
+      const current = itemsStore.getItem(props.id)
+      if (side === 'start') {
+        if (newDate < current.endDate) itemsStore.updateItem(props.id, { startDate: newDate })
+      } else if (newDate > current.startDate) {
+        itemsStore.updateItem(props.id, { endDate: newDate })
+      }
+    },
+    { cursor: 'ew-resize' },
+  )
 }
 </script>
 

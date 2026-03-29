@@ -1,4 +1,4 @@
-import { ref } from "vue"
+import { ref } from 'vue'
 
 export function useInterfaceItemPanels() {
   const itemViewerOpen = ref(false)
@@ -28,7 +28,7 @@ export function useInterfaceItemPanels() {
   function openItemCreator(): Promise<string | null> {
     editingItemId.value = ''
     itemEditorOpen.value = true
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       itemCreatorResolve = resolve
     })
   }
@@ -47,6 +47,6 @@ export function useInterfaceItemPanels() {
     openItemEditor,
     closeItemEditor,
     openItemCreator,
-    resolveItemCreator
+    resolveItemCreator,
   }
 }

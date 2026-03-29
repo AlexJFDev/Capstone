@@ -18,26 +18,27 @@ const sortOptions: { label: string; value: SortOption }[] = [
 ]
 
 // Handle workspace being deleted while viewing
-watch(() => workspacesStore.workspaceIds, (ids) => {
-  const routeId = route.params.workspaceId as string
-  if (routeId && !ids.includes(routeId)) {
-    router.push({ name: 'home' })
-  }
-})
+watch(
+  () => workspacesStore.workspaceIds,
+  (ids) => {
+    const routeId = route.params.workspaceId as string
+    if (routeId && !ids.includes(routeId)) {
+      router.push({ name: 'home' })
+    }
+  },
+)
 
 const workspaceParam = computed(() => route.params.workspaceId as string)
 
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
 
-const workspaceName = computed(() => activeWorkspace.value ?
-    workspacesStore.getWorkspaceName(activeWorkspace.value) :
-    ''
+const workspaceName = computed(() =>
+  activeWorkspace.value ? workspacesStore.getWorkspaceName(activeWorkspace.value) : '',
 )
-
 </script>
 
 <template>
-  <v-main style="height: 100vh; overflow: hidden;">
+  <v-main style="height: 100vh; overflow: hidden">
     <div v-if="!activeWorkspace" class="empty-state">
       <v-icon size="48" color="medium-emphasis">mdi-view-dashboard-outline</v-icon>
       <p class="text-h6 text-medium-emphasis">No workspaces yet</p>
@@ -62,11 +63,11 @@ const workspaceName = computed(() => activeWorkspace.value ?
               density="compact"
               hide-details
               variant="outlined"
-              style="min-width: 160px;"
+              style="min-width: 160px"
               label="Sort"
               @update:model-value="userInterface.setSortOption($event)"
             />
-            <v-tooltip 
+            <v-tooltip
               :text="userInterface.sortDirectionIsAscending ? 'Ascending' : 'Descending'"
               location="bottom"
             >
@@ -74,10 +75,18 @@ const workspaceName = computed(() => activeWorkspace.value ?
                 <v-btn
                   v-bind="props"
                   :style="userInterface.sortingIsCustom ? 'visibility: hidden' : ''"
-                  :icon="userInterface.sortDirectionIsAscending ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+                  :icon="
+                    userInterface.sortDirectionIsAscending
+                      ? 'mdi-sort-ascending'
+                      : 'mdi-sort-descending'
+                  "
                   flat
                   density="compact"
-                  @click="userInterface.setSortDirection(userInterface.sortDirectionIsAscending ? 'desc' : 'asc')"
+                  @click="
+                    userInterface.setSortDirection(
+                      userInterface.sortDirectionIsAscending ? 'desc' : 'asc',
+                    )
+                  "
                 />
               </template>
             </v-tooltip>

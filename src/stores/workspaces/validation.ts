@@ -1,5 +1,5 @@
-import { isValidWorkspaceId, type Workspace } from "@/types"
-import type { Ref } from "vue"
+import { isValidWorkspaceId, type Workspace } from '@/types'
+import type { Ref } from 'vue'
 
 export function useWorkspacesValidation(workspaces: Ref<Record<string, Workspace>>) {
   function doesWorkspaceExist(id: string): boolean {

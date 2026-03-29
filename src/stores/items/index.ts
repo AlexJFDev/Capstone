@@ -1,10 +1,10 @@
-import { defineStore } from "pinia"
-import { computed, ref } from "vue"
-import type { Item } from "@/types"
-import { useItemsInitialization } from "./initialization"
-import { useItemsValidation } from "./validation"
-import { useItemsAccessors } from "./accessors"
-import { useItemsMutations } from "./mutations"
+import { defineStore } from 'pinia'
+import { computed, ref } from 'vue'
+import type { Item } from '@/types'
+import { useItemsInitialization } from './initialization'
+import { useItemsValidation } from './validation'
+import { useItemsAccessors } from './accessors'
+import { useItemsMutations } from './mutations'
 
 export const useItemsStore = defineStore('items', () => {
   const items = ref<Record<string, Item>>({})
@@ -12,10 +12,17 @@ export const useItemsStore = defineStore('items', () => {
 
   const { doesItemExist, validateItemExists } = useItemsValidation(items)
   const { initializeItems } = useItemsInitialization(items)
-  const { getItem, getItems, getName, getColor, getStartDate, getEndDate } =
-    useItemsAccessors(items, validateItemExists)
-  const { addItem, updateItem, deleteItem } =
-    useItemsMutations(items, getItem, validateItemExists, getStartDate, getEndDate)
+  const { getItem, getItems, getName, getColor, getStartDate, getEndDate } = useItemsAccessors(
+    items,
+    validateItemExists,
+  )
+  const { addItem, updateItem, deleteItem } = useItemsMutations(
+    items,
+    getItem,
+    validateItemExists,
+    getStartDate,
+    getEndDate,
+  )
 
   return {
     itemIds,
@@ -30,6 +37,6 @@ export const useItemsStore = defineStore('items', () => {
     updateItem,
     doesItemExist,
     validateItemExists,
-    deleteItem
+    deleteItem,
   }
 })

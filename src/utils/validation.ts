@@ -2,8 +2,7 @@ import { isValidColor } from './colors'
 import { isValidRange, type DateRange } from './dates'
 
 /** Vuetify rule: field must not be empty. */
-export const required = (value: string) =>
-  value.trim().length > 0 || 'Required'
+export const required = (value: string) => value.trim().length > 0 || 'Required'
 
 /** Vuetify rule: value must be a valid 6-digit hex color. */
 export const validColor = (value: string) =>
@@ -26,6 +25,6 @@ export const rangeDatesValid = (range: DateRange) => {
   if (!startValid && !endValid) return 'Both dates are invalid'
   if (!startValid) return 'Start date is invalid'
   if (!endValid) return 'End date is invalid'
-  
+
   return true
 }

@@ -1,14 +1,16 @@
 function randomColor(): string {
-  return `#${Math.floor(Math.random() * 0xFFFFFF).toString(16).padStart(6, '0')}`
+  return `#${Math.floor(Math.random() * 0xffffff)
+    .toString(16)
+    .padStart(6, '0')}`
 }
 
 // === WORKSPACES ===
 export interface Workspace {
-  name: string;
-  description: string;
-  color: string;
+  name: string
+  description: string
+  color: string
   // List of item IDs
-  items: string[];
+  items: string[]
 }
 
 export function constructEmptyWorkspace(): Workspace {
@@ -16,7 +18,7 @@ export function constructEmptyWorkspace(): Workspace {
     name: '',
     description: '',
     color: randomColor(),
-    items: []
+    items: [],
   }
 }
 
@@ -32,7 +34,8 @@ export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
   )
 }
 
-const WORKSPACE_UUID_REGEX = /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const WORKSPACE_UUID_REGEX =
+  /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidWorkspaceId(id: string): boolean {
   return WORKSPACE_UUID_REGEX.test(id)
 }
@@ -48,11 +51,11 @@ export function generateWorkspaceId() {
 
 // === ITEMS ===
 export interface Item {
-  name: string;
-  description: string;
-  startDate: Date;
-  endDate: Date;
-  color: string;
+  name: string
+  description: string
+  startDate: Date
+  endDate: Date
+  color: string
 }
 
 export function constructEmptyItem(): Item {

@@ -11,7 +11,9 @@ const interfaceStore = useInterfaceStore()
       <v-card-actions>
         <v-spacer />
         <v-btn variant="text" @click="interfaceStore.resolveSpeedbump(false)">Cancel</v-btn>
-        <v-btn variant="text" color="error" @click="interfaceStore.resolveSpeedbump(true)">Confirm</v-btn>
+        <v-btn variant="text" color="error" @click="interfaceStore.resolveSpeedbump(true)"
+          >Confirm</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>

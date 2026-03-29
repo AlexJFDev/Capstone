@@ -14,7 +14,7 @@ const userInterface = useInterfaceStore()
 const sortedWorkspaceIds = computed(() => {
   const favorite = userInterface.favoriteWorkspaceId
   if (!favorite || !props.workspaceIds.includes(favorite)) return props.workspaceIds
-  return [favorite, ...props.workspaceIds.filter(id => id !== favorite)]
+  return [favorite, ...props.workspaceIds.filter((id) => id !== favorite)]
 })
 
 function addWorkspace() {
@@ -23,12 +23,7 @@ function addWorkspace() {
 </script>
 
 <template>
-  <v-navigation-drawer
-    v-model="model"
-    temporary
-    touchless
-    width="500"
-  >
+  <v-navigation-drawer v-model="model" temporary touchless width="500">
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
@@ -49,7 +44,6 @@ function addWorkspace() {
           New workspace
         </v-card-title>
       </v-card>
-
     </div>
   </v-navigation-drawer>
 </template>

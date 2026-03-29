@@ -11,7 +11,7 @@ import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
-  workspaceId: string,
+  workspaceId: string
 }>()
 
 const workspacesStore = useWorkspacesStore()
@@ -54,13 +54,11 @@ async function newItem() {
 }
 
 const hoveredItemId = ref<string | null>(null)
-
 </script>
 
 <template>
   <div class="roadmap-wrapper">
     <div class="roadmap-pane">
-
       <!-- Header -->
       <div class="header">
         <div class="list-header">
@@ -77,10 +75,20 @@ const hoveredItemId = ref<string | null>(null)
       <!-- Body: Items List & Roadmap Render -->
       <div class="body">
         <!-- Item List -->
-        <RoadmapItemList v-model:hovered-item-id="hoveredItemId" class="item-list" :workspace-id="workspaceId" :list-width="listWidth" :item-ids="sortedItemIds" />
+        <RoadmapItemList
+          v-model:hovered-item-id="hoveredItemId"
+          class="item-list"
+          :workspace-id="workspaceId"
+          :list-width="listWidth"
+          :item-ids="sortedItemIds"
+        />
 
         <!-- Roadmap Chart -->
-        <RoadmapChart v-model:hovered-item-id="hoveredItemId" class="chart" :item-ids="sortedItemIds" />
+        <RoadmapChart
+          v-model:hovered-item-id="hoveredItemId"
+          class="chart"
+          :item-ids="sortedItemIds"
+        />
       </div>
     </div>
   </div>
@@ -139,7 +147,6 @@ const hoveredItemId = ref<string | null>(null)
         border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
       }
     }
-
   }
 }
 </style>

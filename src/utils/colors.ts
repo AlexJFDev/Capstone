@@ -1,4 +1,3 @@
-
 // === VALIDATION ===
 
 const COLOR_REGEX = /^#[0-9a-f]{6}$/i
@@ -22,7 +21,7 @@ export function validateColor(color: string) {
  * Before measuring how bright a color actually is, we need to undo that stretching.
  * This converts a 0-1 channel value from "how it looks on screen" to "how much light it actually emits".
  */
-const toLinear = (c: number) => c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4
+const toLinear = (c: number) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
 
 /**
  * Returns true if the given hex color is light enough to risk blending into

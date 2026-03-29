@@ -20,7 +20,7 @@ const workspacesStore = useWorkspacesStore()
 await Promise.all([
   workspacesStore.initializeWorkspaces(),
   useItemsStore().initializeItems(),
-  useInterfaceStore().initializeInterface()
+  useInterfaceStore().initializeInterface(),
 ])
 
 workspacesStore.scrubAllWorkspaces()

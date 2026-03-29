@@ -1,9 +1,9 @@
-import type { Workspace } from "@/types"
-import type { Ref } from "vue"
+import type { Workspace } from '@/types'
+import type { Ref } from 'vue'
 
 export function useWorkspacesAccessors(
   workspaces: Ref<Record<string, Workspace>>,
-  validateWorkspaceExists: (id: string) => void
+  validateWorkspaceExists: (id: string) => void,
 ) {
   function getWorkspace(id: string): Workspace {
     validateWorkspaceExists(id)

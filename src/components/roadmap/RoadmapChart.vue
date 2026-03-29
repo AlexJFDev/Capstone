@@ -83,23 +83,23 @@ const bars = computed(() =>
       const width = xForDate(item.endDate, dateRange.value, scale.value) - x
       return { id, x, width, color: item.color, y: index * ROW_HEIGHT }
     })
-    .filter(b => b !== null)
+    .filter((b) => b !== null),
 )
 
 const todayX = computed(() => xForDate(new Date(), dateRange.value, scale.value))
 const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWidth.value)
-
 </script>
 
 <template>
   <div ref="root" class="roadmap-chart">
-    <svg
-      :width="svgWidth"
-      :height="svgHeight"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg :width="svgWidth" :height="svgHeight" xmlns="http://www.w3.org/2000/svg">
       <!-- Vertical grid lines at each interval boundary -->
-      <SvgVerticalGridLines :interval-starts="intervalStarts" :date-range="dateRange" :scale="scale" :height="svgHeight" />
+      <SvgVerticalGridLines
+        :interval-starts="intervalStarts"
+        :date-range="dateRange"
+        :scale="scale"
+        :height="svgHeight"
+      />
 
       <!--
         Horizontal row dividers matching the item list borders.
@@ -182,5 +182,4 @@ svg {
     fill: rgba(0, 0, 0, 0.04);
   }
 }
-
 </style>

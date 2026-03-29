@@ -1,11 +1,10 @@
-
 // === TYPES ===
 
 export type DateStyle = 'long-american' | 'short-american' | 'long-european' | 'short-european'
 
 /**
  * Simple range of dates.
- * 
+ *
  * @property start   The Beginning of the range
  * @property end     The end of the range
  */
@@ -17,7 +16,7 @@ export interface DateRange {
 export function makeDateRange(): DateRange {
   return {
     start: new Date(),
-    end: new Date()
+    end: new Date(),
   }
 }
 
@@ -25,11 +24,7 @@ export function makeDateRange(): DateRange {
 /** True if the end date is after the start date. */
 export function isValidRange(range: DateRange): boolean {
   const { start, end } = range
-  return (
-    isNaN(start.getTime()) ||
-    isNaN(end.getTime()) ||
-    end >= start
-  )
+  return isNaN(start.getTime()) || isNaN(end.getTime()) || end >= start
 }
 /** Throws if range is invalid. */
 export function validateRange(range: DateRange) {
@@ -56,10 +51,14 @@ export const MSEC_IN_DAY = 86400000
 function ordinalSuffix(day: number): string {
   if (day >= 11 && day <= 13) return `${day}th`
   switch (day % 10) {
-    case 1: return `${day}st`
-    case 2: return `${day}nd`
-    case 3: return `${day}rd`
-    default: return `${day}th`
+    case 1:
+      return `${day}st`
+    case 2:
+      return `${day}nd`
+    case 3:
+      return `${day}rd`
+    default:
+      return `${day}th`
   }
 }
 
@@ -75,8 +74,18 @@ export function formatDate(date: string | number | Date, style: DateStyle) {
   const day = d.getUTCDate()
 
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ]
 
   const mm = String(month + 1).padStart(2, '0')

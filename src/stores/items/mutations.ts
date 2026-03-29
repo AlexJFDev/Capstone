@@ -1,9 +1,9 @@
-import { putItem, removeItem } from "@/db"
-import { validateItemId, type Item } from "@/types"
-import { validateColor } from "@/utils/colors"
-import { validateRange } from "@/utils/dates"
-import type { Ref } from "vue"
-import { useWorkspacesStore } from "../workspaces"
+import { putItem, removeItem } from '@/db'
+import { validateItemId, type Item } from '@/types'
+import { validateColor } from '@/utils/colors'
+import { validateRange } from '@/utils/dates'
+import type { Ref } from 'vue'
+import { useWorkspacesStore } from '../workspaces'
 
 export function useItemsMutations(
   items: Ref<Record<string, Item>>,

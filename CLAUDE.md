@@ -10,7 +10,7 @@ Instructions for Claude agents.
 - When making a pull request, rename the branch if necessary. Branches should be named as follows:
 
 ```text
-{type (bug, enhancement, cleanup, etc)}-{issue number}-{name}
+{type (bug, enhancement, cleanup, etc)}-{issue number}/{name}
 ```
 
 - When making a pull request that targets a particular issue, put closes #{issue number} in the BODY of the PR so GitHub can connect the issue to the PR. Do not put the issue number in the PR title because GitHub cannot detect that.

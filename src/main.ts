@@ -15,11 +15,15 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)
 
+const workspacesStore = useWorkspacesStore()
+
 await Promise.all([
-  useWorkspacesStore().initializeWorkspaces(),
+  workspacesStore.initializeWorkspaces(),
   useItemsStore().initializeItems(),
   useInterfaceStore().initializeInterface()
 ])
+
+workspacesStore.scrubAllWorkspaces()
 
 app.use(router)
 app.mount('#app')

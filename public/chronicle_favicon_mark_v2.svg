@@ -15,7 +15,7 @@
   stroke-linecap="round" 
   d="
     M 377,317
-    A 120,120 0 1 0 377,163
+    A 120,120 0 1 1 377,163
   "
   style="
     fill:none;

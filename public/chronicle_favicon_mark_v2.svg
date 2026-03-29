@@ -1,0 +1,22 @@
+<svg width="100%" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  
+</defs>
+
+<!-- Total mark width: arc diameter 240 + gap ~20 + bars 110 = ~370 -->
+<!-- Centre at (340, 240). Arc left edge at 340-120=220, bars right edge at 340+65+110=515 -->
+<!-- Shift arc centre left to (290, 240) so full mark spans ~220 to 510, centred at 365 ≈ 340 -->
+<!-- Arc centred at (285, 240), radius 120 -->
+<!-- Gap on right: from -40° to +40° (80° gap) -->
+<!-- Start: 285 + 120·cos(40°) = 285+91.9=377, 240 + 120·sin(40°) = 240+77.1=317 -->
+<!-- End:   285 + 120·cos(-40°)= 377,            240 + 120·sin(-40°)= 240-77.1=163 -->
+<path stroke-width="26" stroke-linecap="round" d="M 377,317 A 120,120 0 1 0 377,163" style="fill:none;stroke:rgb(15, 110, 86);color:rgb(0, 0, 0);stroke-width:26px;stroke-linecap:round;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+<!-- Bars start just past the arc end caps, aligned right of centre -->
+<!-- Gap centre x = 377 + small offset, gap centre y = 240 -->
+<!-- Three bars, tall and prominent, starting at x=394 -->
+<rect x="394" y="204" width="100" height="20" rx="10" style="fill:rgb(15, 110, 86);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<rect x="394" y="230" width="72" height="20" rx="10" style="fill:rgb(29, 158, 117);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+<rect x="394" y="256" width="46" height="20" rx="10" style="fill:rgb(93, 202, 165);stroke:none;color:rgb(0, 0, 0);stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;opacity:1;font-family:&quot;Anthropic Sans&quot;, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, sans-serif;font-size:16px;font-weight:400;text-anchor:start;dominant-baseline:auto"/>
+
+</svg>

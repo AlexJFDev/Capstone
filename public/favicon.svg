@@ -3,15 +3,22 @@
   
 </defs>
 
-<!-- Total mark width: arc diameter 240 + gap ~20 + bars 110 = ~370 -->
-<!-- Centre at (340, 240). Arc left edge at 340-120=220, bars right edge at 340+65+110=515 -->
-<!-- Shift arc centre left to (290, 240) so full mark spans ~220 to 510, centred at 365 ≈ 340 -->
-<!-- Arc centred at (285, 240), radius 120 -->
-<!-- Gap on right: from -40° to +40° (80° gap) -->
-<!-- Start: 285 + 120·cos(40°) = 285+91.9=377, 240 + 120·sin(40°) = 240+77.1=317 -->
-<!-- End:   285 + 120·cos(-40°)= 377,            240 + 120·sin(-40°)= 240-77.1=163 -->
+<rect
+  x="192" y="166" width="320" height="64" rx="10"
+  style="
+    fill:#E74C3C;
+  "
+/>
+<rect
+  x="192" y="226" width="280" height="64" rx="10"
+  style="
+    fill:#F39C12;
+  "
+/>
+
+
 <path
-  stroke-width="72"
+  stroke-width="96"
   stroke-linecap="round"
   d="
     M 409,384
@@ -19,30 +26,15 @@
   "
   style="
     fill:none;
-    stroke:rgb(15, 110, 86);
+    stroke:#2ECC71;
   "
 />
 
-<!-- Bars start just past the arc end caps, aligned right of centre -->
-<!-- Gap centre x = 377 + small offset, gap centre y = 240 -->
-<!-- Three bars, tall and prominent, starting at x=394 -->
 <rect
-  x="224" y="184" width="256" height="52" rx="10"
+  x="192" y="286" width="240" height="64" rx="10"
   style="
-    fill:rgb(15, 110, 86);
+    fill:
+#4A90D9;
   "
 />
-<rect
-  x="224" y="232" width="192" height="52" rx="10"
-  style="
-    fill:rgb(29, 158, 117);
-  "
-/>
-<rect
-  x="224" y="280" width="128" height="52" rx="10"
-  style="
-    fill:rgb(93, 202, 165);
-  "
-/>
-
 </svg>

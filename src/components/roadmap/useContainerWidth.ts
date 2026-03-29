@@ -15,7 +15,7 @@ export function useContainerWidth(getElement: () => Element | null): Ref<number>
   onMounted(() => {
     const el = getElement()
     if (!el) return
-    resizeObserver = new ResizeObserver(entries => {
+    resizeObserver = new ResizeObserver((entries) => {
       width.value = entries[0]?.contentRect.width ?? 0
     })
     resizeObserver.observe(el)

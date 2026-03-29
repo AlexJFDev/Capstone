@@ -69,3 +69,8 @@ npm run lint
 ### Browser DevTools
 
 - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) (Chrome/Edge)
+
+### MCP Servers
+
+- GitHub MCP
+- Vuetify MCP

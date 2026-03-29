@@ -63,7 +63,7 @@ function toggleFavorite() {
 
     <v-card-text class="d-flex ga-8 flex-column">
       <MarkdownRenderer :content="workspace.description" />
-      <ItemList v-model="workspace.items"/>
+      <ItemList v-model="workspace.items" />
     </v-card-text>
   </v-card>
 </template>

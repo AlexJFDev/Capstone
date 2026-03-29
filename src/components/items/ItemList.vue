@@ -5,13 +5,16 @@ import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import AddItemMenu from './AddItemMenu.vue'
 
-const props = withDefaults(defineProps<{
-  edit?: boolean
-  maxItems?: number
-}>(), {
-  edit: false,
-  maxItems: 10,
-})
+const props = withDefaults(
+  defineProps<{
+    edit?: boolean
+    maxItems?: number
+  }>(),
+  {
+    edit: false,
+    maxItems: 10,
+  },
+)
 
 const model = defineModel<string[]>({ default: [] })
 
@@ -20,8 +23,12 @@ const interfaceStore = useInterfaceStore()
 
 const expanded = ref(false)
 
-const visibleItems = computed(() => (props.edit || expanded.value) ? model.value : model.value.slice(0, props.maxItems))
-const hasMore = computed(() => !props.edit && !expanded.value && model.value.length > props.maxItems)
+const visibleItems = computed(() =>
+  props.edit || expanded.value ? model.value : model.value.slice(0, props.maxItems),
+)
+const hasMore = computed(
+  () => !props.edit && !expanded.value && model.value.length > props.maxItems,
+)
 
 const emit = defineEmits<{
   removeItem: [itemId: string]
@@ -32,24 +39,28 @@ const emit = defineEmits<{
 function removeItem(itemId: string) {
   emit('removeItem', itemId)
 }
-const viewMore = () => { expanded.value = true }
-const viewLess = () => { expanded.value = false }
+const viewMore = () => {
+  expanded.value = true
+}
+const viewLess = () => {
+  expanded.value = false
+}
 </script>
 
 <template>
   <div class="item-list bg-white text-black rounded-lg border">
-
     <v-row v-if="model.length === 0" class="ma-0" align="center">
-      <v-col class="pa-2 text-center text-caption text-medium-emphasis">
-        No items
-      </v-col>
+      <v-col class="pa-2 text-center text-caption text-medium-emphasis"> No items </v-col>
     </v-row>
 
     <v-row
       v-for="(itemId, index) in visibleItems"
       :key="itemId"
       class="ma-0"
-      :class="{ 'border-b': edit || index < visibleItems.length - 1 || hasMore || expanded, 'item-row': !edit }"
+      :class="{
+        'border-b': edit || index < visibleItems.length - 1 || hasMore || expanded,
+        'item-row': !edit,
+      }"
       align="center"
       @click="!edit && interfaceStore.openItemViewer(itemId)"
     >
@@ -87,12 +98,15 @@ const viewLess = () => { expanded.value = false }
           <v-icon size="8">mdi-chevron-up</v-icon>
         </div>
       </v-col>
-      <v-col class="pa-0 text-caption text-medium-emphasis">
-        Show less
-      </v-col>
+      <v-col class="pa-0 text-caption text-medium-emphasis"> Show less </v-col>
     </v-row>
 
-    <AddItemMenu v-if="edit" :excluded-item-ids="model" @add-item="emit('addItem', $event)" @new-item="emit('newItem')">
+    <AddItemMenu
+      v-if="edit"
+      :excluded-item-ids="model"
+      @add-item="emit('addItem', $event)"
+      @new-item="emit('newItem')"
+    >
       <template #default="menuProps">
         <v-row class="ma-0 add-row" align="center" v-bind="menuProps">
           <v-col cols="1" class="d-flex justify-center">
@@ -100,13 +114,10 @@ const viewLess = () => { expanded.value = false }
               <v-icon size="8">mdi-plus</v-icon>
             </div>
           </v-col>
-          <v-col class="pa-0 text-caption text-medium-emphasis">
-            Add item
-          </v-col>
+          <v-col class="pa-0 text-caption text-medium-emphasis"> Add item </v-col>
         </v-row>
       </template>
     </AddItemMenu>
-
   </div>
 </template>
 

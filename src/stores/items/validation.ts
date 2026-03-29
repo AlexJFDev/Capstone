@@ -1,5 +1,5 @@
-import { isValidItemId, type Item } from "@/types"
-import type { Ref } from "vue"
+import { isValidItemId, type Item } from '@/types'
+import type { Ref } from 'vue'
 
 export function useItemsValidation(items: Ref<Record<string, Item>>) {
   function doesItemExist(id: string): boolean {

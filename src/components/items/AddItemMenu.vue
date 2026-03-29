@@ -15,7 +15,7 @@ const emit = defineEmits<{
 const itemsStore = useItemsStore()
 
 const availableItems = computed(() =>
-  itemsStore.itemIds.filter(id => !props.excludedItemIds.includes(id))
+  itemsStore.itemIds.filter((id) => !props.excludedItemIds.includes(id)),
 )
 </script>
 
@@ -37,11 +37,7 @@ const availableItems = computed(() =>
       <v-divider />
 
       <!-- Available items -->
-      <v-list-item
-        v-for="itemId in availableItems"
-        :key="itemId"
-        @click="emit('addItem', itemId)"
-      >
+      <v-list-item v-for="itemId in availableItems" :key="itemId" @click="emit('addItem', itemId)">
         <template #prepend>
           <ColorSwatch :color="itemsStore.getColor(itemId)" class="mr-3" />
         </template>
@@ -49,7 +45,9 @@ const availableItems = computed(() =>
       </v-list-item>
 
       <v-list-item v-if="availableItems.length === 0" disabled>
-        <v-list-item-title class="text-medium-emphasis text-caption">All items are already added</v-list-item-title>
+        <v-list-item-title class="text-medium-emphasis text-caption"
+          >All items are already added</v-list-item-title
+        >
       </v-list-item>
     </v-list>
   </v-menu>

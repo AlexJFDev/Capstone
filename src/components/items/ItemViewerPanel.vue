@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
+import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
 import { useItemsStore } from '@/stores/items'
+import { useWorkspacesStore } from '@/stores/workspaces'
 import { constructEmptyItem } from '@/types'
 import { computed } from 'vue'
 
@@ -12,25 +14,23 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
+const workspacesStore = useWorkspacesStore()
 
-const item = computed(
-  () => props.itemId ?
-    itemsStore.getItem(props.itemId) :
-    constructEmptyItem()
+const item = computed(() =>
+  props.itemId ? itemsStore.getItem(props.itemId) : constructEmptyItem(),
 )
 
-
+const workspaceIds = computed(() =>
+  props.itemId
+    ? workspacesStore.workspaceIds.filter((wid) =>
+        workspacesStore.getWorkspace(wid).items.includes(props.itemId!),
+      )
+    : [],
+)
 </script>
 
 <template>
-  <v-navigation-drawer
-    v-if="item"
-    v-model="model"
-    temporary 
-    location="right"
-    width="500"
-  >
-
+  <v-navigation-drawer v-if="item" v-model="model" temporary touchless location="right" width="500">
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
@@ -39,7 +39,6 @@ const item = computed(
 
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
-
       <v-card variant="outlined">
         <v-card-title class="text-subtitle-2">Details</v-card-title>
         <v-divider />
@@ -76,8 +75,17 @@ const item = computed(
         </v-col>
       </v-row>
 
+      <v-card variant="outlined">
+        <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
+        <v-divider />
+        <v-card-text class="d-flex flex-wrap ga-1">
+          <WorkspaceChip v-for="wid in workspaceIds" :key="wid" :workspace-id="wid" />
+          <span v-if="workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
+            Not in any workspaces
+          </span>
+        </v-card-text>
+      </v-card>
     </div>
-
   </v-navigation-drawer>
 </template>
 

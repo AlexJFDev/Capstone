@@ -2,15 +2,17 @@
 import { computed } from 'vue'
 import { formatDate, type DateStyle } from '@/utils/dates'
 
-const props = withDefaults(defineProps<{
-  date: string | number | Date
-  style?: DateStyle
-}>(), {
-  style: 'short-american'
-})
+const props = withDefaults(
+  defineProps<{
+    date: string | number | Date
+    style?: DateStyle
+  }>(),
+  {
+    style: 'short-american',
+  },
+)
 
 const formatted = computed(() => formatDate(props.date, props.style))
-
 </script>
 
 <template>
@@ -20,5 +22,4 @@ const formatted = computed(() => formatDate(props.date, props.style))
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

@@ -70,10 +70,11 @@ export function snapIntervalEnd(date: Date, gridInterval: RoadmapInterval): Date
  * across all visible items. Boundaries are snapped to the interval via snapIntervalStart/End.
  */
 export function computeDateRange(items: Item[], scale: RoadmapScale): DateRange {
-  if (items.length === 0) return { 
-    start: snapIntervalStart(new Date(), scale.gridInterval), 
-    end: snapIntervalEnd(new Date(), scale.gridInterval)
-  }
+  if (items.length === 0)
+    return {
+      start: snapIntervalStart(new Date(), scale.gridInterval),
+      end: snapIntervalEnd(new Date(), scale.gridInterval),
+    }
   let min = Infinity
   let max = -Infinity
   items.forEach((item) => {
@@ -98,7 +99,11 @@ export function computeDaysInRange(range: DateRange): number {
  * pixel width. Combines the previous computeStartsInRange + extendIntervalStarts into
  * a single pass using advanceByInterval.
  */
-export function computeIntervalStarts(range: DateRange, svgWidth: number, scale: RoadmapScale): Date[] {
+export function computeIntervalStarts(
+  range: DateRange,
+  svgWidth: number,
+  scale: RoadmapScale,
+): Date[] {
   const starts: Date[] = []
   const cur = new Date(range.start)
   while (cur.getTime() < range.end.getTime() || xForDate(cur, range, scale) < svgWidth) {

@@ -1,9 +1,9 @@
-import type { Item } from "@/types"
-import type { Ref } from "vue"
+import type { Item } from '@/types'
+import type { Ref } from 'vue'
 
 export function useItemsAccessors(
   items: Ref<Record<string, Item>>,
-  validateItemExists: (id: string) => void
+  validateItemExists: (id: string) => void,
 ) {
   function getItem(id: string): Item {
     validateItemExists(id)
@@ -11,7 +11,7 @@ export function useItemsAccessors(
   }
 
   function getItems(ids: string[]): Item[] {
-    return ids.map(id => getItem(id))
+    return ids.map((id) => getItem(id))
   }
 
   function getName(id: string): string {

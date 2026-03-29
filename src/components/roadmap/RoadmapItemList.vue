@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
-import { LIST_BORDER_COLOR, MAX_LIST_WIDTH, MIN_LIST_WIDTH, ROW_HEIGHT, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
+import {
+  LIST_BORDER_COLOR,
+  MAX_LIST_WIDTH,
+  MIN_LIST_WIDTH,
+  ROW_HEIGHT,
+  ROW_HEIGHT_PX,
+  SECTION_BORDER_COLOR,
+} from './constants'
 import { computed, ref } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { startDragGesture } from './useDragGesture'
@@ -10,6 +17,11 @@ const props = defineProps<{
   workspaceId: string
   listWidth: number
   itemIds: string[]
+  hoveredItemId: string | null
+}>()
+
+const emit = defineEmits<{
+  'update:hoveredItemId': [id: string | null]
 }>()
 
 const listWidthPx = computed(() => `${props.listWidth}px`)
@@ -27,10 +39,17 @@ const ghostY = ref(0)
 function startResizeDrag(event: MouseEvent) {
   const startX = event.clientX
   const startWidth = props.listWidth
-  startDragGesture(event, (e) => {
-    const newWidth = Math.min(MAX_LIST_WIDTH, Math.max(MIN_LIST_WIDTH, startWidth + (e.clientX - startX)))
-    interfaceStore.updateRoadmapListWidth(newWidth)
-  }, { cursor: 'col-resize' })
+  startDragGesture(
+    event,
+    (e) => {
+      const newWidth = Math.min(
+        MAX_LIST_WIDTH,
+        Math.max(MIN_LIST_WIDTH, startWidth + (e.clientX - startX)),
+      )
+      interfaceStore.updateRoadmapListWidth(newWidth)
+    },
+    { cursor: 'col-resize' },
+  )
 }
 
 // Position ghost so the drag-bar icon center sits under the cursor
@@ -50,32 +69,37 @@ function startDrag(event: MouseEvent, itemId: string) {
   let startY = event.clientY
   let accumulatedDelta = 0
 
-  startDragGesture(event, (e) => {
-    ghostX.value = e.clientX
-    ghostY.value = e.clientY
+  startDragGesture(
+    event,
+    (e) => {
+      ghostX.value = e.clientX
+      ghostY.value = e.clientY
 
-    accumulatedDelta += e.clientY - startY
-    startY = e.clientY
+      accumulatedDelta += e.clientY - startY
+      startY = e.clientY
 
-    const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
-    if (steps === 0) return
+      const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
+      if (steps === 0) return
 
-    const items = workspacesStore.getWorkspace(props.workspaceId).items
-    const currentIndex = items.indexOf(itemId)
-    const newIndex = currentIndex + steps
+      const items = workspacesStore.getWorkspace(props.workspaceId).items
+      const currentIndex = items.indexOf(itemId)
+      const newIndex = currentIndex + steps
 
-    if (newIndex >= 0 && newIndex < items.length) {
-      workspacesStore.moveItem(props.workspaceId, itemId, steps)
-      accumulatedDelta -= steps * ROW_HEIGHT
-    } else {
-      accumulatedDelta = 0
-    }
-  }, {
-    cursor: 'grabbing',
-    onEnd: () => { draggingItemId.value = null },
-  })
+      if (newIndex >= 0 && newIndex < items.length) {
+        workspacesStore.moveItem(props.workspaceId, itemId, steps)
+        accumulatedDelta -= steps * ROW_HEIGHT
+      } else {
+        accumulatedDelta = 0
+      }
+    },
+    {
+      cursor: 'grabbing',
+      onEnd: () => {
+        draggingItemId.value = null
+      },
+    },
+  )
 }
-
 </script>
 
 <template>
@@ -86,19 +110,23 @@ function startDrag(event: MouseEvent, itemId: string) {
       v-for="itemId in itemIds"
       :key="itemId"
       class="item-row"
-      :class="{ 'drag-target': itemId === draggingItemId }"
+      :class="{ 'drag-target': itemId === draggingItemId, 'row-hovered': itemId === hoveredItemId }"
+      @mouseenter="emit('update:hoveredItemId', itemId)"
+      @mouseleave="emit('update:hoveredItemId', null)"
     >
       <template v-if="itemId !== draggingItemId">
         <div
           :class="{
-            'drag-bar' : true,
-            'invisible' : interfaceStore.sortOption !== 'custom'
+            'drag-bar': true,
+            invisible: interfaceStore.sortOption !== 'custom',
           }"
           @mousedown="startDrag($event, itemId)"
         >
           <v-icon>mdi-drag-horizontal</v-icon>
         </div>
-        <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">{{ itemsStore.getName(itemId) }}</div>
+        <div class="item-name" @click="interfaceStore.openItemViewer(itemId)">
+          {{ itemsStore.getName(itemId) }}
+        </div>
         <div class="settings-button" @click.stop="interfaceStore.openItemEditor(itemId)">
           <v-icon>mdi-cog</v-icon>
         </div>
@@ -224,7 +252,10 @@ function startDrag(event: MouseEvent, itemId: string) {
     }
   }
 
-  &:hover {
+  &:hover,
+  &.row-hovered {
+    background-color: rgba(0, 0, 0, 0.04);
+
     .move-buttons,
     .drag-bar,
     .settings-button {
@@ -233,9 +264,10 @@ function startDrag(event: MouseEvent, itemId: string) {
   }
 
   &.drag-target {
-    box-shadow: inset 0 2px 0 rgba(0, 0, 0, 0.35), inset 0 -2px 0 rgba(0, 0, 0, 0.35);
+    box-shadow:
+      inset 0 2px 0 rgba(0, 0, 0, 0.35),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.35);
   }
-
 }
 
 .drag-ghost {

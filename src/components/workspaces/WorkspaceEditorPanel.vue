@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { areWorkspacesEqual, constructEmptyWorkspace, generateWorkspaceId, type Workspace } from '@/types'
+import {
+  areWorkspacesEqual,
+  constructEmptyWorkspace,
+  generateWorkspaceId,
+  type Workspace,
+} from '@/types'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
@@ -17,10 +22,8 @@ const userInterface = useInterfaceStore()
 
 // Editing state
 const isEditing = computed(() => !!props.workspaceId)
-const editingWorkspace = computed(
-  () => isEditing.value ?
-    workspaceStore.getWorkspace(props.workspaceId!) :
-    constructEmptyWorkspace()
+const editingWorkspace = computed(() =>
+  isEditing.value ? workspaceStore.getWorkspace(props.workspaceId!) : constructEmptyWorkspace(),
 )
 
 // Draft state
@@ -34,7 +37,7 @@ function setDraft(workspace: Workspace) {
   draft.value = { ...workspace, items: [...workspace.items] }
 }
 
-watch(model, async isOpen => {
+watch(model, async (isOpen) => {
   if (isOpen) {
     setDraft(isEditing.value ? editingWorkspace.value : constructEmptyWorkspace())
     await nextTick()
@@ -58,13 +61,22 @@ async function save() {
 }
 
 async function cancel() {
-  if (!changesMade.value || await userInterface.confirm("You have unsaved changes. Are you sure you would like to discard them?")) {
+  if (
+    !changesMade.value ||
+    (await userInterface.confirm(
+      'You have unsaved changes. Are you sure you would like to discard them?',
+    ))
+  ) {
     userInterface.closeWorkspaceEditor()
   }
 }
 
 async function deleteWorkspace() {
-  if (await userInterface.confirm(`Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`)) {
+  if (
+    await userInterface.confirm(
+      `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
+    )
+  ) {
     workspaceStore.deleteWorkspace(props.workspaceId!)
     userInterface.closeWorkspaceEditor()
   }
@@ -86,16 +98,20 @@ async function newItem() {
 
 // Validation
 const formRef = useTemplateRef('formRef')
-const nameRules = [ required ]
-
+const nameRules = [required]
 </script>
 
 <template>
   <v-navigation-drawer
     :model-value="model"
     temporary
+    touchless
     width="500"
-    @update:model-value="val => { if (!val) cancel() }"
+    @update:model-value="
+      (val) => {
+        if (!val) cancel()
+      }
+    "
   >
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
@@ -106,7 +122,6 @@ const nameRules = [ required ]
     </v-toolbar>
 
     <v-form ref="formRef" class="pa-3 d-flex flex-column ga-3">
-
       <v-card variant="outlined">
         <v-card-title class="text-subtitle-2">Details</v-card-title>
         <v-divider />
@@ -150,10 +165,15 @@ const nameRules = [ required ]
         <v-card-title class="text-subtitle-2">Items</v-card-title>
         <v-divider />
         <v-card-text>
-          <ItemList :model-value="draft.items" edit @remove-item="remove" @add-item="addItem" @new-item="newItem"></ItemList>
+          <ItemList
+            :model-value="draft.items"
+            edit
+            @remove-item="remove"
+            @add-item="addItem"
+            @new-item="newItem"
+          ></ItemList>
         </v-card-text>
       </v-card>
-
     </v-form>
 
     <!-- FOOTER -->

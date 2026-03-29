@@ -17,6 +17,9 @@ const workspacesStore = useWorkspacesStore()
 <template>
   <v-app>
     <v-app-bar elevation="0" border="b">
+      <template #prepend>
+        <v-img src="/Chronicle/favicon.svg" width="32" height="32" class="ml-2" />
+      </template>
       <v-app-bar-title>Chronicle</v-app-bar-title>
       <template #append>
         <v-btn
@@ -45,10 +48,22 @@ const workspacesStore = useWorkspacesStore()
     </v-app-bar>
     <RouterView />
 
-    <ItemEditorPanel v-model="userInterface.itemEditorOpen" :item-id="userInterface.editingItemId" />
-    <ItemViewerPanel v-model="userInterface.itemViewerOpen" :item-id="userInterface.viewingItemId" />
-    <WorkspaceEditorPanel v-model="userInterface.workspaceEditorOpen" :workspace-id="userInterface.editingWorkspaceId" />
-    <WorkspacesPanel v-model="userInterface.workspacesOpen" :workspace-ids="workspacesStore.workspaceIds" />
+    <ItemEditorPanel
+      v-model="userInterface.itemEditorOpen"
+      :item-id="userInterface.editingItemId"
+    />
+    <ItemViewerPanel
+      v-model="userInterface.itemViewerOpen"
+      :item-id="userInterface.viewingItemId"
+    />
+    <WorkspaceEditorPanel
+      v-model="userInterface.workspaceEditorOpen"
+      :workspace-id="userInterface.editingWorkspaceId"
+    />
+    <WorkspacesPanel
+      v-model="userInterface.workspacesOpen"
+      :workspace-ids="workspacesStore.workspaceIds"
+    />
     <SettingsPanel v-model="userInterface.settingsOpen" />
     <SpeedbumpDialog />
   </v-app>

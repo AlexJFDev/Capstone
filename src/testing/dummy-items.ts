@@ -1,24 +1,27 @@
 // oxlint-disable max-lines
-import type { Item } from "@/types"
+import type { Item } from '@/types'
 
 export const items: Record<string, Item> = {
   'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890': {
     name: 'Design Homepage',
-    description: 'Create **wireframes and mockups** for the homepage layout.\n\n- Low-fidelity wireframes for desktop and mobile\n- High-fidelity mockups with final color palette\n- Handoff to development with annotated specs',
+    description:
+      'Create **wireframes and mockups** for the homepage layout.\n\n- Low-fidelity wireframes for desktop and mobile\n- High-fidelity mockups with final color palette\n- Handoff to development with annotated specs',
     startDate: new Date('2026-02-17T00:00:00Z'),
     endDate: new Date('2026-02-24T00:00:00Z'),
     color: '#4A90D9',
   },
   'i-b2c3d4e5-f6a7-4901-bcde-f12345678901': {
     name: 'Set Up Database',
-    description: 'Initialize the **database schema** and configure connections.\n\n- Define tables, indexes, and foreign key constraints\n- Set up connection pooling and environment-specific configs\n- Seed initial data for development',
+    description:
+      'Initialize the **database schema** and configure connections.\n\n- Define tables, indexes, and foreign key constraints\n- Set up connection pooling and environment-specific configs\n- Seed initial data for development',
     startDate: new Date('2026-02-18T00:00:00Z'),
     endDate: new Date('2026-02-22T00:00:00Z'),
     color: '#7B61FF',
   },
   'i-c3d4e5f6-a7b8-4012-8def-123456789012': {
     name: 'User Authentication',
-    description: 'Implement **login**, **registration**, and **session management**.\n\n- Email/password login with secure hashing (`bcrypt`)\n- JWT-based session tokens with refresh logic\n- Registration flow with email verification',
+    description:
+      'Implement **login**, **registration**, and **session management**.\n\n- Email/password login with secure hashing (`bcrypt`)\n- JWT-based session tokens with refresh logic\n- Registration flow with email verification',
     startDate: new Date('2026-02-20T00:00:00Z'),
     endDate: new Date('2026-02-27T00:00:00Z'),
     color: '#E74C3C',
@@ -32,14 +35,16 @@ export const items: Record<string, Item> = {
   },
   'i-e5f6a7b8-c9d0-4234-8fab-345678901234': {
     name: 'API Documentation',
-    description: 'Document all **REST API endpoints** with request/response examples.\n\n- Use `OpenAPI` spec format\n- Include authentication requirements and error codes',
+    description:
+      'Document all **REST API endpoints** with request/response examples.\n\n- Use `OpenAPI` spec format\n- Include authentication requirements and error codes',
     startDate: new Date('2026-02-01T00:00:00Z'),
     endDate: new Date('2026-02-09T00:00:00Z'),
     color: '#F39C12',
   },
   'i-f6a7b8c9-d0e1-4345-8abc-456789012345': {
     name: 'Deploy to Staging',
-    description: 'Configure **CI/CD pipeline** and deploy to the staging environment.\n\n- Set up automated build and test steps\n- Deploy to staging on merge to `main`\n- Run smoke tests post-deploy',
+    description:
+      'Configure **CI/CD pipeline** and deploy to the staging environment.\n\n- Set up automated build and test steps\n- Deploy to staging on merge to `main`\n- Run smoke tests post-deploy',
     startDate: new Date('2026-02-04T00:00:00Z'),
     endDate: new Date('2026-02-13T00:00:00Z'),
     color: '#1ABC9C',
@@ -102,7 +107,8 @@ export const items: Record<string, Item> = {
   },
   'i-1111aaaa-bbbb-4ccc-8ddd-eeeeeeeeee09': {
     name: 'Toast Notifications',
-    description: 'Add a **global notification system** for `success`, `warning`, and `error` messages.',
+    description:
+      'Add a **global notification system** for `success`, `warning`, and `error` messages.',
     startDate: new Date('2026-02-27T00:00:00Z'),
     endDate: new Date('2026-02-28T00:00:00Z'),
     color: '#2ECC71',

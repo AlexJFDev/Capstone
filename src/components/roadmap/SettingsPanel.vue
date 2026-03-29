@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { useInterfaceStore } from '@/stores/interface'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { DEFAULT_INTERVAL, DEFAULT_LIST_WIDTH, DEFAULT_PIXELS_PER_DAY, MAX_LIST_WIDTH, MIN_LIST_WIDTH } from '@/components/roadmap/constants'
+import {
+  DEFAULT_INTERVAL,
+  DEFAULT_LIST_WIDTH,
+  DEFAULT_PIXELS_PER_DAY,
+  MAX_LIST_WIDTH,
+  MIN_LIST_WIDTH,
+} from '@/components/roadmap/constants'
 
 const model = defineModel<boolean>()
 const userInterface = useInterfaceStore()
@@ -22,19 +28,18 @@ function updateGridInterval(value: RoadmapInterval) {
 
 async function reset() {
   if (await userInterface.confirm('Reset all settings to their defaults?')) {
-    await userInterface.updateRoadmapScale({ ...userInterface.roadmapScale, pixelsPerDay: DEFAULT_PIXELS_PER_DAY, gridInterval: DEFAULT_INTERVAL })
+    await userInterface.updateRoadmapScale({
+      ...userInterface.roadmapScale,
+      pixelsPerDay: DEFAULT_PIXELS_PER_DAY,
+      gridInterval: DEFAULT_INTERVAL,
+    })
     await userInterface.updateRoadmapListWidth(DEFAULT_LIST_WIDTH)
   }
 }
 </script>
 
 <template>
-  <v-navigation-drawer
-    v-model="model"
-    temporary
-    location="right"
-    width="400"
-  >
+  <v-navigation-drawer v-model="model" temporary touchless location="right" width="400">
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
@@ -43,12 +48,10 @@ async function reset() {
 
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
-
       <v-card variant="outlined">
         <v-card-title class="text-subtitle-2">Timeline</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-4">
-
           <div>
             <div class="text-caption text-medium-emphasis mb-1">Grid interval</div>
             <v-btn-toggle
@@ -59,11 +62,7 @@ async function reset() {
               divided
               @update:model-value="updateGridInterval"
             >
-              <v-btn
-                v-for="option in intervalOptions"
-                :key="option.value"
-                :value="option.value"
-              >
+              <v-btn v-for="option in intervalOptions" :key="option.value" :value="option.value">
                 {{ option.label }}
               </v-btn>
             </v-btn-toggle>
@@ -72,7 +71,9 @@ async function reset() {
           <div>
             <div class="d-flex justify-space-between">
               <span class="text-caption text-medium-emphasis">Zoom</span>
-              <span class="text-caption text-medium-emphasis">{{ userInterface.roadmapScale.pixelsPerDay }}px / day</span>
+              <span class="text-caption text-medium-emphasis"
+                >{{ userInterface.roadmapScale.pixelsPerDay }}px / day</span
+              >
             </div>
             <v-slider
               :model-value="userInterface.roadmapScale.pixelsPerDay"
@@ -83,7 +84,6 @@ async function reset() {
               @update:model-value="updatePixelsPerDay"
             />
           </div>
-
         </v-card-text>
       </v-card>
 
@@ -94,7 +94,9 @@ async function reset() {
           <div>
             <div class="d-flex justify-space-between">
               <span class="text-caption text-medium-emphasis">Item list width</span>
-              <span class="text-caption text-medium-emphasis">{{ userInterface.roadmapListWidth }}px</span>
+              <span class="text-caption text-medium-emphasis"
+                >{{ userInterface.roadmapListWidth }}px</span
+              >
             </div>
             <v-slider
               :model-value="userInterface.roadmapListWidth"
@@ -107,7 +109,6 @@ async function reset() {
           </div>
         </v-card-text>
       </v-card>
-
     </div>
 
     <!-- FOOTER -->
@@ -117,7 +118,6 @@ async function reset() {
         <v-btn block color="red" @click="reset">Reset to defaults</v-btn>
       </div>
     </template>
-
   </v-navigation-drawer>
 </template>
 

@@ -1,12 +1,12 @@
-import { getSettings, makeDefaultSettings, putSettings } from "@/db"
-import type { RoadmapInterval } from "@/components/roadmap/roadmap-utils"
-import type { Ref } from "vue"
+import { getSettings, makeDefaultSettings, putSettings } from '@/db'
+import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
+import type { Ref } from 'vue'
 
 export function useInterfaceInitialization(
   favoriteWorkspaceId: Ref<string | null>,
   pixelsPerDay: Ref<number>,
   gridInterval: Ref<RoadmapInterval>,
-  roadmapListWidth: Ref<number>
+  roadmapListWidth: Ref<number>,
 ) {
   async function initializeInterface() {
     const settings = (await getSettings()) || makeDefaultSettings()

@@ -1,3 +1,4 @@
+// Defines core domain types (Workspace, Item) and their factory, equality, ID validation, and generation helpers.
 function randomColor(): string {
   return `#${Math.floor(Math.random() * 0xffffff)
     .toString(16)

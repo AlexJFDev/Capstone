@@ -1,3 +1,4 @@
+<!-- Modal confirmation dialog driven by the interface store's speedbump state; resolves a promise on confirm or cancel. -->
 <script setup lang="ts">
 import { useInterfaceStore } from '@/stores/interface'
 

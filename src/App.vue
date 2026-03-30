@@ -1,3 +1,4 @@
+<!-- Root application shell: renders the app bar, router view, and all global overlay panels (editors, speedbump). -->
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
 import { useInterfaceStore } from './stores/interface'

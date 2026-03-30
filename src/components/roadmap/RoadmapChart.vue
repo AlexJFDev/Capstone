@@ -1,3 +1,4 @@
+<!-- SVG Gantt chart that renders colored bars for each item on a shared timeline with grid lines and a today marker. -->
 <script setup lang="ts">
 /**
  * RoadmapChart

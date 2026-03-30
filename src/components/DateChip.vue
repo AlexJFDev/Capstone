@@ -1,3 +1,4 @@
+<!-- Displays a formatted date alongside a calendar icon, with a configurable DateStyle. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { formatDate, type DateStyle } from '@/utils/dates'

@@ -1,3 +1,4 @@
+// Manages open/close state and editing context for the settings, workspaces, and workspace editor panels.
 import { ref } from 'vue'
 
 export function useInterfacePanels() {

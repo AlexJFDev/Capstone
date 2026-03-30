@@ -1,3 +1,4 @@
+// Provides addWorkspace, updateWorkspace, and deleteWorkspace mutations for the workspaces store, with validation and DB persistence.
 import { putWorkspace, removeWorkspace } from '@/db'
 import { validateWorkspaceId, type Workspace } from '@/types'
 import { validateColor } from '@/utils/colors'

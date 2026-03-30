@@ -1,3 +1,4 @@
+// Color validation helpers and a WCAG-based luminance check for determining whether a hex color is light or dark.
 // === VALIDATION ===
 
 const COLOR_REGEX = /^#[0-9a-f]{6}$/i

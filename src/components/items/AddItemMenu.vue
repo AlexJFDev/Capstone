@@ -1,3 +1,4 @@
+<!-- Dropdown menu for adding an existing item or creating a new one, excluding already-added item IDs. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'

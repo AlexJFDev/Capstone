@@ -1,3 +1,4 @@
+// Provides a promise-based confirm() helper that shows a blocking speedbump dialog and resolves with the user's choice.
 import { ref } from 'vue'
 
 export function useInterfaceSpeedbump() {

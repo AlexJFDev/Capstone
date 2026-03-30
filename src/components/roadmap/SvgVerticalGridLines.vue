@@ -1,3 +1,4 @@
+<!-- Renders SVG vertical lines at each interval boundary across the full height of the roadmap SVG canvas. -->
 <script setup lang="ts">
 import { type DateRange } from '@/utils/dates'
 import { xForDate, type RoadmapScale } from './roadmap-utils'

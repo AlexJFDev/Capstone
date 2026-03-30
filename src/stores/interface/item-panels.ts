@@ -1,3 +1,4 @@
+// Manages open/close state and active item ID for the item viewer, item editor, and item creator panels.
 import { ref } from 'vue'
 
 export function useInterfaceItemPanels() {

@@ -1,3 +1,4 @@
+// Provides read-only accessor functions (getItem, getName, getColor, getStartDate, getEndDate) for the items store.
 import type { Item } from '@/types'
 import type { Ref } from 'vue'
 

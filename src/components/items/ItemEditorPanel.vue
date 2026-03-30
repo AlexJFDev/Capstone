@@ -1,3 +1,4 @@
+<!-- Right-side drawer panel for creating or editing an item's details, schedule, color, and workspace memberships. -->
 <script setup lang="ts">
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'

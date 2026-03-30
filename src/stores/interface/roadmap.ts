@@ -1,3 +1,4 @@
+// Derives reactive roadmap scale and list-width state and persists updates to IndexedDB via the interface store.
 import { putSettings } from '@/db'
 import type { RoadmapInterval, RoadmapScale } from '@/components/roadmap/roadmap-utils'
 import type { Ref } from 'vue'

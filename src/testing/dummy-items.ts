@@ -1,3 +1,4 @@
+// Static fixture data: a large set of dummy Item records used for development and testing.
 // oxlint-disable max-lines
 import type { Item } from '@/types'
 

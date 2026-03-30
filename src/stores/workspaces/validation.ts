@@ -1,3 +1,4 @@
+// Provides doesWorkspaceExist and validateWorkspaceExists helpers for the workspaces store.
 import { isValidWorkspaceId, type Workspace } from '@/types'
 import type { Ref } from 'vue'
 

@@ -1,3 +1,4 @@
+// Application entry point: creates the Vue app, initializes Pinia stores from IndexedDB, and mounts to #app.
 import './assets/main.css'
 
 import { createApp } from 'vue'

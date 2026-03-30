@@ -13,3 +13,5 @@ Instructions for Claude agents.
 - Unless a pull request exclusively adds documentation, you should always include a test plan.
 - You should make pull requests as drafts.
 - If necessary, update `ARCHITECTURE.md` when making a PR.
+- When making new files in `src/` be sure to include a header comment at the top of the file explaining its purpose.
+- When modifying files in `src/` be sure to update the header comment if neccesary.

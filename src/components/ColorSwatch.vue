@@ -1,3 +1,4 @@
+<!-- Renders a small square swatch filled with the given hex color. -->
 <script setup lang="ts">
 defineProps<{
   color: string

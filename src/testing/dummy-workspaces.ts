@@ -1,3 +1,4 @@
+// Static fixture data: a set of dummy Workspace records referencing dummy items, used for development and testing.
 // oxlint-disable max-lines
 import type { Workspace } from '@/types'
 

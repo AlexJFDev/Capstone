@@ -1,3 +1,4 @@
+<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu. -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'

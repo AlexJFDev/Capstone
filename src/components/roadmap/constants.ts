@@ -1,3 +1,4 @@
+// Shared layout and styling constants for the roadmap pane, item list, and chart (dimensions, colors, defaults).
 // Shared Values
 export const ROW_HEIGHT = 30
 export const ROW_HEIGHT_PX = `${ROW_HEIGHT}px`

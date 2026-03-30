@@ -1,3 +1,4 @@
+// Composable that derives dateRange, svgWidth, and intervalStarts for roadmap SVG components based on item dates and container width.
 import { computed, type Ref } from 'vue'
 import { computeDateRange, computeDaysInRange, computeIntervalStarts } from './roadmap-utils'
 import { useItemsStore } from '@/stores/items'

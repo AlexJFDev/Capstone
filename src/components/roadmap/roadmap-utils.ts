@@ -1,3 +1,4 @@
+// Roadmap type definitions, date-range and interval computation helpers, and the xForDate coordinate conversion function.
 import type { Item } from '@/types'
 import { MSEC_IN_DAY, type DateRange } from '@/utils/dates'
 

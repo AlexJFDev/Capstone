@@ -1,3 +1,4 @@
+// Utility that attaches document-level mousemove/mouseup listeners to manage a drag gesture with cursor override and cleanup.
 /**
  * Initiates a mouse drag gesture from a mousedown event.
  *

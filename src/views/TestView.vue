@@ -1,3 +1,4 @@
+<!-- Development-only sandbox view for manually testing UI components and loading dummy data. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'

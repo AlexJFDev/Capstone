@@ -1,3 +1,4 @@
+<!-- Page view that displays the active workspace's roadmap, or an empty state when no workspaces exist. -->
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

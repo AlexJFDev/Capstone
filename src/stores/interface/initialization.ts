@@ -1,3 +1,4 @@
+// Loads persisted app settings into the interface store on startup and exposes setFavoriteWorkspace.
 import { getSettings, makeDefaultSettings, putSettings } from '@/db'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
 import type { Ref } from 'vue'

@@ -1,3 +1,4 @@
+<!-- Right-side drawer panel for viewing an item's details, schedule, color, and workspace memberships in read-only mode. -->
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'

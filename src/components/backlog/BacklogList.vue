@@ -1,3 +1,4 @@
+<!-- Sortable data table of all items with color, dates, workspace chips, and inline edit/delete actions. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'

@@ -1,3 +1,4 @@
+// Date utility types, validation helpers, formatting functions, and constants used across the application.
 // === TYPES ===
 
 export type DateStyle = 'long-american' | 'short-american' | 'long-european' | 'short-european'

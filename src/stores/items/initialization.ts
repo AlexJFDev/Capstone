@@ -1,3 +1,4 @@
+// Loads all persisted items from IndexedDB into the items store on startup.
 import { getAllItems } from '@/db'
 import type { Item } from '@/types'
 import type { Ref } from 'vue'

@@ -1,3 +1,4 @@
+// Provides doesItemExist and validateItemExists helpers for the items store.
 import { isValidItemId, type Item } from '@/types'
 import type { Ref } from 'vue'
 

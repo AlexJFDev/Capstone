@@ -1,3 +1,4 @@
+// Manages the active sort option and sort direction for item lists in the interface store.
 import { ref, computed } from 'vue'
 
 export type SortOption = 'custom' | 'startDate' | 'endDate' | 'name'

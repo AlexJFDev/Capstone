@@ -1,3 +1,4 @@
+// Pinia store for workspaces: composes validation, initialization, accessor, mutation, membership, and scrubbing sub-modules.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Workspace } from '@/types'

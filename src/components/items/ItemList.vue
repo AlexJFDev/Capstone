@@ -1,3 +1,4 @@
+<!-- Scrollable list of items with optional edit mode (reorder, remove, add) and a "view more/less" collapse. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import ColorSwatch from '@/components/ColorSwatch.vue'

@@ -1,3 +1,4 @@
+<!-- Right-side drawer for configuring roadmap display settings: grid interval, zoom level, and item list width. -->
 <script setup lang="ts">
 import { useInterfaceStore } from '@/stores/interface'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'

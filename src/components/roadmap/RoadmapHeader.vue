@@ -1,3 +1,4 @@
+<!-- SVG timeline header that draws interval labels, vertical grid lines, and a "Today" marker above the roadmap chart. -->
 <script setup lang="ts">
 import { computed, toRef, useTemplateRef } from 'vue'
 import { storeToRefs } from 'pinia'

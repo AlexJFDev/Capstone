@@ -14,4 +14,4 @@ Instructions for Claude agents.
 - You should make pull requests as drafts.
 - If necessary, update `ARCHITECTURE.md` when making a PR.
 - When making new files in `src/` be sure to include a header comment at the top of the file explaining its purpose.
-- When modifying files in `src/` be sure to update the header comment if neccesary.
+- When modifying files in `src/` be sure to update the header comment if necessary.

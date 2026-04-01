@@ -1,4 +1,4 @@
-// Provides a promise-based confirm() helper that shows a blocking speedbump dialog and resolves with the user's choice.
+// Provides a promise-based revealSpeedBump() helper that shows a blocking speedbump dialog and resolves with the user's choice.
 import { useConfirmDialog } from '@vueuse/core'
 import { ref } from 'vue'
 

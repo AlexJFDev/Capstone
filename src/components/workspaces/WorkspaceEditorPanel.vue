@@ -152,13 +152,7 @@ const nameRules = [required]
         <v-card-title class="text-subtitle-2">Appearance</v-card-title>
         <v-divider />
         <v-card-text>
-          <ColorInput
-            v-model="draft.color"
-            label="Color"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-          />
+          <ColorInput v-model="draft.color" />
         </v-card-text>
       </v-card>
 

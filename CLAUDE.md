@@ -16,3 +16,4 @@ Instructions for Claude agents.
 - When making new files in `src/` be sure to include a header comment at the top of the file explaining its purpose.
 - When modifying files in `src/` be sure to update the header comment if necessary.
 - Use American English
+- Run prettier with `npm run format` before pushing changes.

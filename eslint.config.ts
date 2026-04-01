@@ -40,5 +40,40 @@ export default defineConfigWithVueTs(
     },
   },
 
+  {
+    files: ['src/**/*.{ts,vue}'],
+    plugins: {
+      header: {
+        rules: {
+          header: {
+            meta: {
+              type: 'layout',
+              schema: [],
+              messages: {
+                missing:
+                  'File must begin with a comment describing its purpose (// for .ts, <!-- --> for .vue).',
+              },
+            },
+            create(context: { sourceCode: { text: string }; report: (o: object) => void }) {
+              return {
+                Program(node: object) {
+                  const src = context.sourceCode.text
+                  const body = src.startsWith('#!') ? src.slice(src.indexOf('\n') + 1) : src
+                  const trimmed = body.trimStart()
+                  if (!trimmed.startsWith('//') && !trimmed.startsWith('<!--')) {
+                    context.report({ node, messageId: 'missing' })
+                  }
+                },
+              }
+            },
+          },
+        },
+      },
+    },
+    rules: {
+      'header/header': 'error',
+    },
+  },
+
   skipFormatting,
 )

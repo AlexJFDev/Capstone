@@ -3,9 +3,9 @@ import { useToggle } from '@vueuse/core'
 import { ref } from 'vue'
 
 export function useInterfacePanels() {
-  const [ settingsOpen, toggleSettings ] = useToggle(false)
+  const [settingsOpen, toggleSettings] = useToggle(false)
 
-  const [ workspacesOpen, toggleWorkspaces ] = useToggle(false)
+  const [workspacesOpen, toggleWorkspaces] = useToggle(false)
 
   const workspaceEditorOpen = ref(false)
   const editingWorkspaceId = ref<string | undefined>()

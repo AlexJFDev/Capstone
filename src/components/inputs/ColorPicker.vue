@@ -3,7 +3,6 @@
 import { generateRandomColor } from '@/utils/colors'
 
 const model = defineModel<string>()
-
 </script>
 
 <template>

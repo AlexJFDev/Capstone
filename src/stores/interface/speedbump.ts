@@ -4,16 +4,16 @@ import { ref } from 'vue'
 
 export function useInterfaceSpeedbump() {
   const { isRevealed, reveal, confirm, cancel, onReveal } = useConfirmDialog()
-  
+
   const speedbumpMessage = ref('')
 
-  onReveal(data => speedbumpMessage.value = data)
+  onReveal((data) => (speedbumpMessage.value = data))
 
-  return { 
-    speedbumpIsRevealed : isRevealed, 
-    speedbumpMessage, 
-    revealSpeedBump : reveal, 
-    confirmSpeedBump : confirm,
-    cancelSpeedBump : cancel 
+  return {
+    speedbumpIsRevealed: isRevealed,
+    speedbumpMessage,
+    revealSpeedBump: reveal,
+    confirmSpeedBump: confirm,
+    cancelSpeedBump: cancel,
   }
 }

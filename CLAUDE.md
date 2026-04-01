@@ -1,13 +1,20 @@
 # CLAUDE.md
 
-Instructions for Claude agents.
+Chronicle is a time management and planning tool.
 
-- Commit often.
-- Before you start working, look at `README.md` to better understand the goals of the project.
-- Before you start working, look at the contents of `docs/` and especially `docs/decisions.md` to understand my design philosophy.
-- Before you start working, look at `ARCHITECTURE.md` to better understand the structure of the app.
-- Before doing work with git, look at `GIT.md`.
-- You should never modify `docs/decisions.md`.
-- When making new files in `src/` be sure to include a header comment at the top of the file explaining its purpose.
-- When modifying files in `src/` be sure to update the header comment if necessary.
+## Before starting work
+
+- Read `README.md`
+- Read `docs/decisions.md` and other files in `docs/` and its subdirectories that are relevant to your current task
+- Read `ARCHITECTURE.md`
+- Read `GIT.md`
+
+## Code Style
+
 - Use American English
+- New files in `src/` must have a header comment explaining the file's purpose
+- Update the header comment when modifying `src/` files
+
+## Off Limits
+
+- Never modify `docs/decisions.md`

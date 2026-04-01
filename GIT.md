@@ -2,6 +2,8 @@
 
 This file outlines rules for making commits, branches, issues, and PRs.
 
+Always use American English.
+
 ## Labels
 
 The following labels are available:

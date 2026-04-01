@@ -4,12 +4,6 @@ import { generateRandomColor } from '@/utils/colors'
 
 const model = defineModel<string>()
 
-// defineProps<{
-//   label?: string
-//   variant?: 'outlined' | 'filled' | 'underlined' | 'solo' | 'solo-filled' | 'solo-inverted' | 'plain'
-//   density?: 'default' | 'comfortable' | 'compact'
-//   hideDetails?: boolean | 'auto'
-// }>()
 </script>
 
 <template>

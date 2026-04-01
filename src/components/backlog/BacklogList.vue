@@ -41,7 +41,7 @@ function createItem() {
 async function deleteItem(id: string) {
   const name = itemsStore.getName(id)
   if (
-    await userInterface.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)
+    await userInterface.revealSpeedBump(`Are you sure you want to delete "${name}"? This cannot be undone.`)
   ) {
     itemsStore.deleteItem(id)
   }

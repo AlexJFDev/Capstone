@@ -28,7 +28,7 @@ function updateGridInterval(value: RoadmapInterval) {
 }
 
 async function reset() {
-  if (await userInterface.confirm('Reset all settings to their defaults?')) {
+  if (await userInterface.revealSpeedBump('Reset all settings to their defaults?')) {
     await userInterface.updateRoadmapScale({
       ...userInterface.roadmapScale,
       pixelsPerDay: DEFAULT_PIXELS_PER_DAY,

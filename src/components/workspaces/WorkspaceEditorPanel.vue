@@ -11,7 +11,7 @@ import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
-import ColorInput from '../inputs/ColorInput.vue'
+import ColorInput from '../inputs/ColorPicker.vue'
 
 // External state
 const model = defineModel<boolean>()

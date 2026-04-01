@@ -33,7 +33,7 @@ const workspacesStore = useWorkspacesStore()
         <v-btn
           prepend-icon="mdi-view-dashboard-outline"
           variant="text"
-          @click="userInterface.openWorkspaces"
+          @click="userInterface.toggleWorkspaces(true)"
         >
           Workspaces
         </v-btn>

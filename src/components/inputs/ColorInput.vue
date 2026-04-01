@@ -4,23 +4,23 @@ import { generateRandomColor } from '@/utils/colors'
 
 const model = defineModel<string>()
 
-defineProps<{
-  label?: string
-  variant?: 'outlined' | 'filled' | 'underlined' | 'solo' | 'solo-filled' | 'solo-inverted' | 'plain'
-  density?: 'default' | 'comfortable' | 'compact'
-  hideDetails?: boolean | 'auto'
-}>()
+// defineProps<{
+//   label?: string
+//   variant?: 'outlined' | 'filled' | 'underlined' | 'solo' | 'solo-filled' | 'solo-inverted' | 'plain'
+//   density?: 'default' | 'comfortable' | 'compact'
+//   hideDetails?: boolean | 'auto'
+// }>()
 </script>
 
 <template>
-  <v-input :model-value="model" :hide-details="hideDetails">
+  <v-input :model-value="model">
     <template #default>
       <div class="d-flex align-center ga-2 w-100">
         <v-text-field
           v-model="model"
-          :label="label"
-          :variant="variant"
-          :density="density"
+          label="Color"
+          variant="outlined"
+          density="compact"
           type="color"
           hide-details
         />

@@ -7,7 +7,7 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
-import DateRangePicker from '../DateRangePicker.vue'
+import DateRangePicker from '../inputs/DateRangePicker.vue'
 import ColorInput from '../inputs/ColorPicker.vue'
 
 // External State

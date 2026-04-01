@@ -43,9 +43,11 @@ src/
 │   ├── items/                  ← Item list, editor panel, viewer panel, add menu
 │   ├── workspaces/             ← Workspace list panel, editor panel, card, chip
 │   ├── backlog/                ← Backlog list view (v-data-table)
-│   ├── ColorSwatch.vue         ← Shared colour picker input
+│   ├── inputs/                 ← Reusable v-input-based form controls
+│   │   └── ColorInput.vue      ← Color picker with random-color button
+│   │   └── DateRangePicker.vue ← Start/end date input pair
+│   ├── ColorSwatch.vue         ← Shared color swatch display
 │   ├── DateChip.vue            ← Compact formatted date display
-│   ├── DateRangePicker.vue     ← Start/end date input pair
 │   └── MarkdownRenderer.vue    ← Renders description fields as HTML
 │
 ├── views/
@@ -55,7 +57,7 @@ src/
 │
 ├── utils/
 │   ├── dates.ts                ← Date formatting, range/string validation, MSEC_IN_DAY
-│   ├── colors.ts               ← Colour validation utilities
+│   ├── colors.ts               ← Color validation utilities
 │   ├── validation.ts           ← Shared validation helpers
 │   └── markdown.ts             ← Markdown-to-HTML conversion
 │

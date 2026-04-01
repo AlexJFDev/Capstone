@@ -11,6 +11,7 @@ import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
+import ColorInput from '../inputs/ColorPicker.vue'
 
 // External state
 const model = defineModel<boolean>()
@@ -151,14 +152,7 @@ const nameRules = [required]
         <v-card-title class="text-subtitle-2">Appearance</v-card-title>
         <v-divider />
         <v-card-text>
-          <v-text-field
-            v-model="draft.color"
-            label="Color"
-            type="color"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-          />
+          <ColorInput v-model="draft.color" />
         </v-card-text>
       </v-card>
 

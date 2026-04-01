@@ -7,7 +7,8 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
-import DateRangePicker from '../DateRangePicker.vue'
+import DateRangePicker from '../inputs/DateRangePicker.vue'
+import ColorInput from '../inputs/ColorPicker.vue'
 
 // External State
 const model = defineModel<boolean>()
@@ -218,14 +219,7 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
             <v-card-title class="text-subtitle-2">Appearance</v-card-title>
             <v-divider />
             <v-card-text>
-              <v-text-field
-                v-model="draft.color"
-                label="Color"
-                type="color"
-                variant="outlined"
-                density="compact"
-                hide-details="auto"
-              />
+              <ColorInput v-model="draft.color" />
             </v-card-text>
           </v-card>
         </v-col>

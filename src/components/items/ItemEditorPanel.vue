@@ -8,7 +8,7 @@ import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
 import DateRangePicker from '../DateRangePicker.vue'
-import { generateRandomColor } from '@/utils/colors'
+import ColorInput from '../inputs/ColorInput.vue'
 
 // External State
 const model = defineModel<boolean>()
@@ -218,21 +218,13 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
           <v-card variant="outlined" height="100%">
             <v-card-title class="text-subtitle-2">Appearance</v-card-title>
             <v-divider />
-            <v-card-text class="d-flex align-center ga-2">
-              <v-text-field
+            <v-card-text>
+              <ColorInput
                 v-model="draft.color"
                 label="Color"
-                type="color"
                 variant="outlined"
                 density="compact"
                 hide-details="auto"
-              />
-              <v-btn
-                icon="mdi-dice-multiple"
-                size="small"
-                variant="text"
-                title="Random color"
-                @click="draft.color = generateRandomColor()"
               />
             </v-card-text>
           </v-card>

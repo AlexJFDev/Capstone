@@ -1,0 +1,37 @@
+<!-- Color picker input with a random-color button, built on v-input. -->
+<script setup lang="ts">
+import { generateRandomColor } from '@/utils/colors'
+
+const model = defineModel<string>()
+
+defineProps<{
+  label?: string
+  variant?: 'outlined' | 'filled' | 'underlined' | 'solo' | 'solo-filled' | 'solo-inverted' | 'plain'
+  density?: 'default' | 'comfortable' | 'compact'
+  hideDetails?: boolean | 'auto'
+}>()
+</script>
+
+<template>
+  <v-input :model-value="model" :hide-details="hideDetails">
+    <template #default>
+      <div class="d-flex align-center ga-2 w-100">
+        <v-text-field
+          v-model="model"
+          :label="label"
+          :variant="variant"
+          :density="density"
+          type="color"
+          hide-details
+        />
+        <v-btn
+          icon="mdi-dice-multiple"
+          size="small"
+          variant="text"
+          title="Random color"
+          @click="model = generateRandomColor()"
+        />
+      </div>
+    </template>
+  </v-input>
+</template>

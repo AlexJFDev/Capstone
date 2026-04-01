@@ -11,7 +11,7 @@ import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
-import { generateRandomColor } from '@/utils/colors'
+import ColorInput from '../inputs/ColorInput.vue'
 
 // External state
 const model = defineModel<boolean>()
@@ -151,21 +151,13 @@ const nameRules = [required]
       <v-card variant="outlined">
         <v-card-title class="text-subtitle-2">Appearance</v-card-title>
         <v-divider />
-        <v-card-text class="d-flex align-center ga-2">
-          <v-text-field
+        <v-card-text>
+          <ColorInput
             v-model="draft.color"
             label="Color"
-            type="color"
             variant="outlined"
             density="compact"
             hide-details="auto"
-          />
-          <v-btn
-            icon="mdi-dice-multiple"
-            size="small"
-            variant="text"
-            title="Random color"
-            @click="draft.color = generateRandomColor()"
           />
         </v-card-text>
       </v-card>

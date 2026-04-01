@@ -74,7 +74,7 @@ function loadDummyData() {
           <v-btn @click="toggle">Toggle Workspace</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="interfaceStore.confirm('Are you sure?')">Speedbump</v-btn>
+          <v-btn @click="interfaceStore.revealSpeedBump('Are you sure?')">Speedbump</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn @click="loadDummyData">Load Dummy Data</v-btn>

@@ -65,7 +65,7 @@ async function save() {
 async function cancel() {
   if (
     !changesMade.value ||
-    (await userInterface.confirm(
+    (await userInterface.revealSpeedBump(
       'You have unsaved changes. Are you sure you would like to discard them?',
     ))
   ) {
@@ -75,7 +75,7 @@ async function cancel() {
 
 async function deleteWorkspace() {
   if (
-    await userInterface.confirm(
+    await userInterface.revealSpeedBump(
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {

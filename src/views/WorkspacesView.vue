@@ -92,7 +92,7 @@ const workspaceName = computed(() =>
               </template>
             </v-tooltip>
           </div>
-          <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
+          <v-btn prepend-icon="mdi-cog" flat @click="userInterface.toggleSettings(true)">Settings</v-btn>
         </div>
       </div>
 

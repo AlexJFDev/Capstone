@@ -43,7 +43,9 @@ src/
 │   ├── items/                  ← Item list, editor panel, viewer panel, add menu
 │   ├── workspaces/             ← Workspace list panel, editor panel, card, chip
 │   ├── backlog/                ← Backlog list view (v-data-table)
-│   ├── ColorSwatch.vue         ← Shared colour picker input
+│   ├── inputs/                 ← Reusable v-input-based form controls
+│   │   └── ColorInput.vue      ← Color picker with random-color button
+│   ├── ColorSwatch.vue         ← Shared colour swatch display
 │   ├── DateChip.vue            ← Compact formatted date display
 │   ├── DateRangePicker.vue     ← Start/end date input pair
 │   └── MarkdownRenderer.vue    ← Renders description fields as HTML

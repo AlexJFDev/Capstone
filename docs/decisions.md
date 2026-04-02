@@ -84,3 +84,35 @@ I will go with option A based on the fact that issues with more complex componen
 Details in [`unit-testing-proposal.md`](proposals/unit-testing-proposal.md).
 
 I will go with option A based on the same reasoning as component testing. An issue should be created.
+
+## Spaces
+
+Details in [`views-proposal`](proposals/views-proposal.md).
+
+Decisions WIP.
+
+### Naming
+
+Not mentioned in the proposal doc. I have decided to move away from the name "View" for a container of workspaces and will use "Space" instead. The term "View" will be used to refer to a visualization style.
+
+### Visualization Type
+
+I will adopt a hybrid approach. A space can contain any number of views, represented by tabs. Then a view can be configured with a type (roadmap, backlog, calendar, board) and the particular settings available for that view type.
+
+### Settings Migration
+
+Option B, no doubt about it.
+
+### Routing
+
+Option C. Spaces will become the primary way to navigate the app, but it should still be possible to view workspaces on their own. The exact way you reach a workspace might change though.
+
+### User Interface
+
+A user will be able to browse their spaces in a panel similar to the workspaces panel.
+
+When a space is open, there will be a bar of tabs at the top. These are the spaces's views. The user will be able to select, modify, and create views from here. The open view will be shown in a pane below.
+
+When a user opens the app for the first time, a default space with a default view and workspace will already be open.
+
+### Implementation

@@ -1,7 +1,7 @@
 // Pinia store for items: composes validation, initialization, accessor, and mutation sub-modules into a single public API.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Item } from '@/types'
+import type { Item } from '@/types/items'
 import { useItemsInitialization } from './initialization'
 import { useItemsValidation } from './validation'
 import { useItemsAccessors } from './accessors'

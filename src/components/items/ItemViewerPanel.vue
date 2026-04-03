@@ -5,7 +5,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
 import { useItemsStore } from '@/stores/items'
 import { useWorkspacesStore } from '@/stores/workspaces'
-import { constructEmptyItem } from '@/types'
+import { constructEmptyItem } from '@/types/items'
 import { computed } from 'vue'
 
 const model = defineModel<boolean>()

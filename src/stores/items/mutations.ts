@@ -1,6 +1,6 @@
 // Provides addItem, updateItem, and deleteItem mutations for the items store, with validation and DB persistence.
 import { putItem, removeItem } from '@/db'
-import { validateItemId, type Item } from '@/types'
+import { validateItemId, type Item } from '@/types/items'
 import { validateColor } from '@/utils/colors'
 import { validateRange } from '@/utils/dates'
 import type { Ref } from 'vue'

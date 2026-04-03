@@ -5,7 +5,7 @@ import {
   constructEmptyWorkspace,
   generateWorkspaceId,
   type Workspace,
-} from '@/types'
+} from '@/types/workspaces'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'

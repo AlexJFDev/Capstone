@@ -1,5 +1,5 @@
 // Provides doesWorkspaceExist and validateWorkspaceExists helpers for the workspaces store.
-import { isValidWorkspaceId, type Workspace } from '@/types'
+import { isValidWorkspaceId, type Workspace } from '@/types/workspaces'
 import type { Ref } from 'vue'
 
 export function useWorkspacesValidation(workspaces: Ref<Record<string, Workspace>>) {

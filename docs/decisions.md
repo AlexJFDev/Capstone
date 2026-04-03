@@ -89,15 +89,22 @@ I will go with option A based on the same reasoning as component testing. An iss
 
 Details in [`views-proposal`](proposals/views-proposal.md).
 
-Decisions WIP.
+Spaces are intended to be the highest level datatype in the app.
 
 ### Naming
 
-Not mentioned in the proposal doc. I have decided to move away from the name "View" for a container of workspaces and will use "Space" instead. The term "View" will be used to refer to a visualization style.
+Not covered in the `views-proposal`.
+
+Throughout the development of the app, I used several names to refer to various datatypes. This section serves to change or standardize them. They are ordered from smallest to largest.
+
+- Item, a very generic datatype. It is intended to represent a task, event, goal, project, unit of work, etc.
+- Collection, aggregates items. Previously called a workspace.
+- Visualization, contains configuration for displaying items.
+- Space, serves as a container for collections and visualizations. Previously called a view.
 
 ### Visualization Type
 
-I will adopt a hybrid approach. A space can contain any number of views, represented by tabs. Then a view can be configured with a type (roadmap, backlog, calendar, board) and the particular settings available for that view type.
+I will adopt a hybrid approach. A space can contain any number of visualizations, represented by tabs. Then a visualization can be configured with a type (roadmap, backlog, calendar, board) and the particular settings available for that visualization type.
 
 ### Settings Migration
 
@@ -105,14 +112,24 @@ Option B, no doubt about it.
 
 ### Routing
 
-Option C. Spaces will become the primary way to navigate the app, but it should still be possible to view workspaces on their own. The exact way you reach a workspace might change though.
+Option C. Spaces will become the primary way to navigate the app, but it should still be possible to view collections (workspaces) on their own. The exact way you reach a collection might change.
 
 ### User Interface
 
-A user will be able to browse their spaces in a panel similar to the workspaces panel.
+A user will be able to browse their spaces in a panel similar to the collections panel.
 
-When a space is open, there will be a bar of tabs at the top. These are the spaces's views. The user will be able to select, modify, and create views from here. The open view will be shown in a pane below.
+When a space is open, there will be a bar of tabs at the top. These are the spaces's visualizations. The user will be able to select, modify, and create visualizations from here. The open visualization will be shown in a pane below.
 
-When a user opens the app for the first time, a default space with a default view and workspace will already be open.
+When a user opens the app for the first time, a default space with a default calendar visualization and collection will already be open.
 
 ### Implementation
+
+The order of implementation:
+
+1. Add types for spaces and visualizations.
+2. Create spaces store, visualizations store, and dummy data.
+3. Update the router with a `/space/:spaceId` route.
+4. Create a spaces panel and editor panel.
+5. Create a SpaceView.
+6. The home page should be updated to show the SpaceView rather than the WorkspaceView.
+7. Rename workspaces to collections.

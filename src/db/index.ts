@@ -1,7 +1,9 @@
-// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, and settings.
+// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, settings, visualizations, and spaces.
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item } from '@/types/items'
 import type { Workspace } from '@/types/workspaces'
+import type { Visualization } from '@/types/visualizations'
+import type { Space } from '@/types/spaces'
 import { toRaw } from 'vue'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
 import {
@@ -23,12 +25,14 @@ export interface AppSettings {
 
 /**
  * Schema for the Chronicle IndexedDB database.
- * Defines the three object stores and their key/value types.
+ * Defines the five object stores and their key/value types.
  */
 interface ChronicleDB extends DBSchema {
   items: { key: string; value: Item }
   workspaces: { key: string; value: Workspace }
   settings: { key: string; value: AppSettings }
+  visualizations: { key: string; value: Visualization }
+  spaces: { key: string; value: Space }
 }
 
 /**
@@ -44,11 +48,17 @@ let dbPromise: Promise<IDBPDatabase<ChronicleDB>> | null = null
  */
 function getDatabase(): Promise<IDBPDatabase<ChronicleDB>> {
   if (!dbPromise) {
-    dbPromise = openDB<ChronicleDB>('chronicle', 1, {
-      upgrade(db) {
-        db.createObjectStore('items')
-        db.createObjectStore('workspaces')
-        db.createObjectStore('settings')
+    dbPromise = openDB<ChronicleDB>('chronicle', 2, {
+      upgrade(db, oldVersion) {
+        if (oldVersion < 1) {
+          db.createObjectStore('items')
+          db.createObjectStore('workspaces')
+          db.createObjectStore('settings')
+        }
+        if (oldVersion < 2) {
+          db.createObjectStore('visualizations')
+          db.createObjectStore('spaces')
+        }
       },
     })
   }
@@ -106,14 +116,66 @@ export async function removeWorkspace(id: string): Promise<void> {
   await db.delete('workspaces', id)
 }
 
+// === Visualizations ===
+
+/** Returns all stored visualizations as a Record keyed by visualization ID. */
+export async function getAllVisualizations(): Promise<Record<string, Visualization>> {
+  const db = await getDatabase()
+  const keys = await db.getAllKeys('visualizations')
+  const values = await db.getAll('visualizations')
+  return Object.fromEntries(keys.map((key, i) => [key, values[i]!]))
+}
+
+/**
+ * Writes a visualization to the store.
+ * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
+ */
+export async function putVisualization(id: string, visualization: Visualization): Promise<void> {
+  const db = await getDatabase()
+  await db.put('visualizations', toRaw(visualization), id)
+}
+
+/** Removes a visualization from the store by ID. */
+export async function removeVisualization(id: string): Promise<void> {
+  const db = await getDatabase()
+  await db.delete('visualizations', id)
+}
+
+// === Spaces ===
+
+/** Returns all stored spaces as a Record keyed by space ID. */
+export async function getAllSpaces(): Promise<Record<string, Space>> {
+  const db = await getDatabase()
+  const keys = await db.getAllKeys('spaces')
+  const values = await db.getAll('spaces')
+  return Object.fromEntries(keys.map((key, i) => [key, values[i]!]))
+}
+
+/**
+ * Writes a space to the store.
+ * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
+ */
+export async function putSpace(id: string, space: Space): Promise<void> {
+  const db = await getDatabase()
+  await db.put('spaces', toRaw(space), id)
+}
+
+/** Removes a space from the store by ID. */
+export async function removeSpace(id: string): Promise<void> {
+  const db = await getDatabase()
+  await db.delete('spaces', id)
+}
+
 // === Clear ===
 
-/** Clears all items, workspaces, and settings from the database. */
+/** Clears all items, workspaces, settings, visualizations, and spaces from the database. */
 export async function clearDatabase(): Promise<void> {
   const db = await getDatabase()
   await db.clear('items')
   await db.clear('workspaces')
   await db.clear('settings')
+  await db.clear('visualizations')
+  await db.clear('spaces')
 }
 
 // === Settings ===

@@ -1,5 +1,5 @@
 // Removes stale workspace and visualization IDs (referencing deleted entities) from space membership lists and persists the cleaned space.
-// DB persistence will be added when putSpace is available in the persistence layer.
+import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
 import { useWorkspacesStore } from '../workspaces'
@@ -30,6 +30,7 @@ export function useSpacesScrubbing(
     if (workspaceIdsChanged || visualizationIdsChanged) {
       spaces.value[id]!.workspaceIds = validWorkspaceIds
       spaces.value[id]!.visualizationIds = validVisualizationIds
+      putSpace(id, getSpace(id))
     }
   }
 

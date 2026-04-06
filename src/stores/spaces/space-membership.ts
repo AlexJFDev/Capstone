@@ -1,5 +1,5 @@
 // Provides addWorkspaceToSpace, removeWorkspaceFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
-// DB persistence will be added when putSpace is available in the persistence layer.
+import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
 import { useWorkspacesStore } from '../workspaces'
@@ -22,6 +22,7 @@ export function useSpacesMembership(
     if (space.workspaceIds.includes(workspaceId)) return
 
     space.workspaceIds.push(workspaceId)
+    putSpace(spaceId, getSpace(spaceId))
   }
 
   function removeWorkspaceFromSpace(workspaceId: string, spaceId: string) {
@@ -36,6 +37,7 @@ export function useSpacesMembership(
     if (index === -1) return
 
     space.workspaceIds.splice(index, 1)
+    putSpace(spaceId, getSpace(spaceId))
   }
 
   function addVisualizationToSpace(visualizationId: string, spaceId: string) {
@@ -49,6 +51,7 @@ export function useSpacesMembership(
     if (space.visualizationIds.includes(visualizationId)) return
 
     space.visualizationIds.push(visualizationId)
+    putSpace(spaceId, getSpace(spaceId))
   }
 
   function removeVisualizationFromSpace(visualizationId: string, spaceId: string) {
@@ -63,6 +66,7 @@ export function useSpacesMembership(
     if (index === -1) return
 
     space.visualizationIds.splice(index, 1)
+    putSpace(spaceId, getSpace(spaceId))
   }
 
   return {

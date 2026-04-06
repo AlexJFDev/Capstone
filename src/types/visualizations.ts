@@ -49,7 +49,7 @@ export function areVisualizationsEqual(
 }
 
 const VISUALIZATION_UUID_REGEX =
-  /^viz-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  /^v-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 export function isValidVisualizationId(id: string): boolean {
   return VISUALIZATION_UUID_REGEX.test(id)
 }

@@ -1,6 +1,5 @@
 // Defines BacklogSettings type factory and equality.
 
-
 export interface BacklogSettings {
   // User will select which fields they want to display on a backlog.
   selectedFields: string[]
@@ -10,7 +9,7 @@ export interface BacklogSettings {
 
 export function constructDefaultBacklogSettings(): BacklogSettings {
   return {
-    selectedFields: [ 'name', 'color' ],
+    selectedFields: ['name', 'color'],
     sortField: null,
     sortIsAscending: false,
   }

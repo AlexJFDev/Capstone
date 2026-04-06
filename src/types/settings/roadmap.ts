@@ -7,7 +7,7 @@ export interface RoadmapSettings {
   pixelsPerDay: number
   gridInterval: RoadmapInterval
   roadmapListWidth: number
-  // User will be able to select any field that exists on item. `null` means custom. 
+  // User will be able to select any field that exists on item. `null` means custom.
   sortField: string | null
   sortIsAscending: boolean
 }

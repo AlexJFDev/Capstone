@@ -1,3 +1,4 @@
+<!-- Sticky left-side item list for the roadmap with drag-to-reorder, a resize handle, and row hover sync with the chart. -->
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'

@@ -1,3 +1,4 @@
+// Pinia store for UI state: composes roadmap scale, sorting, panel visibility, item panels, speedbump, and settings persistence.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import {

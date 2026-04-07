@@ -1,3 +1,4 @@
+<!-- Two-field date range picker (start + end) that binds to a DateRange model and supports Vuetify validation rules. -->
 <script setup lang="ts">
 import { type DateRange, dateToShortISOString, makeDateRange } from '@/utils/dates'
 import { ref, useTemplateRef, watch } from 'vue'

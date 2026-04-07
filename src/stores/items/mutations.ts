@@ -1,3 +1,4 @@
+// Provides addItem, updateItem, and deleteItem mutations for the items store, with validation and DB persistence.
 import { putItem, removeItem } from '@/db'
 import { validateItemId, type Item } from '@/types'
 import { validateColor } from '@/utils/colors'

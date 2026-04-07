@@ -1,3 +1,4 @@
+<!-- Renders a small colored chip for a workspace, adding a subtle border when the workspace color is very light. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useWorkspacesStore } from '@/stores/workspaces'

@@ -1,3 +1,4 @@
+// Color validation helpers, a random color generator, and a WCAG-based luminance check for determining whether a hex color is light or dark.
 // === VALIDATION ===
 
 const COLOR_REGEX = /^#[0-9a-f]{6}$/i
@@ -12,6 +13,22 @@ export function validateColor(color: string) {
   if (!isValidColor(color)) {
     throw new Error(`Invalid hex color: "${color}"`)
   }
+}
+
+// === GENERATION ===
+
+/** Returns a random valid 6-digit hex color (e.g. `#a1b2c3`). */
+export function generateRandomColor(): string {
+  const r = Math.floor(Math.random() * 256)
+    .toString(16)
+    .padStart(2, '0')
+  const g = Math.floor(Math.random() * 256)
+    .toString(16)
+    .padStart(2, '0')
+  const b = Math.floor(Math.random() * 256)
+    .toString(16)
+    .padStart(2, '0')
+  return `#${r}${g}${b}`
 }
 
 // === HELPERS ===

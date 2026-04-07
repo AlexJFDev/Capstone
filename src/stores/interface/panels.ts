@@ -1,21 +1,11 @@
+// Manages open/close state and editing context for the settings, workspaces, and workspace editor panels.
+import { useToggle } from '@vueuse/core'
 import { ref } from 'vue'
 
 export function useInterfacePanels() {
-  const settingsOpen = ref(false)
-  function openSettings() {
-    settingsOpen.value = true
-  }
-  function closeSettings() {
-    settingsOpen.value = false
-  }
+  const [settingsOpen, toggleSettings] = useToggle(false)
 
-  const workspacesOpen = ref(false)
-  function openWorkspaces() {
-    workspacesOpen.value = true
-  }
-  function closeWorkspaces() {
-    workspacesOpen.value = false
-  }
+  const [workspacesOpen, toggleWorkspaces] = useToggle(false)
 
   const workspaceEditorOpen = ref(false)
   const editingWorkspaceId = ref<string | undefined>()
@@ -34,11 +24,9 @@ export function useInterfacePanels() {
 
   return {
     settingsOpen,
-    openSettings,
-    closeSettings,
+    toggleSettings,
     workspacesOpen,
-    openWorkspaces,
-    closeWorkspaces,
+    toggleWorkspaces,
     workspaceEditorOpen,
     editingWorkspaceId,
     openWorkspaceEditor,

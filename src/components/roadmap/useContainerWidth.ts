@@ -1,3 +1,4 @@
+// Composable that tracks a DOM element's content width reactively via ResizeObserver.
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 /**

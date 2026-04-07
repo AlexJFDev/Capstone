@@ -1,3 +1,4 @@
+<!-- Right-side drawer panel for creating or editing a workspace's name, description, color, and item list. -->
 <script setup lang="ts">
 import {
   areWorkspacesEqual,
@@ -10,6 +11,7 @@ import ItemList from '../items/ItemList.vue'
 import { useWorkspacesStore } from '@/stores/workspaces'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
+import ColorInput from '../inputs/ColorPicker.vue'
 
 // External state
 const model = defineModel<boolean>()
@@ -63,7 +65,7 @@ async function save() {
 async function cancel() {
   if (
     !changesMade.value ||
-    (await userInterface.confirm(
+    (await userInterface.revealSpeedBump(
       'You have unsaved changes. Are you sure you would like to discard them?',
     ))
   ) {
@@ -73,7 +75,7 @@ async function cancel() {
 
 async function deleteWorkspace() {
   if (
-    await userInterface.confirm(
+    await userInterface.revealSpeedBump(
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {
@@ -150,14 +152,7 @@ const nameRules = [required]
         <v-card-title class="text-subtitle-2">Appearance</v-card-title>
         <v-divider />
         <v-card-text>
-          <v-text-field
-            v-model="draft.color"
-            label="Color"
-            type="color"
-            variant="outlined"
-            density="compact"
-            hide-details="auto"
-          />
+          <ColorInput v-model="draft.color" />
         </v-card-text>
       </v-card>
 

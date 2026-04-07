@@ -1,3 +1,4 @@
+<!-- Renders a single Gantt bar with left/right edge drag handles that update the item's start and end dates. -->
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { CHART_BAR_PADDING, ROW_HEIGHT } from './constants'

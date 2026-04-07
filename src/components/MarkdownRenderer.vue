@@ -1,3 +1,4 @@
+<!-- Renders a Markdown string as styled HTML using markdown-it, with scoped typography styles. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { renderMarkdown } from '@/utils/markdown'

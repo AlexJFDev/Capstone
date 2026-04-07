@@ -1,3 +1,4 @@
+<!-- Page view that lists all items in a flat backlog table, independent of any workspace. -->
 <script setup lang="ts">
 import BacklogList from '@/components/backlog/BacklogList.vue'
 import { useItemsStore } from '@/stores/items'

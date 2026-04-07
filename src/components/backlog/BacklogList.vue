@@ -1,3 +1,4 @@
+<!-- Sortable data table of all items with color, dates, workspace chips, and inline edit/delete actions. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'
@@ -40,7 +41,9 @@ function createItem() {
 async function deleteItem(id: string) {
   const name = itemsStore.getName(id)
   if (
-    await userInterface.confirm(`Are you sure you want to delete "${name}"? This cannot be undone.`)
+    await userInterface.revealSpeedBump(
+      `Are you sure you want to delete "${name}"? This cannot be undone.`,
+    )
   ) {
     itemsStore.deleteItem(id)
   }

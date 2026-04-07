@@ -1,3 +1,4 @@
+// Vuetify form validation rules for required fields, hex colors, date strings, and date ranges.
 import { isValidColor } from './colors'
 import { isValidRange, type DateRange } from './dates'
 

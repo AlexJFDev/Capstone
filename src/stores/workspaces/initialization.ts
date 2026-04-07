@@ -1,3 +1,4 @@
+// Loads all persisted workspaces from IndexedDB into the workspaces store on startup.
 import { getAllWorkspaces } from '@/db'
 import type { Workspace } from '@/types'
 import type { Ref } from 'vue'

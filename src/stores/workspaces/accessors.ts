@@ -1,3 +1,4 @@
+// Provides getWorkspace and getWorkspaceName read-only accessors for the workspaces store.
 import type { Workspace } from '@/types'
 import type { Ref } from 'vue'
 

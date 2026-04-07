@@ -1,3 +1,4 @@
+<!-- Page view that displays the active workspace's roadmap, or an empty state when no workspaces exist. -->
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -91,7 +92,9 @@ const workspaceName = computed(() =>
               </template>
             </v-tooltip>
           </div>
-          <v-btn prepend-icon="mdi-cog" flat @click="userInterface.openSettings()">Settings</v-btn>
+          <v-btn prepend-icon="mdi-cog" flat @click="userInterface.toggleSettings(true)"
+            >Settings</v-btn
+          >
         </div>
       </div>
 

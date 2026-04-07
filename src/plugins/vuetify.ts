@@ -1,3 +1,4 @@
+// Configures and exports the Vuetify plugin instance with all components, directives, MDI icons, and the default light theme.
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'

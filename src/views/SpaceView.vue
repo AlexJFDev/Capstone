@@ -58,7 +58,7 @@ watch(activeVisualizationId, (id) => userInterface.setActiveVisualization(id), {
 // Reset when leaving the view so global roadmap settings apply elsewhere
 onUnmounted(() => userInterface.setActiveVisualization(null))
 
-// Collect unique item IDs from all of the space's workspaces in order
+// Collect unique item IDs from all of the space's collections in order
 const spaceItemIds = computed(() => {
   if (!space.value) return []
   const seen = new Set<string>()

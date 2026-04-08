@@ -1,6 +1,6 @@
 <!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu.
-     Accepts either collectionId (workspace context, enables add-item and drag-to-reorder) or itemIds (read-only,
-     used when rendering inside a SpaceView where items come from multiple workspaces). -->
+     Accepts either collectionId (collection context, enables add-item and drag-to-reorder) or itemIds (read-only,
+     used when rendering inside a SpaceView where items come from multiple collections). -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'

@@ -120,7 +120,7 @@ const nameRules = [required]
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
-      <v-toolbar-title>{{ isEditing ? 'Edit workspace' : 'New workspace' }}</v-toolbar-title>
+      <v-toolbar-title>{{ isEditing ? 'Edit collection' : 'New collection' }}</v-toolbar-title>
       <v-spacer />
       <v-btn variant="text" @click="save">Save</v-btn>
     </v-toolbar>

@@ -169,7 +169,7 @@ export async function removeSpace(id: string): Promise<void> {
 
 // === Clear ===
 
-/** Clears all items, workspaces, settings, visualizations, and spaces from the database. */
+/** Clears all items, collections (workspaces), settings, visualizations, and spaces from the database. */
 export async function clearDatabase(): Promise<void> {
   const db = await getDatabase()
   await db.clear('items')

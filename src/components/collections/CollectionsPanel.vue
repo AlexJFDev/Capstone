@@ -12,7 +12,7 @@ const model = defineModel<boolean>()
 
 const userInterface = useInterfaceStore()
 
-const sortedWorkspaceIds = computed(() => {
+const sortedCollectionIds = computed(() => {
   const favorite = userInterface.favoriteCollectionId
   if (!favorite || !props.collectionIds.includes(favorite)) return props.collectionIds
   return [favorite, ...props.collectionIds.filter((id) => id !== favorite)]
@@ -34,12 +34,12 @@ function addCollection() {
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
       <CollectionCard
-        v-for="collectionId in sortedWorkspaceIds"
+        v-for="collectionId in sortedCollectionIds"
         :key="collectionId"
         :collection-id="collectionId"
       />
 
-      <v-card class="add-workspace-card" variant="outlined" @click="addCollection">
+      <v-card class="add-collection-card" variant="outlined" @click="addCollection">
         <v-card-title class="d-flex align-center ga-2 text-medium-emphasis">
           <v-icon>mdi-plus</v-icon>
           New collection
@@ -50,7 +50,7 @@ function addCollection() {
 </template>
 
 <style scoped>
-.add-workspace-card {
+.add-collection-card {
   cursor: pointer;
   border-style: dashed !important;
 }

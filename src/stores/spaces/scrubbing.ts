@@ -17,18 +17,18 @@ export function useSpacesScrubbing(
     const visualizationsStore = useVisualizationsStore()
     const space = getSpace(id)
 
-    const validWorkspaceIds = space.collectionIds.filter((collectionId) =>
+    const validCollectionIds = space.collectionIds.filter((collectionId) =>
       collectionsStore.doesCollectionExist(collectionId),
     )
     const validVisualizationIds = space.visualizationIds.filter((visualizationId) =>
       visualizationsStore.doesVisualizationExist(visualizationId),
     )
 
-    const collectionIdsChanged = validWorkspaceIds.length !== space.collectionIds.length
+    const collectionIdsChanged = validCollectionIds.length !== space.collectionIds.length
     const visualizationIdsChanged = validVisualizationIds.length !== space.visualizationIds.length
 
     if (collectionIdsChanged || visualizationIdsChanged) {
-      spaces.value[id]!.collectionIds = validWorkspaceIds
+      spaces.value[id]!.collectionIds = validCollectionIds
       spaces.value[id]!.visualizationIds = validVisualizationIds
       putSpace(id, getSpace(id))
     }

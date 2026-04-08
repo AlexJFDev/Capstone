@@ -22,13 +22,13 @@ const headers = [
   { key: 'description', title: 'Description', sortable: false },
   { key: 'startDate', title: 'Start', sortable: true },
   { key: 'endDate', title: 'End', sortable: true },
-  { key: 'workspaces', title: 'Workspaces', sortable: false },
+  { key: 'collections', title: 'Collections', sortable: false },
   { key: 'actions', title: '', sortable: false, width: '40px' },
 ]
 
 const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getItem(id) })))
 
-function workspaceIdsFor(itemId: string) {
+function collectionIdsFor(itemId: string) {
   return collectionsStore.collectionIds.filter((wid) =>
     collectionsStore.getCollection(wid).items.includes(itemId),
   )
@@ -75,9 +75,9 @@ async function deleteItem(id: string) {
     <template #item.endDate="{ item }">
       <DateChip :date="item.endDate" />
     </template>
-    <template #item.workspaces="{ item }">
+    <template #item.collections="{ item }">
       <CollectionChip
-        v-for="wid in workspaceIdsFor(item.id)"
+        v-for="wid in collectionIdsFor(item.id)"
         :key="wid"
         :collection-id="wid"
         class="mr-1"

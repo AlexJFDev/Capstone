@@ -42,9 +42,9 @@ const collectionName = computed(() =>
   <v-main style="height: 100vh; overflow: hidden">
     <div v-if="!activeCollection" class="empty-state">
       <v-icon size="48" color="medium-emphasis">mdi-view-dashboard-outline</v-icon>
-      <p class="text-h6 text-medium-emphasis">No workspaces yet</p>
+      <p class="text-h6 text-medium-emphasis">No collections yet</p>
       <v-btn variant="tonal" prepend-icon="mdi-plus" @click="userInterface.openCollectionCreator()">
-        New workspace
+        New collection
       </v-btn>
     </div>
 

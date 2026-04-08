@@ -14,9 +14,11 @@ import { useInterfaceSorting } from './sorting'
 import { useInterfacePanels } from './panels'
 import { useInterfaceItemPanels } from './item-panels'
 import { useInterfaceSpeedbump } from './speedbump'
+import { useInterfaceActiveVisualization } from './active-visualization'
 
 export type { SortOption, SortDirection } from './sorting'
 
+// oxlint-disable-next-line max-lines-per-function
 export const useInterfaceStore = defineStore('interface', () => {
   const favoriteWorkspaceId = ref<string | null>(null)
   const defaultWorkspaceId = computed(() => {
@@ -36,6 +38,11 @@ export const useInterfaceStore = defineStore('interface', () => {
   const gridInterval = ref<RoadmapInterval>(DEFAULT_INTERVAL)
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
 
+  const { activeVisualizationId, setActiveVisualization } = useInterfaceActiveVisualization(
+    pixelsPerDay,
+    gridInterval,
+    roadmapListWidth,
+  )
   const { initializeInterface, setFavoriteWorkspace } = useInterfaceInitialization(
     favoriteWorkspaceId,
     pixelsPerDay,
@@ -43,7 +50,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     roadmapListWidth,
   )
   const { roadmapScale, roadmapListWidthPx, updateRoadmapScale, updateRoadmapListWidth } =
-    useInterfaceRoadmap(pixelsPerDay, gridInterval, roadmapListWidth)
+    useInterfaceRoadmap(pixelsPerDay, gridInterval, roadmapListWidth, activeVisualizationId)
   const sorting = useInterfaceSorting()
   const panels = useInterfacePanels()
   const itemPanels = useInterfaceItemPanels()
@@ -54,6 +61,8 @@ export const useInterfaceStore = defineStore('interface', () => {
     defaultWorkspaceId,
     initializeInterface,
     setFavoriteWorkspace,
+    activeVisualizationId,
+    setActiveVisualization,
     roadmapScale,
     roadmapListWidthPx,
     roadmapListWidth,

@@ -1,4 +1,6 @@
-<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu. -->
+<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu.
+     Accepts either workspaceId (workspace context, enables add-item and drag-to-reorder) or itemIds (read-only,
+     used when rendering inside a SpaceView where items come from multiple workspaces). -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
@@ -12,14 +14,17 @@ import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
-  workspaceId: string
+  workspaceId?: string
+  itemIds?: string[]
 }>()
 
 const workspacesStore = useWorkspacesStore()
 const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const workspace = computed(() =>
+  props.workspaceId ? workspacesStore.getWorkspace(props.workspaceId) : null,
+)
 
 const {
   roadmapListWidth: listWidth,
@@ -28,8 +33,14 @@ const {
   sortDirection,
 } = storeToRefs(userInterface)
 
+const baseItemIds = computed(() => {
+  if (props.itemIds) return props.itemIds
+  if (workspace.value) return workspace.value.items
+  return []
+})
+
 const sortedItemIds = computed(() => {
-  const ids = [...workspace.value.items]
+  const ids = [...baseItemIds.value]
   if (sortOption.value === 'custom') return ids
 
   return ids.toSorted((a, b) => {
@@ -46,10 +57,12 @@ const sortedItemIds = computed(() => {
 })
 
 function addItem(itemId: string) {
+  if (!props.workspaceId) return
   workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
 async function newItem() {
+  if (!props.workspaceId) return
   const itemId = await userInterface.openItemCreator()
   if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
 }
@@ -64,11 +77,17 @@ const hoveredItemId = ref<string | null>(null)
       <div class="header">
         <div class="list-header">
           <div class="list-box" />
-          <AddItemMenu :excluded-item-ids="workspace.items" @add-item="addItem" @new-item="newItem">
+          <AddItemMenu
+            v-if="workspaceId && workspace"
+            :excluded-item-ids="workspace.items"
+            @add-item="addItem"
+            @new-item="newItem"
+          >
             <template #default="menuProps">
               <v-btn flat class="add-button" v-bind="menuProps">Add Item</v-btn>
             </template>
           </AddItemMenu>
+          <div v-else class="add-button" />
         </div>
         <RoadmapHeader :item-ids="sortedItemIds" />
       </div>

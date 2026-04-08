@@ -14,6 +14,7 @@ import { useInterfaceSorting } from './sorting'
 import { useInterfacePanels } from './panels'
 import { useInterfaceItemPanels } from './item-panels'
 import { useInterfaceSpeedbump } from './speedbump'
+import { useInterfaceSpacePanels } from './space-panels'
 
 export type { SortOption, SortDirection } from './sorting'
 
@@ -48,6 +49,7 @@ export const useInterfaceStore = defineStore('interface', () => {
   const panels = useInterfacePanels()
   const itemPanels = useInterfaceItemPanels()
   const speedbump = useInterfaceSpeedbump()
+  const spacePanels = useInterfaceSpacePanels()
 
   return {
     favoriteWorkspaceId,
@@ -63,5 +65,6 @@ export const useInterfaceStore = defineStore('interface', () => {
     ...panels,
     ...itemPanels,
     ...speedbump,
+    ...spacePanels,
   }
 })

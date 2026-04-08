@@ -68,7 +68,9 @@ const workspaces = computed(() =>
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-body-1">Visualizations ({{ visualizations.length }})</v-card-title>
+        <v-card-title class="text-body-1"
+          >Visualizations ({{ visualizations.length }})</v-card-title
+        >
         <v-card-text>
           <pre>{{ JSON.stringify(visualizations, null, 2) }}</pre>
         </v-card-text>

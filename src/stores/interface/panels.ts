@@ -17,7 +17,7 @@ export function useInterfacePanels() {
     editingCollectionId.value = undefined
     collectionEditorOpen.value = true
   }
-  function closeWorkspaceEditor() {
+  function closeCollectionEditor() {
     editingCollectionId.value = undefined
     collectionEditorOpen.value = false
   }
@@ -31,6 +31,6 @@ export function useInterfacePanels() {
     editingCollectionId,
     openCollectionEditor,
     openCollectionCreator,
-    closeWorkspaceEditor,
+    closeCollectionEditor,
   }
 }

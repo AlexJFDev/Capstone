@@ -56,11 +56,11 @@ async function save() {
 
   if (isEditing.value) {
     collectionsStore.updateCollection(props.collectionId!, draft.value)
-    userInterface.closeWorkspaceEditor()
+    userInterface.closeCollectionEditor()
   } else {
     const id = generateCollectionId()
     collectionsStore.addCollection(id, draft.value)
-    userInterface.closeWorkspaceEditor()
+    userInterface.closeCollectionEditor()
   }
 }
 
@@ -71,7 +71,7 @@ async function cancel() {
       'You have unsaved changes. Are you sure you would like to discard them?',
     ))
   ) {
-    userInterface.closeWorkspaceEditor()
+    userInterface.closeCollectionEditor()
   }
 }
 
@@ -82,7 +82,7 @@ async function deleteCollection() {
     )
   ) {
     collectionsStore.deleteCollection(props.collectionId!)
-    userInterface.closeWorkspaceEditor()
+    userInterface.closeCollectionEditor()
   }
 }
 

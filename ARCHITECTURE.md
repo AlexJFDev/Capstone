@@ -52,6 +52,7 @@ src/
 │
 ├── views/
 │   ├── WorkspacesView.vue      ← Main page: WorkspacesPanel + roadmap/backlog pane
+│   ├── SpaceView.vue           ← Space page: displays space data, visualizations, and workspaces
 │   ├── ItemsView.vue           ← Global items list (no workspace context)
 │   └── TestView.vue            ← Dev-only sandbox (only visible in dev/preview mode)
 │

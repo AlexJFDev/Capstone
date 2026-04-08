@@ -13,6 +13,7 @@ import BacklogList from '@/components/backlog/BacklogList.vue'
 import { useItemsStore } from '@/stores/items'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useSpacesStore } from '@/stores/spaces'
+import { useRouter } from 'vue-router'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { workspaces as dummyWorkspaces } from '@/testing/dummy-workspaces'
 import { visualizations as dummyVisualizations } from '@/testing/dummy-visualizations'
@@ -24,6 +25,7 @@ const itemsStore = useItemsStore()
 const visualizationsStore = useVisualizationsStore()
 const spacesStore = useSpacesStore()
 const interfaceStore = useInterfaceStore()
+const router = useRouter()
 
 const test_item_id = computed(() => itemsStore.itemIds[0])
 
@@ -91,6 +93,9 @@ function loadDummyData() {
         </v-col>
         <v-col cols="auto">
           <v-btn @click="interfaceStore.revealSpeedBump('Are you sure?')">Speedbump</v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn @click="router.push({ name: 'space', params: { spaceId: spacesStore.spaceIds[0] } })">First Space</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn @click="loadDummyData">Load Dummy Data</v-btn>

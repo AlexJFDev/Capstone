@@ -40,7 +40,7 @@ const spacesStore = useSpacesStore()
         <v-btn
           prepend-icon="mdi-view-dashboard-outline"
           variant="text"
-          @click="userInterface.toggleWorkspaces(true)"
+          @click="userInterface.toggleCollections(true)"
         >
           Workspaces
         </v-btn>
@@ -65,11 +65,11 @@ const spacesStore = useSpacesStore()
       :item-id="userInterface.viewingItemId"
     />
     <CollectionEditorPanel
-      v-model="userInterface.workspaceEditorOpen"
-      :workspace-id="userInterface.editingWorkspaceId"
+      v-model="userInterface.collectionEditorOpen"
+      :workspace-id="userInterface.editingCollectionId"
     />
     <CollectionsPanel
-      v-model="userInterface.workspacesOpen"
+      v-model="userInterface.collectionsOpen"
       :workspace-ids="collectionsStore.workspaceIds"
     />
     <SpaceEditorPanel

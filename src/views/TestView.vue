@@ -33,8 +33,8 @@ const workspaceIds = collectionsStore.workspaceIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
-const workspaceEditorOpen = ref(false)
-const workspacesOpen = ref(false)
+const collectionEditorOpen = ref(false)
+const collectionsOpen = ref(false)
 
 const workspaceIndex = ref(1)
 const workspaceId = computed(() => workspaceIds[workspaceIndex.value]!)
@@ -83,10 +83,10 @@ function loadDummyData() {
           <v-btn @click="itemViewerOpen = true">Item Viewer</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="workspaceEditorOpen = true">Workspace Editor</v-btn>
+          <v-btn @click="collectionEditorOpen = true">Workspace Editor</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="workspacesOpen = true">Workspaces</v-btn>
+          <v-btn @click="collectionsOpen = true">Workspaces</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn @click="toggle">Toggle Workspace</v-btn>
@@ -112,8 +112,8 @@ function loadDummyData() {
 
     <ItemEditorPanel v-model="itemEditorOpen" />
     <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
-    <CollectionEditorPanel v-model="workspaceEditorOpen" />
-    <CollectionsPanel v-model="workspacesOpen" :workspace-ids="workspaceIds" />
+    <CollectionEditorPanel v-model="collectionEditorOpen" />
+    <CollectionsPanel v-model="collectionsOpen" :workspace-ids="workspaceIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

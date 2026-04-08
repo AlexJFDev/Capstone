@@ -41,7 +41,7 @@ function toggleFavorite() {
             icon="mdi-pencil"
             density="compact"
             variant="text"
-            @click="userInterface.openWorkspaceEditor(workspaceId)"
+            @click="userInterface.openCollectionEditor(workspaceId)"
           />
           <v-btn
             icon="mdi-open-in-new"

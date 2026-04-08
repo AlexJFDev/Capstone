@@ -19,7 +19,7 @@ const sortedWorkspaceIds = computed(() => {
 })
 
 function addWorkspace() {
-  userInterface.openWorkspaceCreator()
+  userInterface.openCollectionCreator()
 }
 </script>
 

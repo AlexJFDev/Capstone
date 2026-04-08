@@ -42,7 +42,7 @@ const spacesStore = useSpacesStore()
           variant="text"
           @click="userInterface.toggleCollections(true)"
         >
-          Workspaces
+          Collections
         </v-btn>
         <v-btn
           v-if="router.hasRoute('test')"

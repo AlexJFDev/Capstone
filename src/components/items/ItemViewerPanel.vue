@@ -77,12 +77,12 @@ const collectionIds = computed(() =>
       </v-row>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
+        <v-card-title class="text-subtitle-2">Collections</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-wrap ga-1">
           <CollectionChip v-for="wid in collectionIds" :key="wid" :collection-id="wid" />
           <span v-if="collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
-            Not in any workspaces
+            Not in any collections
           </span>
         </v-card-text>
       </v-card>

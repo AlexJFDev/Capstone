@@ -28,7 +28,7 @@ function addCollection() {
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
-      <v-toolbar-title>Workspaces</v-toolbar-title>
+      <v-toolbar-title>Collections</v-toolbar-title>
     </v-toolbar>
 
     <!-- BODY -->
@@ -42,7 +42,7 @@ function addCollection() {
       <v-card class="add-workspace-card" variant="outlined" @click="addCollection">
         <v-card-title class="d-flex align-center ga-2 text-medium-emphasis">
           <v-icon>mdi-plus</v-icon>
-          New workspace
+          New collection
         </v-card-title>
       </v-card>
     </div>

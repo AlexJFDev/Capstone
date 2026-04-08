@@ -7,7 +7,7 @@ import {
   DEFAULT_PIXELS_PER_DAY,
 } from '@/components/roadmap/constants'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { useWorkspacesStore } from '../workspaces'
+import { useWorkspacesStore } from '../collections'
 import { useInterfaceInitialization } from './initialization'
 import { useInterfaceRoadmap } from './roadmap'
 import { useInterfaceSorting } from './sorting'

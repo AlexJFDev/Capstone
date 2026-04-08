@@ -3,7 +3,7 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { useInterfaceStore, type SortOption } from '@/stores/interface'
 
 const route = useRoute()

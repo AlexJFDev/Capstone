@@ -4,7 +4,7 @@ import { validateItemId, type Item } from '@/types/items'
 import { validateColor } from '@/utils/colors'
 import { validateRange } from '@/utils/dates'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../workspaces'
+import { useWorkspacesStore } from '../collections'
 
 export function useItemsMutations(
   items: Ref<Record<string, Item>>,

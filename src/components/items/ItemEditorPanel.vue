@@ -3,7 +3,7 @@
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types/items'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'

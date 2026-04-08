@@ -1,7 +1,7 @@
 // IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, settings, visualizations, and spaces.
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item } from '@/types/items'
-import type { Workspace } from '@/types/workspaces'
+import type { Workspace } from '@/types/collections'
 import type { Visualization } from '@/types/visualizations'
 import type { Space } from '@/types/spaces'
 import { toRaw } from 'vue'

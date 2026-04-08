@@ -1,5 +1,5 @@
 // Provides getWorkspace and getWorkspaceName read-only accessors for the workspaces store.
-import type { Workspace } from '@/types/workspaces'
+import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
 export function useWorkspacesAccessors(

@@ -1,6 +1,6 @@
 // Removes stale item IDs (referencing deleted items) from workspace item lists and persists the cleaned workspace.
 import { putWorkspace } from '@/db'
-import type { Workspace } from '@/types/workspaces'
+import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 

@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{

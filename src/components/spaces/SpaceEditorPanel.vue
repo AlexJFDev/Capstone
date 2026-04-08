@@ -3,7 +3,7 @@
 import { areSpacesEqual, constructNewSpace, generateSpaceId, type Space } from '@/types/spaces'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useSpacesStore } from '@/stores/spaces'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'

@@ -1,12 +1,12 @@
 // Pinia store for workspaces: composes validation, initialization, accessor, mutation, membership, and scrubbing sub-modules.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Workspace } from '@/types/workspaces'
+import type { Workspace } from '@/types/collections'
 import { useWorkspacesInitialization } from './initialization'
 import { useWorkspacesValidation } from './validation'
 import { useWorkspacesAccessors } from './accessors'
 import { useWorkspacesMutations } from './mutations'
-import { useWorkspacesMembership } from './workspace-membership'
+import { useWorkspacesMembership } from './collection-membership'
 import { useWorkspacesScrubbing } from './scrubbing'
 
 export const useWorkspacesStore = defineStore('workspaces', () => {

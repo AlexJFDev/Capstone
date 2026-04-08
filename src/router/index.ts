@@ -1,7 +1,7 @@
 // Defines application routes (home, workspace, space, items, and dev-only test) and guards against navigating to deleted workspaces or spaces.
 import { createRouter, createWebHistory } from 'vue-router'
-import WorkspacesView from '../views/WorkspacesView.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import WorkspacesView from '../views/CollectionsView.vue'
+import { useWorkspacesStore } from '@/stores/collections'
 import { useSpacesStore } from '@/stores/spaces'
 
 const router = createRouter({

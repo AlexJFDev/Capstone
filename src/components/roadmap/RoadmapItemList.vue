@@ -11,7 +11,7 @@ import {
   SECTION_BORDER_COLOR,
 } from './constants'
 import { computed, ref } from 'vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{

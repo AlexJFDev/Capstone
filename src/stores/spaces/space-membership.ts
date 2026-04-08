@@ -2,7 +2,7 @@
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../workspaces'
+import { useWorkspacesStore } from '../collections'
 import { useVisualizationsStore } from '../visualizations'
 
 // oxlint-disable-next-line max-lines-per-function

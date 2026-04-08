@@ -2,10 +2,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import DateChip from '@/components/DateChip.vue'
-import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
+import WorkspaceChip from '@/components/collections/CollectionChip.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{

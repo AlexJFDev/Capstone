@@ -5,10 +5,10 @@ import {
   constructEmptyWorkspace,
   generateWorkspaceId,
   type Workspace,
-} from '@/types/workspaces'
+} from '@/types/collections'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
 import ColorInput from '../inputs/ColorPicker.vue'

@@ -1,6 +1,6 @@
 // Provides moveItem, addItemToWorkspace, and removeItemFromWorkspace operations for managing workspace item membership.
 import { putWorkspace } from '@/db'
-import type { Workspace } from '@/types/workspaces'
+import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 

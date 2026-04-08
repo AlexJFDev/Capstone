@@ -2,9 +2,9 @@
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
+import WorkspaceChip from '@/components/collections/CollectionChip.vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useWorkspacesStore } from '@/stores/collections'
 import { constructEmptyItem } from '@/types/items'
 import { computed } from 'vue'
 

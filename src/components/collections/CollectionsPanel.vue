@@ -1,7 +1,7 @@
 <!-- Right-side drawer listing all workspace cards sorted with the favorite first, plus a button to create a new workspace. -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import WorkspaceCard from './WorkspaceCard.vue'
+import WorkspaceCard from './CollectionCard.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{

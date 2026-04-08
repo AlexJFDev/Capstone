@@ -19,9 +19,9 @@ export function useSpacesMembership(
 
     const space = getSpace(spaceId)
 
-    if (space.workspaceIds.includes(collectionId)) return
+    if (space.collectionIds.includes(collectionId)) return
 
-    space.workspaceIds.push(collectionId)
+    space.collectionIds.push(collectionId)
     putSpace(spaceId, getSpace(spaceId))
   }
 
@@ -32,11 +32,11 @@ export function useSpacesMembership(
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
-    const index = space.workspaceIds.indexOf(collectionId)
+    const index = space.collectionIds.indexOf(collectionId)
 
     if (index === -1) return
 
-    space.workspaceIds.splice(index, 1)
+    space.collectionIds.splice(index, 1)
     putSpace(spaceId, getSpace(spaceId))
   }
 

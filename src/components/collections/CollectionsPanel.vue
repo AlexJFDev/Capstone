@@ -5,7 +5,7 @@ import WorkspaceCard from './CollectionCard.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
-  workspaceIds: Array<string>
+  collectionIds: Array<string>
 }>()
 
 const model = defineModel<boolean>()
@@ -14,8 +14,8 @@ const userInterface = useInterfaceStore()
 
 const sortedWorkspaceIds = computed(() => {
   const favorite = userInterface.favoriteCollectionId
-  if (!favorite || !props.workspaceIds.includes(favorite)) return props.workspaceIds
-  return [favorite, ...props.workspaceIds.filter((id) => id !== favorite)]
+  if (!favorite || !props.collectionIds.includes(favorite)) return props.collectionIds
+  return [favorite, ...props.collectionIds.filter((id) => id !== favorite)]
 })
 
 function addWorkspace() {

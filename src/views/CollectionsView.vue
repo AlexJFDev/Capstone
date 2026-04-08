@@ -20,7 +20,7 @@ const sortOptions: { label: string; value: SortOption }[] = [
 
 // Handle workspace being deleted while viewing
 watch(
-  () => collectionsStore.workspaceIds,
+  () => collectionsStore.collectionIds,
   (ids) => {
     const routeId = route.params.collectionId as string
     if (routeId && !ids.includes(routeId)) {

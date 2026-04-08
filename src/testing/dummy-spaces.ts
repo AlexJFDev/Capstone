@@ -7,7 +7,7 @@ export const spaces: Record<string, Space> = {
     description:
       'Tracks all work for the **web platform** across frontend and backend teams.\n\n- Sprint planning and quarterly roadmaps\n- Bug and task backlogs',
     color: '#4A90D9',
-    workspaceIds: [
+    collectionIds: [
       'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890',
       'w-2b3c4d5e-6f7a-4901-bcde-f12345678901',
     ],
@@ -22,7 +22,7 @@ export const spaces: Record<string, Space> = {
     description:
       'DevOps and QA work for **deployment pipelines** and quality assurance.\n\n- Release timelines and bug tracking',
     color: '#1ABC9C',
-    workspaceIds: [
+    collectionIds: [
       'w-3c4d5e6f-7a8b-4012-8def-123456789012',
       'w-4d5e6f7a-8b9c-4123-8efa-234567890123',
     ],

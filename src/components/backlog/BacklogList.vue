@@ -29,7 +29,7 @@ const headers = [
 const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getItem(id) })))
 
 function workspaceIdsFor(itemId: string) {
-  return collectionsStore.workspaceIds.filter((wid) =>
+  return collectionsStore.collectionIds.filter((wid) =>
     collectionsStore.getWorkspace(wid).items.includes(itemId),
   )
 }

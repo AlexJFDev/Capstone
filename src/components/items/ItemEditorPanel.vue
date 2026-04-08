@@ -42,7 +42,7 @@ const changesMade = computed(
 
 // Workspace options for the autocomplete (workspaces not already in the draft)
 const availableWorkspaces = computed(() =>
-  collectionsStore.workspaceIds
+  collectionsStore.collectionIds
     .filter((wid) => !workspaceDraft.value.includes(wid))
     .map((wid) => ({ id: wid, name: collectionsStore.getWorkspaceName(wid) })),
 )
@@ -67,7 +67,7 @@ function setDraft(item: Item) {
   }
 
   const currentWorkspaceIds = props.itemId
-    ? collectionsStore.workspaceIds.filter((wid) =>
+    ? collectionsStore.collectionIds.filter((wid) =>
         collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
       )
     : []

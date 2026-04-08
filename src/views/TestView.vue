@@ -29,7 +29,7 @@ const router = useRouter()
 
 const test_item_id = computed(() => itemsStore.itemIds[0])
 
-const workspaceIds = collectionsStore.workspaceIds
+const collectionIds = collectionsStore.collectionIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
@@ -37,10 +37,10 @@ const collectionEditorOpen = ref(false)
 const collectionsOpen = ref(false)
 
 const workspaceIndex = ref(1)
-const collectionId = computed(() => workspaceIds[workspaceIndex.value]!)
+const collectionId = computed(() => collectionIds[workspaceIndex.value]!)
 
 function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % workspaceIds.length
+  workspaceIndex.value = (workspaceIndex.value + 1) % collectionIds.length
 }
 
 async function clearAll() {
@@ -113,7 +113,7 @@ function loadDummyData() {
     <ItemEditorPanel v-model="itemEditorOpen" />
     <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
     <CollectionEditorPanel v-model="collectionEditorOpen" />
-    <CollectionsPanel v-model="collectionsOpen" :workspace-ids="workspaceIds" />
+    <CollectionsPanel v-model="collectionsOpen" :collectionIds="collectionIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

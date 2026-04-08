@@ -21,9 +21,9 @@ const item = computed(() =>
   props.itemId ? itemsStore.getItem(props.itemId) : constructEmptyItem(),
 )
 
-const workspaceIds = computed(() =>
+const collectionIds = computed(() =>
   props.itemId
-    ? collectionsStore.workspaceIds.filter((wid) =>
+    ? collectionsStore.collectionIds.filter((wid) =>
         collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
       )
     : [],
@@ -80,8 +80,8 @@ const workspaceIds = computed(() =>
         <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-wrap ga-1">
-          <WorkspaceChip v-for="wid in workspaceIds" :key="wid" :collectionId="wid" />
-          <span v-if="workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
+          <WorkspaceChip v-for="wid in collectionIds" :key="wid" :collectionId="wid" />
+          <span v-if="collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
             Not in any workspaces
           </span>
         </v-card-text>

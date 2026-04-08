@@ -32,7 +32,7 @@ export const useInterfaceStore = defineStore('interface', () => {
     ) {
       return favoriteCollectionId.value
     }
-    return collectionsStore.workspaceIds[0]
+    return collectionsStore.collectionIds[0]
   })
 
   const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)

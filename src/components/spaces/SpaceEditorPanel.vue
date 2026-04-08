@@ -35,12 +35,12 @@ const changesMade = computed(() => !areSpacesEqual(draft.value, original.value))
 function setDraft(space: Space) {
   original.value = {
     ...space,
-    workspaceIds: [...space.workspaceIds],
+    collectionIds: [...space.collectionIds],
     visualizationIds: [...space.visualizationIds],
   }
   draft.value = {
     ...space,
-    workspaceIds: [...space.workspaceIds],
+    collectionIds: [...space.collectionIds],
     visualizationIds: [...space.visualizationIds],
   }
 }
@@ -55,18 +55,18 @@ watch(model, async (isOpen) => {
 
 // Collection membership
 const availableWorkspaces = computed(() =>
-  collectionsStore.workspaceIds
-    .filter((id) => !draft.value.workspaceIds.includes(id))
+  collectionsStore.collectionIds
+    .filter((id) => !draft.value.collectionIds.includes(id))
     .map((id) => ({ id, name: collectionsStore.getWorkspaceName(id) })),
 )
 
 function removeWorkspace(collectionId: string) {
-  draft.value.workspaceIds = draft.value.workspaceIds.filter((id) => id !== collectionId)
+  draft.value.collectionIds = draft.value.collectionIds.filter((id) => id !== collectionId)
 }
 
 function addWorkspace(collectionId: string) {
-  if (!draft.value.workspaceIds.includes(collectionId)) {
-    draft.value.workspaceIds.push(collectionId)
+  if (!draft.value.collectionIds.includes(collectionId)) {
+    draft.value.collectionIds.push(collectionId)
   }
 }
 
@@ -179,7 +179,7 @@ const nameRules = [required]
         <v-card-text class="d-flex flex-column ga-2">
           <div class="d-flex flex-wrap ga-1">
             <v-chip
-              v-for="collectionId in draft.workspaceIds"
+              v-for="collectionId in draft.collectionIds"
               :key="collectionId"
               :color="collectionsStore.getWorkspace(collectionId).color"
               size="small"
@@ -189,7 +189,7 @@ const nameRules = [required]
             >
               {{ collectionsStore.getWorkspaceName(collectionId) }}
             </v-chip>
-            <span v-if="draft.workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
+            <span v-if="draft.collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any collections
             </span>
           </div>

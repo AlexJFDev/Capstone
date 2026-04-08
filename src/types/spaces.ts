@@ -6,7 +6,7 @@ export interface Space {
   name: string
   description: string
   color: string
-  workspaceIds: string[]
+  collectionIds: string[]
   visualizationIds: string[]
 }
 
@@ -15,7 +15,7 @@ export function constructNewSpace(): Space {
     name: '',
     description: '',
     color: generateRandomColor(),
-    workspaceIds: [],
+    collectionIds: [],
     visualizationIds: [],
   }
 }
@@ -27,8 +27,8 @@ export function areSpacesEqual(space1: Space, space2: Space): boolean {
     space1.name === space2.name &&
     space1.description === space2.description &&
     space1.color === space2.color &&
-    space1.workspaceIds.length === space2.workspaceIds.length &&
-    space1.workspaceIds.every((id, i) => id === space2.workspaceIds[i]) &&
+    space1.collectionIds.length === space2.collectionIds.length &&
+    space1.collectionIds.every((id, i) => id === space2.collectionIds[i]) &&
     space1.visualizationIds.length === space2.visualizationIds.length &&
     space1.visualizationIds.every((id, i) => id === space2.visualizationIds[i])
   )

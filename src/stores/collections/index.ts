@@ -11,8 +11,8 @@ import { useWorkspacesScrubbing } from './scrubbing'
 
 export const useCollectionsStore = defineStore('workspaces', () => {
   const workspaces = ref<Record<string, Workspace>>({})
-  const workspaceIds = computed(() => Object.keys(workspaces.value))
-  const hasCollections = computed(() => workspaceIds.value.length > 0)
+  const collectionIds = computed(() => Object.keys(workspaces.value))
+  const hasCollections = computed(() => collectionIds.value.length > 0)
 
   const { doesCollectionExist, validateWorkspaceExists } = useWorkspacesValidation(workspaces)
   const { initializeWorkspaces } = useWorkspacesInitialization(workspaces)
@@ -37,7 +37,7 @@ export const useCollectionsStore = defineStore('workspaces', () => {
   )
 
   return {
-    workspaceIds,
+    collectionIds,
     hasCollections,
     initializeWorkspaces,
     doesCollectionExist,

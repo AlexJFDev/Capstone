@@ -6,8 +6,8 @@ import { useWorkspacesStore } from './stores/collections'
 import { useSpacesStore } from './stores/spaces'
 import ItemEditorPanel from './components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from './components/items/ItemViewerPanel.vue'
-import WorkspaceEditorPanel from './components/collections/CollectionEditorPanel.vue'
-import WorkspacesPanel from './components/collections/CollectionsPanel.vue'
+import CollectionEditorPanel from './components/collections/CollectionEditorPanel.vue'
+import CollectionsPanel from './components/collections/CollectionsPanel.vue'
 import SpaceEditorPanel from './components/spaces/SpaceEditorPanel.vue'
 import SpacesPanel from './components/spaces/SpacesPanel.vue'
 import SpeedbumpDialog from './SpeedbumpDialog.vue'
@@ -64,11 +64,11 @@ const spacesStore = useSpacesStore()
       v-model="userInterface.itemViewerOpen"
       :item-id="userInterface.viewingItemId"
     />
-    <WorkspaceEditorPanel
+    <CollectionEditorPanel
       v-model="userInterface.workspaceEditorOpen"
       :workspace-id="userInterface.editingWorkspaceId"
     />
-    <WorkspacesPanel
+    <CollectionsPanel
       v-model="userInterface.workspacesOpen"
       :workspace-ids="workspacesStore.workspaceIds"
     />

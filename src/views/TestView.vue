@@ -3,8 +3,8 @@
 import { computed, ref } from 'vue'
 import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
-import WorkspaceEditorPanel from '@/components/collections/CollectionEditorPanel.vue'
-import WorkspacesPanel from '@/components/collections/CollectionsPanel.vue'
+import CollectionEditorPanel from '@/components/collections/CollectionEditorPanel.vue'
+import CollectionsPanel from '@/components/collections/CollectionsPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
 import { useWorkspacesStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
@@ -112,8 +112,8 @@ function loadDummyData() {
 
     <ItemEditorPanel v-model="itemEditorOpen" />
     <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
-    <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
-    <WorkspacesPanel v-model="workspacesOpen" :workspace-ids="workspaceIds" />
+    <CollectionEditorPanel v-model="workspaceEditorOpen" />
+    <CollectionsPanel v-model="workspacesOpen" :workspace-ids="workspaceIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

@@ -73,7 +73,7 @@ function getDatabase(): Promise<IDBPDatabase<ChronicleDB>> {
           }
           ;(db as unknown as IDBDatabase).deleteObjectStore('workspaces')
 
-          // Migrate spaces: rename workspaceIds → collectionIds
+          // Migrate spaces: rename workspaceIds -> collectionIds
           const spacesCursor = rawTx.objectStore('spaces').openCursor()
           spacesCursor.onsuccess = (event) => {
             const cursor = (event.target as IDBRequest<IDBCursorWithValue | null>).result

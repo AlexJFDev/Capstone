@@ -1,4 +1,4 @@
-import{d as x,b as U,A as L,a as z,u as W,c as O,e as Z,f as t,j as b,l as a,m as o,x as r,n as _,R as M,z as A,I as q,B as N,W as H,C as $,D as j,h as G,i as y,r as s,E as Q,v as C,_ as J}from"./index-C1idKJZv.js";import{B as K}from"./BacklogList-CNgqRx_A.js";const X={"i-a1b2c3d4-e5f6-4890-abcd-ef1234567890":{name:"Design Homepage",description:`Create **wireframes and mockups** for the homepage layout.
+import{d as x,b as U,A as L,a as z,u as W,c as O,e as Z,f as t,j as b,l as a,m as o,x as r,n as _,R as M,z as A,I as q,B as N,W as H,C as $,D as j,h as G,i as y,r as s,E as Q,v as C,_ as J}from"./index-CsQS-SH_.js";import{B as K}from"./BacklogList-mtKzghpH.js";const X={"i-a1b2c3d4-e5f6-4890-abcd-ef1234567890":{name:"Design Homepage",description:`Create **wireframes and mockups** for the homepage layout.
 
 - Low-fidelity wireframes for desktop and mobile
 - High-fidelity mockups with final color palette

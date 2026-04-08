@@ -25,14 +25,14 @@ const spacesStore = useSpacesStore()
 // If a new store is added with an initialize* function, it belongs in this Promise.all.
 // Omitting it means the store will always start empty after a page reload (see issue #125).
 await Promise.all([
-  collectionsStore.initializeWorkspaces(),
+  collectionsStore.initializeCollections(),
   useItemsStore().initializeItems(),
   useInterfaceStore().initializeInterface(),
   spacesStore.initializeSpaces(),
   useVisualizationsStore().initializeVisualizations(),
 ])
 
-collectionsStore.scrubAllWorkspaces()
+collectionsStore.scrubAllCollections()
 spacesStore.scrubAllSpaces()
 
 app.use(router)

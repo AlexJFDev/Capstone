@@ -4,12 +4,12 @@ import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
 export function useWorkspacesInitialization(workspaces: Ref<Record<string, Workspace>>) {
-  async function initializeWorkspaces() {
+  async function initializeCollections() {
     const storedWorkspaces = await getAllWorkspaces()
     Object.entries(storedWorkspaces).forEach(([id, workspace]) => {
       workspaces.value[id] = workspace
     })
   }
 
-  return { initializeWorkspaces }
+  return { initializeCollections }
 }

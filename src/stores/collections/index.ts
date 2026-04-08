@@ -15,7 +15,7 @@ export const useCollectionsStore = defineStore('workspaces', () => {
   const hasCollections = computed(() => collectionIds.value.length > 0)
 
   const { doesCollectionExist, validateWorkspaceExists } = useWorkspacesValidation(workspaces)
-  const { initializeWorkspaces } = useWorkspacesInitialization(workspaces)
+  const { initializeCollections } = useWorkspacesInitialization(workspaces)
   const { getWorkspace, getWorkspaceName } = useWorkspacesAccessors(
     workspaces,
     validateWorkspaceExists,
@@ -25,7 +25,7 @@ export const useCollectionsStore = defineStore('workspaces', () => {
     getWorkspace,
     validateWorkspaceExists,
   )
-  const { scrubWorkspace, scrubAllWorkspaces } = useWorkspacesScrubbing(
+  const { scrubWorkspace, scrubAllCollections } = useWorkspacesScrubbing(
     workspaces,
     getWorkspace,
     validateWorkspaceExists,
@@ -39,7 +39,7 @@ export const useCollectionsStore = defineStore('workspaces', () => {
   return {
     collectionIds,
     hasCollections,
-    initializeWorkspaces,
+    initializeCollections,
     doesCollectionExist,
     validateWorkspaceExists,
     getWorkspace,
@@ -48,7 +48,7 @@ export const useCollectionsStore = defineStore('workspaces', () => {
     updateWorkspace,
     deleteWorkspace,
     scrubWorkspace,
-    scrubAllWorkspaces,
+    scrubAllCollections,
     addItemToWorkspace,
     moveItem,
     removeItemFromWorkspace,

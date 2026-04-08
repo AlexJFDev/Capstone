@@ -20,11 +20,11 @@ export function useWorkspacesScrubbing(
     }
   }
 
-  function scrubAllWorkspaces() {
+  function scrubAllCollections() {
     for (const id of Object.keys(workspaces.value)) {
       scrubWorkspace(id)
     }
   }
 
-  return { scrubWorkspace, scrubAllWorkspaces }
+  return { scrubWorkspace, scrubAllCollections }
 }

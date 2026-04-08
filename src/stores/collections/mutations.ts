@@ -5,7 +5,7 @@ import { validateColor } from '@/utils/colors'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
-export function useWorkspacesMutations(
+export function useCollectionsMutations(
   workspaces: Ref<Record<string, Workspace>>,
   getWorkspace: (id: string) => Workspace,
   validateWorkspaceExists: (id: string) => void,

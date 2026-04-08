@@ -5,7 +5,7 @@ import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
 // oxlint-disable-next-line max-lines-per-function
-export function useWorkspacesMembership(
+export function useCollectionsMembership(
   workspaces: Ref<Record<string, Workspace>>,
   getWorkspace: (id: string) => Workspace,
   validateWorkspaceExists: (id: string) => void,

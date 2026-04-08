@@ -3,7 +3,7 @@ import { getAllWorkspaces } from '@/db'
 import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
-export function useWorkspacesInitialization(workspaces: Ref<Record<string, Workspace>>) {
+export function useCollectionsInitialization(workspaces: Ref<Record<string, Workspace>>) {
   async function initializeCollections() {
     const storedWorkspaces = await getAllWorkspaces()
     Object.entries(storedWorkspaces).forEach(([id, workspace]) => {

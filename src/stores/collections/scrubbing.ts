@@ -4,7 +4,7 @@ import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
-export function useWorkspacesScrubbing(
+export function useCollectionsScrubbing(
   workspaces: Ref<Record<string, Workspace>>,
   getWorkspace: (id: string) => Workspace,
   validateWorkspaceExists: (id: string) => void,

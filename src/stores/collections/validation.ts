@@ -2,7 +2,7 @@
 import { isValidCollectionId, type Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
-export function useWorkspacesValidation(workspaces: Ref<Record<string, Workspace>>) {
+export function useCollectionsValidation(workspaces: Ref<Record<string, Workspace>>) {
   function doesCollectionExist(id: string): boolean {
     isValidCollectionId(id)
     return id in workspaces.value

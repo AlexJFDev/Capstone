@@ -2,7 +2,7 @@
 import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
-export function useWorkspacesAccessors(
+export function useCollectionsAccessors(
   workspaces: Ref<Record<string, Workspace>>,
   validateWorkspaceExists: (id: string) => void,
 ) {

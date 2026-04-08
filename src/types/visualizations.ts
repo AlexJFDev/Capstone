@@ -55,7 +55,7 @@ export function isValidVisualizationId(id: string): boolean {
 }
 export function validateVisualizationId(id: string) {
   if (!isValidVisualizationId(id)) {
-    throw new Error(`Invalid item id: "${id}"`)
+    throw new Error(`Invalid visualization id: "${id}"`)
   }
 }
 

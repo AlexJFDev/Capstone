@@ -11,12 +11,18 @@ import { useInterfaceStore } from '@/stores/interface'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 import BacklogList from '@/components/backlog/BacklogList.vue'
 import { useItemsStore } from '@/stores/items'
+import { useVisualizationsStore } from '@/stores/visualizations'
+import { useSpacesStore } from '@/stores/spaces'
 import { items as dummyItems } from '@/testing/dummy-items'
 import { workspaces as dummyWorkspaces } from '@/testing/dummy-workspaces'
+import { visualizations as dummyVisualizations } from '@/testing/dummy-visualizations'
+import { spaces as dummySpaces } from '@/testing/dummy-spaces'
 import { clearDatabase } from '@/db'
 
 const workspacesStore = useWorkspacesStore()
 const itemsStore = useItemsStore()
+const visualizationsStore = useVisualizationsStore()
+const spacesStore = useSpacesStore()
 const interfaceStore = useInterfaceStore()
 
 const test_item_id = computed(() => itemsStore.itemIds[0])
@@ -49,6 +55,16 @@ function loadDummyData() {
   for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
     if (!workspacesStore.doesWorkspaceExist(id)) {
       workspacesStore.addWorkspace(id, workspace)
+    }
+  }
+  for (const [id, visualization] of Object.entries(dummyVisualizations)) {
+    if (!visualizationsStore.doesVisualizationExist(id)) {
+      visualizationsStore.addVisualization(id, visualization)
+    }
+  }
+  for (const [id, space] of Object.entries(dummySpaces)) {
+    if (!spacesStore.doesSpaceExist(id)) {
+      spacesStore.addSpace(id, space)
     }
   }
 }

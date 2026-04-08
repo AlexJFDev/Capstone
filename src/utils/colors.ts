@@ -19,16 +19,9 @@ export function validateColor(color: string) {
 
 /** Returns a random valid 6-digit hex color (e.g. `#a1b2c3`). */
 export function generateRandomColor(): string {
-  const r = Math.floor(Math.random() * 256)
+  return `#${Math.floor(Math.random() * 0xffffff)
     .toString(16)
-    .padStart(2, '0')
-  const g = Math.floor(Math.random() * 256)
-    .toString(16)
-    .padStart(2, '0')
-  const b = Math.floor(Math.random() * 256)
-    .toString(16)
-    .padStart(2, '0')
-  return `#${r}${g}${b}`
+    .padStart(6, '0')}`
 }
 
 // === HELPERS ===

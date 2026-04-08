@@ -1,0 +1,47 @@
+// Defines workspace type factory, equality, ID validation, and generation helpers.
+
+import { generateRandomColor } from '@/utils/colors'
+
+export interface Workspace {
+  name: string
+  description: string
+  color: string
+  // List of item IDs
+  items: string[]
+}
+
+export function constructEmptyWorkspace(): Workspace {
+  return {
+    name: '',
+    description: '',
+    color: generateRandomColor(),
+    items: [],
+  }
+}
+
+export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
+  if (w1 === w2) return true
+
+  return (
+    w1.name === w2.name &&
+    w1.description === w2.description &&
+    w1.color === w2.color &&
+    w1.items.length === w2.items.length &&
+    w1.items.every((id, i) => id === w2.items[i])
+  )
+}
+
+const WORKSPACE_UUID_REGEX =
+  /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+export function isValidWorkspaceId(id: string): boolean {
+  return WORKSPACE_UUID_REGEX.test(id)
+}
+export function validateWorkspaceId(id: string) {
+  if (!isValidWorkspaceId(id)) {
+    throw new Error(`Invalid workspace id: "${id}"`)
+  }
+}
+
+export function generateWorkspaceId() {
+  return `w-${crypto.randomUUID()}`
+}

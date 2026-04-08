@@ -1,5 +1,5 @@
 // Provides read-only accessor functions (getItem, getName, getColor, getStartDate, getEndDate) for the items store.
-import type { Item } from '@/types'
+import type { Item } from '@/types/items'
 import type { Ref } from 'vue'
 
 export function useItemsAccessors(

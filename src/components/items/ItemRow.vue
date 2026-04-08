@@ -1,7 +1,7 @@
 <!-- Renders a single item as a compact row showing its color swatch and name. -->
 <script setup lang="ts">
 import ColorSwatch from '@/components/ColorSwatch.vue'
-import type { Item } from '@/types'
+import type { Item } from '@/types/items'
 
 defineProps<{
   item: Item

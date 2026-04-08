@@ -29,7 +29,7 @@ export interface AppSettings {
  */
 interface ChronicleDB extends DBSchema {
   items: { key: string; value: Item }
-  workspaces: { key: string; value: Collection }
+  collections: { key: string; value: Collection }
   settings: { key: string; value: AppSettings }
   visualizations: { key: string; value: Visualization }
   spaces: { key: string; value: Space }
@@ -48,17 +48,45 @@ let dbPromise: Promise<IDBPDatabase<ChronicleDB>> | null = null
  */
 function getDatabase(): Promise<IDBPDatabase<ChronicleDB>> {
   if (!dbPromise) {
-    dbPromise = openDB<ChronicleDB>('chronicle', 2, {
-      upgrade(db, oldVersion) {
+    dbPromise = openDB<ChronicleDB>('chronicle', 3, {
+      upgrade(db, oldVersion, _newVersion, transaction) {
         if (oldVersion < 1) {
           db.createObjectStore('items')
-          // TODO_: Should be renamed to collections
-          db.createObjectStore('workspaces')
+          db.createObjectStore('collections')
           db.createObjectStore('settings')
         }
         if (oldVersion < 2) {
           db.createObjectStore('visualizations')
           db.createObjectStore('spaces')
+        }
+        if (oldVersion >= 1 && oldVersion < 3) {
+          // Rename 'workspaces' store to 'collections'
+          db.createObjectStore('collections')
+          const rawTx = transaction as unknown as IDBTransaction
+          const workspacesCursor = rawTx.objectStore('workspaces').openCursor()
+          workspacesCursor.onsuccess = (event) => {
+            const cursor = (event.target as IDBRequest<IDBCursorWithValue | null>).result
+            if (cursor) {
+              rawTx.objectStore('collections').put(cursor.value, cursor.key)
+              cursor.continue()
+            }
+          }
+          ;(db as unknown as IDBDatabase).deleteObjectStore('workspaces')
+
+          // Migrate spaces: rename workspaceIds → collectionIds
+          const spacesCursor = rawTx.objectStore('spaces').openCursor()
+          spacesCursor.onsuccess = (event) => {
+            const cursor = (event.target as IDBRequest<IDBCursorWithValue | null>).result
+            if (cursor) {
+              const space = cursor.value
+              if ('workspaceIds' in space) {
+                space.collectionIds = space.workspaceIds
+                delete space.workspaceIds
+                cursor.update(space)
+              }
+              cursor.continue()
+            }
+          }
         }
       },
     })
@@ -92,13 +120,13 @@ export async function removeItem(id: string): Promise<void> {
   await db.delete('items', id)
 }
 
-// === Collections (Workspaces) ===
+// === Collections ===
 
 /** Returns all stored collections as a Record keyed by collection ID. */
 export async function getAllCollections(): Promise<Record<string, Collection>> {
   const db = await getDatabase()
-  const keys = await db.getAllKeys('workspaces')
-  const values = await db.getAll('workspaces')
+  const keys = await db.getAllKeys('collections')
+  const values = await db.getAll('collections')
   return Object.fromEntries(keys.map((key, i) => [key, values[i]!]))
 }
 
@@ -108,13 +136,13 @@ export async function getAllCollections(): Promise<Record<string, Collection>> {
  */
 export async function putCollection(id: string, collection: Collection): Promise<void> {
   const db = await getDatabase()
-  await db.put('workspaces', toRaw(collection), id)
+  await db.put('collections', toRaw(collection), id)
 }
 
 /** Removes a collection from the store by ID. */
 export async function removeCollection(id: string): Promise<void> {
   const db = await getDatabase()
-  await db.delete('workspaces', id)
+  await db.delete('collections', id)
 }
 
 // === Visualizations ===
@@ -169,11 +197,11 @@ export async function removeSpace(id: string): Promise<void> {
 
 // === Clear ===
 
-/** Clears all items, collections (workspaces), settings, visualizations, and spaces from the database. */
+/** Clears all items, collections, settings, visualizations, and spaces from the database. */
 export async function clearDatabase(): Promise<void> {
   const db = await getDatabase()
   await db.clear('items')
-  await db.clear('workspaces')
+  await db.clear('collections')
   await db.clear('settings')
   await db.clear('visualizations')
   await db.clear('spaces')

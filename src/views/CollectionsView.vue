@@ -22,14 +22,14 @@ const sortOptions: { label: string; value: SortOption }[] = [
 watch(
   () => collectionsStore.workspaceIds,
   (ids) => {
-    const routeId = route.params.workspaceId as string
+    const routeId = route.params.collectionId as string
     if (routeId && !ids.includes(routeId)) {
       router.push({ name: 'home' })
     }
   },
 )
 
-const workspaceParam = computed(() => route.params.workspaceId as string)
+const workspaceParam = computed(() => route.params.collectionId as string)
 
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
 
@@ -99,7 +99,7 @@ const workspaceName = computed(() =>
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :workspace-id="activeWorkspace" />
+        <RoadmapPane :collectionId="activeWorkspace" />
       </div>
     </div>
   </v-main>

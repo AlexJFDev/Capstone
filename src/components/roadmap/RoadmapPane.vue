@@ -1,5 +1,5 @@
 <!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu.
-     Accepts either workspaceId (workspace context, enables add-item and drag-to-reorder) or itemIds (read-only,
+     Accepts either collectionId (workspace context, enables add-item and drag-to-reorder) or itemIds (read-only,
      used when rendering inside a SpaceView where items come from multiple workspaces). -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
@@ -14,7 +14,7 @@ import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
-  workspaceId?: string
+  collectionId?: string
   itemIds?: string[]
 }>()
 
@@ -23,7 +23,7 @@ const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
 const workspace = computed(() =>
-  props.workspaceId ? collectionsStore.getWorkspace(props.workspaceId) : null,
+  props.collectionId ? collectionsStore.getWorkspace(props.collectionId) : null,
 )
 
 const {
@@ -57,14 +57,14 @@ const sortedItemIds = computed(() => {
 })
 
 function addItem(itemId: string) {
-  if (!props.workspaceId) return
-  collectionsStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (!props.collectionId) return
+  collectionsStore.addItemToWorkspace(itemId, props.collectionId)
 }
 
 async function newItem() {
-  if (!props.workspaceId) return
+  if (!props.collectionId) return
   const itemId = await userInterface.openItemCreator()
-  if (itemId) collectionsStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (itemId) collectionsStore.addItemToWorkspace(itemId, props.collectionId)
 }
 
 const hoveredItemId = ref<string | null>(null)
@@ -78,7 +78,7 @@ const hoveredItemId = ref<string | null>(null)
         <div class="list-header">
           <div class="list-box" />
           <AddItemMenu
-            v-if="workspaceId && workspace"
+            v-if="collectionId && workspace"
             :excluded-item-ids="workspace.items"
             @add-item="addItem"
             @new-item="newItem"
@@ -97,7 +97,7 @@ const hoveredItemId = ref<string | null>(null)
         <!-- Item List -->
         <RoadmapItemList
           v-model:hovered-item-id="hoveredItemId"
-          :workspace-id="workspaceId"
+          :collectionId="collectionId"
           :list-width="listWidth"
           :item-ids="sortedItemIds"
         />

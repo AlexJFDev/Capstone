@@ -1,4 +1,4 @@
-<!-- Sticky left-side item list for the roadmap with drag-to-reorder, a resize handle, and row hover sync with the chart. When workspaceId is omitted, drag-to-reorder is disabled. -->
+<!-- Sticky left-side item list for the roadmap with drag-to-reorder, a resize handle, and row hover sync with the chart. When collectionId is omitted, drag-to-reorder is disabled. -->
 <script setup lang="ts">
 import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
@@ -15,7 +15,7 @@ import { useCollectionsStore } from '@/stores/collections'
 import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{
-  workspaceId?: string
+  collectionId?: string
   listWidth: number
   itemIds: string[]
   hoveredItemId: string | null
@@ -31,7 +31,7 @@ const itemsStore = useItemsStore()
 const collectionsStore = useCollectionsStore()
 const interfaceStore = useInterfaceStore()
 
-const isDraggable = computed(() => !!props.workspaceId && interfaceStore.sortingIsCustom)
+const isDraggable = computed(() => !!props.collectionId && interfaceStore.sortingIsCustom)
 
 const draggingItemId = ref<string | null>(null)
 const ghostX = ref(0)
@@ -82,13 +82,13 @@ function startDrag(event: MouseEvent, itemId: string) {
       const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
       if (steps === 0) return
 
-      if (!props.workspaceId) return
-      const items = collectionsStore.getWorkspace(props.workspaceId).items
+      if (!props.collectionId) return
+      const items = collectionsStore.getWorkspace(props.collectionId).items
       const currentIndex = items.indexOf(itemId)
       const newIndex = currentIndex + steps
 
       if (newIndex >= 0 && newIndex < items.length) {
-        collectionsStore.moveItem(props.workspaceId, itemId, steps)
+        collectionsStore.moveItem(props.collectionId, itemId, steps)
         accumulatedDelta -= steps * ROW_HEIGHT
       } else {
         accumulatedDelta = 0

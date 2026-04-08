@@ -5,12 +5,12 @@ import { useCollectionsStore } from '@/stores/collections'
 import { isLightColor } from '@/utils/colors'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId: string
 }>()
 
 const collectionsStore = useCollectionsStore()
 
-const workspace = computed(() => collectionsStore.getWorkspace(props.workspaceId))
+const workspace = computed(() => collectionsStore.getWorkspace(props.collectionId))
 const showBorder = computed(() => isLightColor(workspace.value.color))
 </script>
 

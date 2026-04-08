@@ -13,7 +13,7 @@ const router = createRouter({
       component: CollectionsView,
     },
     {
-      path: '/workspace/:workspaceId',
+      path: '/workspace/:collectionId',
       name: 'workspace',
       component: CollectionsView,
     },
@@ -41,9 +41,9 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   if (to.name === 'workspace') {
-    const workspaceId = to.params.workspaceId as string
+    const collectionId = to.params.collectionId as string
     const collectionsStore = useCollectionsStore()
-    if (!collectionsStore.doesCollectionExist(workspaceId)) {
+    if (!collectionsStore.doesCollectionExist(collectionId)) {
       return { name: 'home' }
     }
   }

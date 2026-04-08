@@ -16,16 +16,16 @@ import ColorInput from '../inputs/ColorPicker.vue'
 // External state
 const model = defineModel<boolean>()
 const props = defineProps<{
-  workspaceId?: string
+  collectionId?: string
 }>()
 
 const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Editing state
-const isEditing = computed(() => !!props.workspaceId)
+const isEditing = computed(() => !!props.collectionId)
 const editingWorkspace = computed(() =>
-  isEditing.value ? collectionsStore.getWorkspace(props.workspaceId!) : constructEmptyCollection(),
+  isEditing.value ? collectionsStore.getWorkspace(props.collectionId!) : constructEmptyCollection(),
 )
 
 // Draft state
@@ -53,7 +53,7 @@ async function save() {
   if (!valid) return
 
   if (isEditing.value) {
-    collectionsStore.updateWorkspace(props.workspaceId!, draft.value)
+    collectionsStore.updateWorkspace(props.collectionId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
     const id = generateCollectionId()
@@ -79,7 +79,7 @@ async function deleteWorkspace() {
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {
-    collectionsStore.deleteWorkspace(props.workspaceId!)
+    collectionsStore.deleteWorkspace(props.collectionId!)
     userInterface.closeWorkspaceEditor()
   }
 }

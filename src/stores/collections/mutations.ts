@@ -31,11 +31,11 @@ export function useWorkspacesMutations(
     putWorkspace(id, getWorkspace(id))
   }
 
-  function deleteWorkspace(workspaceId: string) {
-    validateWorkspaceExists(workspaceId)
+  function deleteWorkspace(collectionId: string) {
+    validateWorkspaceExists(collectionId)
 
-    delete workspaces.value[workspaceId]
-    removeWorkspace(workspaceId)
+    delete workspaces.value[collectionId]
+    removeWorkspace(collectionId)
   }
 
   return { addWorkspace, updateWorkspace, deleteWorkspace }

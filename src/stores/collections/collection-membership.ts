@@ -10,16 +10,16 @@ export function useWorkspacesMembership(
   getWorkspace: (id: string) => Workspace,
   validateWorkspaceExists: (id: string) => void,
 ) {
-  function moveItem(workspaceId: string, itemId: string, amount: number) {
-    validateWorkspaceExists(workspaceId)
+  function moveItem(collectionId: string, itemId: string, amount: number) {
+    validateWorkspaceExists(collectionId)
 
     const itemsStore = useItemsStore()
     itemsStore.validateItemExists(itemId)
 
-    const items = workspaces.value[workspaceId]!.items
+    const items = workspaces.value[collectionId]!.items
     const index = items.indexOf(itemId)
     if (index === -1) {
-      throw new Error(`Item "${itemId}" not found in workspace "${workspaceId}"`)
+      throw new Error(`Item "${itemId}" not found in workspace "${collectionId}"`)
     }
 
     const newIndex = index + amount
@@ -32,36 +32,36 @@ export function useWorkspacesMembership(
 
     items.splice(index, 1)
     items.splice(newIndex, 0, itemId)
-    putWorkspace(workspaceId, getWorkspace(workspaceId))
+    putWorkspace(collectionId, getWorkspace(collectionId))
   }
 
-  function addItemToWorkspace(itemId: string, workspaceId: string) {
+  function addItemToWorkspace(itemId: string, collectionId: string) {
     const itemsStore = useItemsStore()
 
     itemsStore.validateItemExists(itemId)
-    validateWorkspaceExists(workspaceId)
+    validateWorkspaceExists(collectionId)
 
-    const workspace = getWorkspace(workspaceId)
+    const workspace = getWorkspace(collectionId)
 
     if (workspace.items.includes(itemId)) return
 
     workspace.items.push(itemId)
-    putWorkspace(workspaceId, getWorkspace(workspaceId))
+    putWorkspace(collectionId, getWorkspace(collectionId))
   }
 
-  function removeItemFromWorkspace(itemId: string, workspaceId: string) {
+  function removeItemFromWorkspace(itemId: string, collectionId: string) {
     const itemsStore = useItemsStore()
 
     itemsStore.validateItemExists(itemId)
-    validateWorkspaceExists(workspaceId)
+    validateWorkspaceExists(collectionId)
 
-    const workspace = getWorkspace(workspaceId)
+    const workspace = getWorkspace(collectionId)
     const index = workspace.items.indexOf(itemId)
 
     if (index === -1) return
 
     workspace.items.splice(index, 1)
-    putWorkspace(workspaceId, getWorkspace(workspaceId))
+    putWorkspace(collectionId, getWorkspace(collectionId))
   }
 
   return { moveItem, addItemToWorkspace, removeItemFromWorkspace }

@@ -79,7 +79,7 @@ async function deleteItem(id: string) {
       <WorkspaceChip
         v-for="wid in workspaceIdsFor(item.id)"
         :key="wid"
-        :workspace-id="wid"
+        :collectionId="wid"
         class="mr-1"
       />
     </template>

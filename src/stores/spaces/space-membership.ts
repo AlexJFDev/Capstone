@@ -11,28 +11,28 @@ export function useSpacesMembership(
   getSpace: (id: string) => Space,
   validateSpaceExists: (id: string) => void,
 ) {
-  function addWorkspaceToSpace(workspaceId: string, spaceId: string) {
+  function addWorkspaceToSpace(collectionId: string, spaceId: string) {
     const collectionsStore = useCollectionsStore()
 
-    collectionsStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateWorkspaceExists(collectionId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
 
-    if (space.workspaceIds.includes(workspaceId)) return
+    if (space.workspaceIds.includes(collectionId)) return
 
-    space.workspaceIds.push(workspaceId)
+    space.workspaceIds.push(collectionId)
     putSpace(spaceId, getSpace(spaceId))
   }
 
-  function removeWorkspaceFromSpace(workspaceId: string, spaceId: string) {
+  function removeWorkspaceFromSpace(collectionId: string, spaceId: string) {
     const collectionsStore = useCollectionsStore()
 
-    collectionsStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateWorkspaceExists(collectionId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
-    const index = space.workspaceIds.indexOf(workspaceId)
+    const index = space.workspaceIds.indexOf(collectionId)
 
     if (index === -1) return
 

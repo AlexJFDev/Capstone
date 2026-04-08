@@ -66,7 +66,7 @@ const spacesStore = useSpacesStore()
     />
     <CollectionEditorPanel
       v-model="userInterface.collectionEditorOpen"
-      :workspace-id="userInterface.editingCollectionId"
+      :collectionId="userInterface.editingCollectionId"
     />
     <CollectionsPanel
       v-model="userInterface.collectionsOpen"

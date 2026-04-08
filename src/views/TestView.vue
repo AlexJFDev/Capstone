@@ -37,7 +37,7 @@ const collectionEditorOpen = ref(false)
 const collectionsOpen = ref(false)
 
 const workspaceIndex = ref(1)
-const workspaceId = computed(() => workspaceIds[workspaceIndex.value]!)
+const collectionId = computed(() => workspaceIds[workspaceIndex.value]!)
 
 function toggle() {
   workspaceIndex.value = (workspaceIndex.value + 1) % workspaceIds.length
@@ -107,7 +107,7 @@ function loadDummyData() {
     </v-container>
 
     <div class="pane">
-      <RoadmapPane v-if="workspaceId" :workspace-id="workspaceId" />
+      <RoadmapPane v-if="collectionId" :collectionId="collectionId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />

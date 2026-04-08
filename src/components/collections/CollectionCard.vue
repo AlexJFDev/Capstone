@@ -8,21 +8,21 @@ import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId: string
 }>()
 
 const router = useRouter()
 const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(() => collectionsStore.getWorkspace(props.workspaceId))
+const workspace = computed(() => collectionsStore.getWorkspace(props.collectionId))
 
 const hovered = ref(false)
 
-const isFavorite = computed(() => userInterface.favoriteCollectionId === props.workspaceId)
+const isFavorite = computed(() => userInterface.favoriteCollectionId === props.collectionId)
 
 function toggleFavorite() {
-  userInterface.setFavoriteCollection(isFavorite.value ? null : props.workspaceId)
+  userInterface.setFavoriteCollection(isFavorite.value ? null : props.collectionId)
 }
 </script>
 
@@ -41,13 +41,13 @@ function toggleFavorite() {
             icon="mdi-pencil"
             density="compact"
             variant="text"
-            @click="userInterface.openCollectionEditor(workspaceId)"
+            @click="userInterface.openCollectionEditor(collectionId)"
           />
           <v-btn
             icon="mdi-open-in-new"
             density="compact"
             variant="text"
-            @click="router.push({ name: 'workspace', params: { workspaceId } })"
+            @click="router.push({ name: 'workspace', params: { collectionId } })"
           />
         </div>
         <v-btn

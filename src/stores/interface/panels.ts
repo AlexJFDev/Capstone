@@ -1,4 +1,4 @@
-// Manages open/close state and editing context for the settings, workspaces, and workspace editor panels.
+// Manages open/close state and editing context for the settings, collections, and collection editor panels.
 import { useToggle } from '@vueuse/core'
 import { ref } from 'vue'
 
@@ -9,8 +9,8 @@ export function useInterfacePanels() {
 
   const collectionEditorOpen = ref(false)
   const editingCollectionId = ref<string | undefined>()
-  function openCollectionEditor(workspaceId: string) {
-    editingCollectionId.value = workspaceId
+  function openCollectionEditor(collectionId: string) {
+    editingCollectionId.value = collectionId
     collectionEditorOpen.value = true
   }
   function openCollectionCreator() {

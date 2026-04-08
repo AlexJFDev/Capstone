@@ -34,9 +34,9 @@ function addWorkspace() {
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
       <WorkspaceCard
-        v-for="workspaceId in sortedWorkspaceIds"
-        :key="workspaceId"
-        :workspace-id="workspaceId"
+        v-for="collectionId in sortedWorkspaceIds"
+        :key="collectionId"
+        :collectionId="collectionId"
       />
 
       <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">

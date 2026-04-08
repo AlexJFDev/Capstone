@@ -60,13 +60,13 @@ const availableWorkspaces = computed(() =>
     .map((id) => ({ id, name: collectionsStore.getWorkspaceName(id) })),
 )
 
-function removeWorkspace(workspaceId: string) {
-  draft.value.workspaceIds = draft.value.workspaceIds.filter((id) => id !== workspaceId)
+function removeWorkspace(collectionId: string) {
+  draft.value.workspaceIds = draft.value.workspaceIds.filter((id) => id !== collectionId)
 }
 
-function addWorkspace(workspaceId: string) {
-  if (!draft.value.workspaceIds.includes(workspaceId)) {
-    draft.value.workspaceIds.push(workspaceId)
+function addWorkspace(collectionId: string) {
+  if (!draft.value.workspaceIds.includes(collectionId)) {
+    draft.value.workspaceIds.push(collectionId)
   }
 }
 
@@ -179,15 +179,15 @@ const nameRules = [required]
         <v-card-text class="d-flex flex-column ga-2">
           <div class="d-flex flex-wrap ga-1">
             <v-chip
-              v-for="workspaceId in draft.workspaceIds"
-              :key="workspaceId"
-              :color="collectionsStore.getWorkspace(workspaceId).color"
+              v-for="collectionId in draft.workspaceIds"
+              :key="collectionId"
+              :color="collectionsStore.getWorkspace(collectionId).color"
               size="small"
               variant="flat"
               closable
-              @click:close="removeWorkspace(workspaceId)"
+              @click:close="removeWorkspace(collectionId)"
             >
-              {{ collectionsStore.getWorkspaceName(workspaceId) }}
+              {{ collectionsStore.getWorkspaceName(collectionId) }}
             </v-chip>
             <span v-if="draft.workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any collections

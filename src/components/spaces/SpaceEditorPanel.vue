@@ -172,6 +172,7 @@ const nameRules = [required]
             <v-chip
               v-for="workspaceId in draft.workspaceIds"
               :key="workspaceId"
+              :color="workspacesStore.getWorkspace(workspaceId).color"
               closable
               @click:close="removeWorkspace(workspaceId)"
             >

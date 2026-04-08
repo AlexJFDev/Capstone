@@ -15,7 +15,7 @@ import { useVisualizationsStore } from '@/stores/visualizations'
 import { useSpacesStore } from '@/stores/spaces'
 import { useRouter } from 'vue-router'
 import { items as dummyItems } from '@/testing/dummy-items'
-import { workspaces as dummyWorkspaces } from '@/testing/dummy-collections'
+import { collections } from '@/testing/dummy-collections'
 import { visualizations as dummyVisualizations } from '@/testing/dummy-visualizations'
 import { spaces as dummySpaces } from '@/testing/dummy-spaces'
 import { clearDatabase } from '@/db'
@@ -36,11 +36,11 @@ const itemViewerOpen = ref(false)
 const collectionEditorOpen = ref(false)
 const collectionsOpen = ref(false)
 
-const workspaceIndex = ref(1)
-const collectionId = computed(() => collectionIds[workspaceIndex.value]!)
+const collectionIndex = ref(1)
+const collectionId = computed(() => collectionIds[collectionIndex.value]!)
 
 function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % collectionIds.length
+  collectionIndex.value = (collectionIndex.value + 1) % collectionIds.length
 }
 
 async function clearAll() {
@@ -54,9 +54,9 @@ function loadDummyData() {
       itemsStore.addItem(id, item)
     }
   }
-  for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
+  for (const [id, collection] of Object.entries(collections)) {
     if (!collectionsStore.doesCollectionExist(id)) {
-      collectionsStore.addCollection(id, workspace)
+      collectionsStore.addCollection(id, collection)
     }
   }
   for (const [id, visualization] of Object.entries(dummyVisualizations)) {
@@ -83,13 +83,13 @@ function loadDummyData() {
           <v-btn @click="itemViewerOpen = true">Item Viewer</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="collectionEditorOpen = true">Workspace Editor</v-btn>
+          <v-btn @click="collectionEditorOpen = true">Collection Editor</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="collectionsOpen = true">Workspaces</v-btn>
+          <v-btn @click="collectionsOpen = true">Collections</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="toggle">Toggle Workspace</v-btn>
+          <v-btn @click="toggle">Toggle Collection</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn @click="interfaceStore.revealSpeedBump('Are you sure?')">Speedbump</v-btn>

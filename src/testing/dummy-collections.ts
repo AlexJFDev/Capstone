@@ -2,7 +2,7 @@
 // oxlint-disable max-lines
 import type { Collection } from '@/types/collections'
 
-export const workspaces: Record<string, Collection> = {
+export const collections: Record<string, Collection> = {
   'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890': {
     name: 'Frontend Development',
     description:

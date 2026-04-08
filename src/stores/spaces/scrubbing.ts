@@ -18,7 +18,7 @@ export function useSpacesScrubbing(
     const space = getSpace(id)
 
     const validWorkspaceIds = space.workspaceIds.filter((workspaceId) =>
-      collectionsStore.doesWorkspaceExist(workspaceId),
+      collectionsStore.doesCollectionExist(workspaceId),
     )
     const validVisualizationIds = space.visualizationIds.filter((visualizationId) =>
       visualizationsStore.doesVisualizationExist(visualizationId),

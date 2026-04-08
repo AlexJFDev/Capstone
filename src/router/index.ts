@@ -43,7 +43,7 @@ router.beforeEach((to) => {
   if (to.name === 'workspace') {
     const workspaceId = to.params.workspaceId as string
     const collectionsStore = useCollectionsStore()
-    if (!collectionsStore.doesWorkspaceExist(workspaceId)) {
+    if (!collectionsStore.doesCollectionExist(workspaceId)) {
       return { name: 'home' }
     }
   }

@@ -55,7 +55,7 @@ function loadDummyData() {
     }
   }
   for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
-    if (!collectionsStore.doesWorkspaceExist(id)) {
+    if (!collectionsStore.doesCollectionExist(id)) {
       collectionsStore.addWorkspace(id, workspace)
     }
   }

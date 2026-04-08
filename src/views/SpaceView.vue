@@ -64,7 +64,7 @@ const spaceItemIds = computed(() => {
   const seen = new Set<string>()
   const ids: string[] = []
   for (const workspaceId of space.value.workspaceIds) {
-    if (!collectionsStore.doesWorkspaceExist(workspaceId)) continue
+    if (!collectionsStore.doesCollectionExist(workspaceId)) continue
     for (const itemId of collectionsStore.getWorkspace(workspaceId).items) {
       if (!seen.has(itemId)) {
         seen.add(itemId)

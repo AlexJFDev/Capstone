@@ -31,7 +31,7 @@ watch(
 
 const workspaceParam = computed(() => route.params.workspaceId as string)
 
-const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
+const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
 
 const workspaceName = computed(() =>
   activeWorkspace.value ? collectionsStore.getWorkspaceName(activeWorkspace.value) : '',

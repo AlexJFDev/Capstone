@@ -13,7 +13,7 @@ const model = defineModel<boolean>()
 const userInterface = useInterfaceStore()
 
 const sortedWorkspaceIds = computed(() => {
-  const favorite = userInterface.favoriteWorkspaceId
+  const favorite = userInterface.favoriteCollectionId
   if (!favorite || !props.workspaceIds.includes(favorite)) return props.workspaceIds
   return [favorite, ...props.workspaceIds.filter((id) => id !== favorite)]
 })

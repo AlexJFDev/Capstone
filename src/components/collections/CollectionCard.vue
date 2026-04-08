@@ -19,10 +19,10 @@ const workspace = computed(() => collectionsStore.getWorkspace(props.workspaceId
 
 const hovered = ref(false)
 
-const isFavorite = computed(() => userInterface.favoriteWorkspaceId === props.workspaceId)
+const isFavorite = computed(() => userInterface.favoriteCollectionId === props.workspaceId)
 
 function toggleFavorite() {
-  userInterface.setFavoriteWorkspace(isFavorite.value ? null : props.workspaceId)
+  userInterface.setFavoriteCollection(isFavorite.value ? null : props.workspaceId)
 }
 </script>
 

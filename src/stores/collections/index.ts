@@ -12,9 +12,9 @@ import { useWorkspacesScrubbing } from './scrubbing'
 export const useCollectionsStore = defineStore('workspaces', () => {
   const workspaces = ref<Record<string, Workspace>>({})
   const workspaceIds = computed(() => Object.keys(workspaces.value))
-  const hasWorkspaces = computed(() => workspaceIds.value.length > 0)
+  const hasCollections = computed(() => workspaceIds.value.length > 0)
 
-  const { doesWorkspaceExist, validateWorkspaceExists } = useWorkspacesValidation(workspaces)
+  const { doesCollectionExist, validateWorkspaceExists } = useWorkspacesValidation(workspaces)
   const { initializeWorkspaces } = useWorkspacesInitialization(workspaces)
   const { getWorkspace, getWorkspaceName } = useWorkspacesAccessors(
     workspaces,
@@ -38,9 +38,9 @@ export const useCollectionsStore = defineStore('workspaces', () => {
 
   return {
     workspaceIds,
-    hasWorkspaces,
+    hasCollections,
     initializeWorkspaces,
-    doesWorkspaceExist,
+    doesCollectionExist,
     validateWorkspaceExists,
     getWorkspace,
     getWorkspaceName,

@@ -1,10 +1,10 @@
-// Loads persisted app settings into the interface store on startup and exposes setFavoriteWorkspace.
+// Loads persisted app settings into the interface store on startup and exposes setFavoriteCollection.
 import { getSettings, makeDefaultSettings, putSettings } from '@/db'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
 import type { Ref } from 'vue'
 
 export function useInterfaceInitialization(
-  favoriteWorkspaceId: Ref<string | null>,
+  favoriteCollectionId: Ref<string | null>,
   pixelsPerDay: Ref<number>,
   gridInterval: Ref<RoadmapInterval>,
   roadmapListWidth: Ref<number>,
@@ -12,16 +12,16 @@ export function useInterfaceInitialization(
   async function initializeInterface() {
     const settings = (await getSettings()) || makeDefaultSettings()
 
-    favoriteWorkspaceId.value = settings.favoriteWorkspaceId
+    favoriteCollectionId.value = settings.favoriteCollectionId
     pixelsPerDay.value = settings.pixelsPerDay
     gridInterval.value = settings.gridInterval
     roadmapListWidth.value = settings.roadmapListWidth
   }
 
-  async function setFavoriteWorkspace(id: string | null) {
-    favoriteWorkspaceId.value = id
-    await putSettings({ favoriteWorkspaceId: id })
+  async function setFavoriteCollection(id: string | null) {
+    favoriteCollectionId.value = id
+    await putSettings({ favoriteCollectionId: id })
   }
 
-  return { initializeInterface, setFavoriteWorkspace }
+  return { initializeInterface, setFavoriteCollection }
 }

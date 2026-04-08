@@ -21,16 +21,16 @@ export type { SortOption, SortDirection } from './sorting'
 
 // oxlint-disable-next-line max-lines-per-function
 export const useInterfaceStore = defineStore('interface', () => {
-  const favoriteWorkspaceId = ref<string | null>(null)
-  const defaultWorkspaceId = computed(() => {
+  const favoriteCollectionId = ref<string | null>(null)
+  const defaultCollectionId = computed(() => {
     const collectionsStore = useCollectionsStore()
 
-    if (!collectionsStore.hasWorkspaces) return
+    if (!collectionsStore.hasCollections) return
     if (
-      favoriteWorkspaceId.value &&
-      collectionsStore.doesWorkspaceExist(favoriteWorkspaceId.value)
+      favoriteCollectionId.value &&
+      collectionsStore.doesCollectionExist(favoriteCollectionId.value)
     ) {
-      return favoriteWorkspaceId.value
+      return favoriteCollectionId.value
     }
     return collectionsStore.workspaceIds[0]
   })
@@ -44,8 +44,8 @@ export const useInterfaceStore = defineStore('interface', () => {
     gridInterval,
     roadmapListWidth,
   )
-  const { initializeInterface, setFavoriteWorkspace } = useInterfaceInitialization(
-    favoriteWorkspaceId,
+  const { initializeInterface, setFavoriteCollection } = useInterfaceInitialization(
+    favoriteCollectionId,
     pixelsPerDay,
     gridInterval,
     roadmapListWidth,
@@ -59,10 +59,10 @@ export const useInterfaceStore = defineStore('interface', () => {
   const spacePanels = useInterfaceSpacePanels()
 
   return {
-    favoriteWorkspaceId,
-    defaultWorkspaceId,
+    favoriteCollectionId,
+    defaultCollectionId,
     initializeInterface,
-    setFavoriteWorkspace,
+    setFavoriteCollection,
     activeVisualizationId,
     setActiveVisualization,
     roadmapScale,

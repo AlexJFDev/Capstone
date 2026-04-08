@@ -1,4 +1,4 @@
-// Removes stale workspace and visualization IDs (referencing deleted entities) from space membership lists and persists the cleaned space.
+// Removes stale collection and visualization IDs (referencing deleted entities) from space membership lists and persists the cleaned space.
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'

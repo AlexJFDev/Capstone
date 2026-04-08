@@ -1,4 +1,4 @@
-// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, settings, visualizations, and spaces.
+// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, collections, settings, visualizations, and spaces.
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item } from '@/types/items'
 import type { Collection } from '@/types/collections'
@@ -52,6 +52,7 @@ function getDatabase(): Promise<IDBPDatabase<ChronicleDB>> {
       upgrade(db, oldVersion) {
         if (oldVersion < 1) {
           db.createObjectStore('items')
+          // TODO_: Should be renamed to collections
           db.createObjectStore('workspaces')
           db.createObjectStore('settings')
         }
@@ -91,10 +92,10 @@ export async function removeItem(id: string): Promise<void> {
   await db.delete('items', id)
 }
 
-// === Workspaces ===
+// === Collections (Workspaces) ===
 
-/** Returns all stored workspaces as a Record keyed by workspace ID. */
-export async function getAllWorkspaces(): Promise<Record<string, Collection>> {
+/** Returns all stored collections as a Record keyed by collection ID. */
+export async function getAllCollections(): Promise<Record<string, Collection>> {
   const db = await getDatabase()
   const keys = await db.getAllKeys('workspaces')
   const values = await db.getAll('workspaces')
@@ -102,16 +103,16 @@ export async function getAllWorkspaces(): Promise<Record<string, Collection>> {
 }
 
 /**
- * Writes a workspace to the store.
+ * Writes a collection to the store.
  * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
  */
-export async function putWorkspace(id: string, workspace: Collection): Promise<void> {
+export async function putCollection(id: string, workspace: Collection): Promise<void> {
   const db = await getDatabase()
   await db.put('workspaces', toRaw(workspace), id)
 }
 
-/** Removes a workspace from the store by ID. */
-export async function removeWorkspace(id: string): Promise<void> {
+/** Removes a collection from the store by ID. */
+export async function removeCollection(id: string): Promise<void> {
   const db = await getDatabase()
   await db.delete('workspaces', id)
 }

@@ -1,5 +1,5 @@
-// Provides moveItem, addItemToCollection, and removeItemFromCollection operations for managing workspace item membership.
-import { putWorkspace } from '@/db'
+// Provides moveItem, addItemToCollection, and removeItemFromCollection operations for managing collection item membership.
+import { putCollection } from '@/db'
 import type { Collection } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
@@ -32,7 +32,7 @@ export function useCollectionsMembership(
 
     items.splice(index, 1)
     items.splice(newIndex, 0, itemId)
-    putWorkspace(collectionId, getCollection(collectionId))
+    putCollection(collectionId, getCollection(collectionId))
   }
 
   function addItemToCollection(itemId: string, collectionId: string) {
@@ -46,7 +46,7 @@ export function useCollectionsMembership(
     if (collection.items.includes(itemId)) return
 
     collection.items.push(itemId)
-    putWorkspace(collectionId, getCollection(collectionId))
+    putCollection(collectionId, getCollection(collectionId))
   }
 
   function removeItemFromCollection(itemId: string, collectionId: string) {
@@ -61,7 +61,7 @@ export function useCollectionsMembership(
     if (index === -1) return
 
     collection.items.splice(index, 1)
-    putWorkspace(collectionId, getCollection(collectionId))
+    putCollection(collectionId, getCollection(collectionId))
   }
 
   return { moveItem, addItemToCollection, removeItemFromCollection }

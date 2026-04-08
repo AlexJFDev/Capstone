@@ -1,4 +1,4 @@
-<!-- Renders a small colored chip for a workspace, adding a subtle border when the workspace color is very light. -->
+<!-- Renders a small colored chip for a collection, adding a subtle border when the collection color is very light. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCollectionsStore } from '@/stores/collections'

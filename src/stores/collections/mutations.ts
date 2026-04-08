@@ -1,5 +1,5 @@
-// Provides addCollection, updateCollection, and deleteCollection mutations for the workspaces store, with validation and DB persistence.
-import { putWorkspace, removeWorkspace } from '@/db'
+// Provides addCollection, updateCollection, and deleteCollection mutations for the collections store, with validation and DB persistence.
+import { putCollection, removeCollection } from '@/db'
 import { validateCollectionId, type Collection } from '@/types/collections'
 import { validateColor } from '@/utils/colors'
 import type { Ref } from 'vue'
@@ -13,7 +13,7 @@ export function useCollectionsMutations(
   function addCollection(id: string, collection: Collection) {
     validateCollectionId(id)
     collections.value[id] = collection
-    putWorkspace(id, collections.value[id]!)
+    putCollection(id, collections.value[id]!)
   }
 
   function updateCollection(id: string, updates: Partial<Collection>) {
@@ -28,14 +28,14 @@ export function useCollectionsMutations(
     }
 
     Object.assign(collections.value[id]!, updates)
-    putWorkspace(id, getCollection(id))
+    putCollection(id, getCollection(id))
   }
 
   function deleteCollection(collectionId: string) {
     validateCollectionExists(collectionId)
 
     delete collections.value[collectionId]
-    removeWorkspace(collectionId)
+    removeCollection(collectionId)
   }
 
   return { addCollection, updateCollection, deleteCollection }

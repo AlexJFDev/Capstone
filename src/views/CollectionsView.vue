@@ -1,4 +1,4 @@
-<!-- Page view that displays the active workspace's roadmap, or an empty state when no workspaces exist. -->
+<!-- Page view that displays the active collection's roadmap, or an empty state when no collections exist. -->
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,7 +18,7 @@ const sortOptions: { label: string; value: SortOption }[] = [
   { label: 'By name', value: 'name' },
 ]
 
-// Handle workspace being deleted while viewing
+// Handle collection being deleted while viewing
 watch(
   () => collectionsStore.collectionIds,
   (ids) => {

@@ -1,4 +1,4 @@
-<!-- Right-side drawer panel for creating or editing a workspace's name, description, color, and item list. -->
+<!-- Right-side drawer panel for creating or editing a collection's name, description, color, and item list. -->
 <script setup lang="ts">
 import {
   areCollectionsEqual,

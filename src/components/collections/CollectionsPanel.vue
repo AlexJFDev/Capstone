@@ -1,4 +1,4 @@
-<!-- Right-side drawer listing all workspace cards sorted with the favorite first, plus a button to create a new collection. -->
+<!-- Right-side drawer listing all collection cards sorted with the favorite first, plus a button to create a new collection. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import CollectionCard from './CollectionCard.vue'

@@ -1,4 +1,4 @@
-<!-- Card displaying a workspace's name, description, and item list with hover actions to edit, open, or toggle as favorite. -->
+<!-- Card displaying a collection's name, description, and item list with hover actions to edit, open, or toggle as favorite. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'

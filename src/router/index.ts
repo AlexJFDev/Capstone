@@ -1,4 +1,4 @@
-// Defines application routes (home, workspace, space, items, and dev-only test) and guards against navigating to deleted workspaces or spaces.
+// Defines application routes (home, collection, space, items, and dev-only test) and guards against navigating to deleted collections or spaces.
 import { createRouter, createWebHistory } from 'vue-router'
 import CollectionsView from '../views/CollectionsView.vue'
 import { useCollectionsStore } from '@/stores/collections'

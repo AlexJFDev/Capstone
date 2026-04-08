@@ -60,7 +60,7 @@ const availableWorkspaces = computed(() =>
     .map((id) => ({ id, name: collectionsStore.getCollectionName(id) })),
 )
 
-function removeWorkspace(collectionId: string) {
+function removeCollection(collectionId: string) {
   draft.value.collectionIds = draft.value.collectionIds.filter((id) => id !== collectionId)
 }
 
@@ -185,7 +185,7 @@ const nameRules = [required]
               size="small"
               variant="flat"
               closable
-              @click:close="removeWorkspace(collectionId)"
+              @click:close="removeCollection(collectionId)"
             >
               {{ collectionsStore.getCollectionName(collectionId) }}
             </v-chip>

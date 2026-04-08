@@ -1,4 +1,4 @@
-// Static fixture data: a set of dummy Space records referencing dummy workspaces and visualizations, used for development and testing.
+// Static fixture data: a set of dummy Space records referencing dummy collections and visualizations, used for development and testing.
 import type { Space } from '@/types/spaces'
 
 export const spaces: Record<string, Space> = {

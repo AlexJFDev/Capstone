@@ -1,4 +1,4 @@
-// Defines workspace type factory, equality, ID validation, and generation helpers.
+// Defines collection type factory, equality, ID validation, and generation helpers.
 
 import { generateRandomColor } from '@/utils/colors'
 

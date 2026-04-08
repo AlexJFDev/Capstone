@@ -1,4 +1,4 @@
-<!-- Right-side drawer panel for creating or editing an item's details, schedule, color, and workspace memberships. -->
+<!-- Right-side drawer panel for creating or editing an item's details, schedule, color, and collection memberships. -->
 <script setup lang="ts">
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types/items'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
@@ -53,7 +53,7 @@ function addCollection(wid: string) {
   }
 }
 
-function removeWorkspace(wid: string) {
+function removeCollection(wid: string) {
   workspaceDraft.value = workspaceDraft.value.filter((w) => w !== wid)
 }
 
@@ -237,7 +237,7 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
               size="small"
               variant="flat"
               closable
-              @click:close="removeWorkspace(wid)"
+              @click:close="removeCollection(wid)"
             >
               {{ collectionsStore.getCollectionName(wid) }}
             </v-chip>

@@ -24,7 +24,7 @@ const userInterface = useInterfaceStore()
 
 // Editing state
 const isEditing = computed(() => !!props.collectionId)
-const editingWorkspace = computed(() =>
+const editingCollection = computed(() =>
   isEditing.value
     ? collectionsStore.getCollection(props.collectionId!)
     : constructEmptyCollection(),
@@ -43,7 +43,7 @@ function setDraft(collection: Collection) {
 
 watch(model, async (isOpen) => {
   if (isOpen) {
-    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyCollection())
+    setDraft(isEditing.value ? editingCollection.value : constructEmptyCollection())
     await nextTick()
     formRef.value?.resetValidation()
   }

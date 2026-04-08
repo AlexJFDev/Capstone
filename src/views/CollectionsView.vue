@@ -31,16 +31,16 @@ watch(
 
 const workspaceParam = computed(() => route.params.collectionId as string)
 
-const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
+const activeCollection = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
 
 const workspaceName = computed(() =>
-  activeWorkspace.value ? collectionsStore.getCollectionName(activeWorkspace.value) : '',
+  activeCollection.value ? collectionsStore.getCollectionName(activeCollection.value) : '',
 )
 </script>
 
 <template>
   <v-main style="height: 100vh; overflow: hidden">
-    <div v-if="!activeWorkspace" class="empty-state">
+    <div v-if="!activeCollection" class="empty-state">
       <v-icon size="48" color="medium-emphasis">mdi-view-dashboard-outline</v-icon>
       <p class="text-h6 text-medium-emphasis">No workspaces yet</p>
       <v-btn variant="tonal" prepend-icon="mdi-plus" @click="userInterface.openCollectionCreator()">
@@ -48,7 +48,7 @@ const workspaceName = computed(() =>
       </v-btn>
     </div>
 
-    <div v-if="activeWorkspace" class="view">
+    <div v-if="activeCollection" class="view">
       <div class="view-header">
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-chart-gantt</v-icon>
@@ -99,7 +99,7 @@ const workspaceName = computed(() =>
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :collection-id="activeWorkspace" />
+        <RoadmapPane :collection-id="activeCollection" />
       </div>
     </div>
   </v-main>

@@ -10,7 +10,7 @@ export interface Workspace {
   items: string[]
 }
 
-export function constructEmptyWorkspace(): Workspace {
+export function constructEmptyCollection(): Workspace {
   return {
     name: '',
     description: '',
@@ -19,7 +19,7 @@ export function constructEmptyWorkspace(): Workspace {
   }
 }
 
-export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
+export function areCollectionsEqual(w1: Workspace, w2: Workspace): boolean {
   if (w1 === w2) return true
 
   return (
@@ -31,17 +31,17 @@ export function areWorkspacesEqual(w1: Workspace, w2: Workspace): boolean {
   )
 }
 
-const WORKSPACE_UUID_REGEX =
+const COLLECTION_UUID_REGEX =
   /^w-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
-export function isValidWorkspaceId(id: string): boolean {
-  return WORKSPACE_UUID_REGEX.test(id)
+export function isValidCollectionId(id: string): boolean {
+  return COLLECTION_UUID_REGEX.test(id)
 }
-export function validateWorkspaceId(id: string) {
-  if (!isValidWorkspaceId(id)) {
+export function validateCollectionId(id: string) {
+  if (!isValidCollectionId(id)) {
     throw new Error(`Invalid workspace id: "${id}"`)
   }
 }
 
-export function generateWorkspaceId() {
+export function generateCollectionId() {
   return `w-${crypto.randomUUID()}`
 }

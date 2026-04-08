@@ -1,6 +1,6 @@
 // Provides addWorkspace, updateWorkspace, and deleteWorkspace mutations for the workspaces store, with validation and DB persistence.
 import { putWorkspace, removeWorkspace } from '@/db'
-import { validateWorkspaceId, type Workspace } from '@/types/collections'
+import { validateCollectionId, type Workspace } from '@/types/collections'
 import { validateColor } from '@/utils/colors'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
@@ -11,7 +11,7 @@ export function useWorkspacesMutations(
   validateWorkspaceExists: (id: string) => void,
 ) {
   function addWorkspace(id: string, workspace: Workspace) {
-    validateWorkspaceId(id)
+    validateCollectionId(id)
     workspaces.value[id] = workspace
     putWorkspace(id, workspaces.value[id]!)
   }

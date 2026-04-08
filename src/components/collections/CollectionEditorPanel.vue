@@ -1,9 +1,9 @@
 <!-- Right-side drawer panel for creating or editing a workspace's name, description, color, and item list. -->
 <script setup lang="ts">
 import {
-  areWorkspacesEqual,
-  constructEmptyWorkspace,
-  generateWorkspaceId,
+  areCollectionsEqual,
+  constructEmptyCollection,
+  generateCollectionId,
   type Workspace,
 } from '@/types/collections'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
@@ -25,13 +25,13 @@ const userInterface = useInterfaceStore()
 // Editing state
 const isEditing = computed(() => !!props.workspaceId)
 const editingWorkspace = computed(() =>
-  isEditing.value ? collectionsStore.getWorkspace(props.workspaceId!) : constructEmptyWorkspace(),
+  isEditing.value ? collectionsStore.getWorkspace(props.workspaceId!) : constructEmptyCollection(),
 )
 
 // Draft state
-const draft = ref<Workspace>(constructEmptyWorkspace())
-const original = ref<Workspace>(constructEmptyWorkspace())
-const changesMade = computed(() => !areWorkspacesEqual(draft.value, original.value))
+const draft = ref<Workspace>(constructEmptyCollection())
+const original = ref<Workspace>(constructEmptyCollection())
+const changesMade = computed(() => !areCollectionsEqual(draft.value, original.value))
 
 // Draft management
 function setDraft(workspace: Workspace) {
@@ -41,7 +41,7 @@ function setDraft(workspace: Workspace) {
 
 watch(model, async (isOpen) => {
   if (isOpen) {
-    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyWorkspace())
+    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyCollection())
     await nextTick()
     formRef.value?.resetValidation()
   }
@@ -56,7 +56,7 @@ async function save() {
     collectionsStore.updateWorkspace(props.workspaceId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
-    const id = generateWorkspaceId()
+    const id = generateCollectionId()
     collectionsStore.addWorkspace(id, draft.value)
     userInterface.closeWorkspaceEditor()
   }

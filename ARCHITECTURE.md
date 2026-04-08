@@ -26,16 +26,25 @@ Key design choices reflected here:
 
 ```
 src/
-├── types.ts                    ← Core interfaces and ID utilities
-├── db/index.ts                 ← All IndexedDB access (items, workspaces, settings)
+├── types/
+│   ├── items.ts                ← Item interface and helpers
+│   ├── workspaces.ts           ← Workspace interface and helpers
+│   ├── spaces.ts               ← Space interface and helpers
+│   ├── visualizations.ts       ← Visualization interface, type union, and helpers
+│   └── settings/
+│       ├── roadmap.ts          ← RoadmapSettings (pixelsPerDay, gridInterval, roadmapListWidth, sort)
+│       └── backlog.ts          ← BacklogSettings (selectedFields, sort)
+├── db/index.ts                 ← All IndexedDB access (items, workspaces, settings, visualizations, spaces)
 ├── main.ts                     ← App entry point; mounts Vue, initialises stores
 ├── App.vue                     ← Root layout; sidebar nav, router-view
-├── router/index.ts             ← Route definitions and workspace-ID guard
+├── router/index.ts             ← Route definitions; guards for workspace-ID and space-ID
 ├── plugins/vuetify.ts          ← Vuetify theme/component registration
 │
 ├── stores/
 │   ├── items/                  ← Item CRUD and queries
 │   ├── workspaces/             ← Workspace CRUD, membership, scrubbing
+│   ├── spaces/                 ← Space CRUD, visualization/workspace membership, scrubbing
+│   ├── visualizations/         ← Visualization CRUD
 │   └── interface/              ← UI state (panels, sorting, roadmap settings, speedbump)
 │
 ├── components/
@@ -84,8 +93,12 @@ The workspaces store has two extra modules:
 - `workspace-membership.ts` — `addItemToWorkspace()`, `removeItemFromWorkspace()`, `moveItem()`
 - `scrubbing.ts` — removes stale item IDs from workspaces (called after item deletion)
 
+The spaces store has two extra modules:
+- `space-membership.ts` — `addWorkspaceToSpace()`, `removeWorkspaceFromSpace()`, `addVisualizationToSpace()`, `removeVisualizationFromSpace()`
+- `scrubbing.ts` — removes stale workspace/visualization IDs from spaces
+
 The interface store sub-modules:
-- `roadmap.ts` — `pixelsPerDay`, `gridInterval`, `roadmapListWidth` + update actions
+- `roadmap.ts` — `pixelsPerDay`, `gridInterval`, `roadmapListWidth` + update actions; when `activeVisualizationId` is set, settings are read from and saved to that visualization instead of global AppSettings
 - `sorting.ts` — sort field and direction for item lists
 - `panels.ts` — open/close state for workspace/settings side panels
 - `item-panels.ts` — open/close and mode (view vs edit) for the item detail panel
@@ -94,12 +107,14 @@ The interface store sub-modules:
 
 ## Persistence (`src/db/index.ts`)
 
-Three IndexedDB object stores:
+Five IndexedDB object stores:
 - `items` — keyed by item ID
 - `workspaces` — keyed by workspace ID
 - `settings` — single record keyed `"app"` (`AppSettings`)
+- `visualizations` — keyed by visualization ID
+- `spaces` — keyed by space ID
 
-`AppSettings` persists: `favoriteWorkspaceId`, `pixelsPerDay`, `gridInterval`, `roadmapListWidth`.
+`AppSettings` persists: `favoriteWorkspaceId`, `pixelsPerDay`, `gridInterval`, `roadmapListWidth`. These global roadmap settings are superseded by per-visualization `RoadmapSettings` when a visualization is active in `SpaceView`.
 
 `toRaw()` is called before writing Vue reactive objects to IndexedDB (IndexedDB cannot serialise Proxy objects).
 
@@ -139,7 +154,7 @@ Supporting files:
 | Add a space action (CRUD) | `src/stores/spaces/mutations.ts` or `space-membership.ts` |
 | Add a visualization action (CRUD) | `src/stores/visualizations/mutations.ts` |
 | Add a confirmation dialog | `src/stores/interface/speedbump.ts` + `src/SpeedbumpDialog.vue` |
-| Add test fixtures | `src/testing/` — `dummy-items.ts`, `dummy-workspaces.ts`, `dummy-spaces.ts`, or `dummy-visualizations.ts` |
+| Add test fixtures | `src/testing/dummy-items.ts`, `dummy-workspaces.ts`, `dummy-spaces.ts`, or `dummy-visualizations.ts` |
 
 ## Validation convention
 

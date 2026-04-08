@@ -69,22 +69,6 @@ function addWorkspace(workspaceId: string) {
   }
 }
 
-// Visualizations
-const availableVisualizationIds = computed(() =>
-  visualizationsStore.visualizationIds.filter((id) => !draft.value.visualizationIds.includes(id)),
-)
-
-function removeVisualization(visualizationId: string) {
-  const index = draft.value.visualizationIds.indexOf(visualizationId)
-  draft.value.visualizationIds.splice(index, 1)
-}
-
-function addVisualization(visualizationId: string) {
-  if (!draft.value.visualizationIds.includes(visualizationId)) {
-    draft.value.visualizationIds.push(visualizationId)
-  }
-}
-
 // Actions
 async function save() {
   const { valid } = await formRef.value!.validate()
@@ -184,14 +168,16 @@ const nameRules = [required]
         <v-card-title class="text-subtitle-2">Collections</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
-          <v-chip
-            v-for="workspaceId in draft.workspaceIds"
-            :key="workspaceId"
-            closable
-            @click:close="removeWorkspace(workspaceId)"
-          >
-            {{ workspacesStore.getWorkspaceName(workspaceId) }}
-          </v-chip>
+          <div class="d-flex flex-wrap ga-2">
+            <v-chip
+              v-for="workspaceId in draft.workspaceIds"
+              :key="workspaceId"
+              closable
+              @click:close="removeWorkspace(workspaceId)"
+            >
+              {{ workspacesStore.getWorkspaceName(workspaceId) }}
+            </v-chip>
+          </div>
           <v-select
             v-if="availableWorkspaceIds.length > 0"
             label="Add collection"
@@ -215,35 +201,13 @@ const nameRules = [required]
       <v-card variant="outlined">
         <v-card-title class="text-subtitle-2">Visualizations</v-card-title>
         <v-divider />
-        <v-card-text class="d-flex flex-column ga-2">
-          <v-chip
-            v-for="visualizationId in draft.visualizationIds"
-            :key="visualizationId"
-            closable
-            @click:close="removeVisualization(visualizationId)"
-          >
-            {{ visualizationsStore.getVisualizationName(visualizationId) }}
-          </v-chip>
-          <v-select
-            v-if="availableVisualizationIds.length > 0"
-            label="Add visualization"
-            variant="outlined"
-            density="compact"
-            hide-details
-            :items="
-              availableVisualizationIds.map((id) => ({
-                title: visualizationsStore.getVisualizationName(id),
-                value: id,
-              }))
-            "
-            @update:model-value="addVisualization"
-          />
-          <p
-            v-else-if="draft.visualizationIds.length === 0"
-            class="text-medium-emphasis text-body-2"
-          >
-            No visualizations available
-          </p>
+        <v-card-text>
+          <div v-if="draft.visualizationIds.length > 0" class="d-flex flex-wrap ga-2">
+            <v-chip v-for="visualizationId in draft.visualizationIds" :key="visualizationId">
+              {{ visualizationsStore.getVisualizationName(visualizationId) }}
+            </v-chip>
+          </div>
+          <p v-else class="text-medium-emphasis text-body-2">No visualizations</p>
         </v-card-text>
       </v-card>
     </v-form>

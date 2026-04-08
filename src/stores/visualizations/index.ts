@@ -14,14 +14,13 @@ export const useVisualizationsStore = defineStore('visualizations', () => {
   const { doesVisualizationExist, validateVisualizationExists } =
     useVisualizationsValidation(visualizations)
   const { initializeVisualizations } = useVisualizationsInitialization(visualizations)
-  const {
+  const { getVisualization, getVisualizationName, getVisualizationType, getVisualizationSettings } =
+    useVisualizationsAccessors(visualizations, validateVisualizationExists)
+  const { addVisualization, updateVisualization, deleteVisualization } = useVisualizationsMutations(
+    visualizations,
     getVisualization,
-    getVisualizationName,
-    getVisualizationType,
-    getVisualizationSettings,
-  } = useVisualizationsAccessors(visualizations, validateVisualizationExists)
-  const { addVisualization, updateVisualization, deleteVisualization } =
-    useVisualizationsMutations(visualizations, getVisualization, validateVisualizationExists)
+    validateVisualizationExists,
+  )
 
   return {
     visualizationIds,

@@ -1,5 +1,9 @@
 // Provides read-only accessor functions (getVisualization, getVisualizationName, getVisualizationType, getVisualizationSettings) for the visualizations store.
-import type { Visualization, VisualizationSettings, VisualizationType } from '@/types/visualizations'
+import type {
+  Visualization,
+  VisualizationSettings,
+  VisualizationType,
+} from '@/types/visualizations'
 import type { Ref } from 'vue'
 
 export function useVisualizationsAccessors(

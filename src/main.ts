@@ -7,7 +7,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
-import { useWorkspacesStore } from './stores/workspaces'
+import { useCollectionsStore } from './stores/collections'
 import { useItemsStore } from './stores/items'
 import { useInterfaceStore } from './stores/interface'
 
@@ -16,15 +16,15 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 
 await Promise.all([
-  workspacesStore.initializeWorkspaces(),
+  collectionsStore.initializeCollections(),
   useItemsStore().initializeItems(),
   useInterfaceStore().initializeInterface(),
 ])
 
-workspacesStore.scrubAllWorkspaces()
+collectionsStore.scrubAllCollections()
 
 app.use(router)
 app.mount('#app')

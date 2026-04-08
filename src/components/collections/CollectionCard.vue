@@ -1,35 +1,33 @@
-<!-- Card displaying a workspace's name, description, and item list with hover actions to edit, open, or toggle as favorite. -->
+<!-- Card displaying a collection's name, description, and item list with hover actions to edit or toggle as favorite. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId: string
 }>()
 
-const router = useRouter()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const collection = computed(() => collectionsStore.getCollection(props.collectionId))
 
 const hovered = ref(false)
 
-const isFavorite = computed(() => userInterface.favoriteWorkspaceId === props.workspaceId)
+const isFavorite = computed(() => userInterface.favoriteCollectionId === props.collectionId)
 
 function toggleFavorite() {
-  userInterface.setFavoriteWorkspace(isFavorite.value ? null : props.workspaceId)
+  userInterface.setFavoriteCollection(isFavorite.value ? null : props.collectionId)
 }
 </script>
 
 <template>
   <v-card
-    :title="workspace.name"
-    :color="workspace.color"
+    :title="collection.name"
+    :color="collection.color"
     :elevation="hovered ? 8 : 2"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
@@ -41,13 +39,7 @@ function toggleFavorite() {
             icon="mdi-pencil"
             density="compact"
             variant="text"
-            @click="userInterface.openWorkspaceEditor(workspaceId)"
-          />
-          <v-btn
-            icon="mdi-open-in-new"
-            density="compact"
-            variant="text"
-            @click="router.push({ name: 'workspace', params: { workspaceId } })"
+            @click="userInterface.openCollectionEditor(collectionId)"
           />
         </div>
         <v-btn
@@ -63,8 +55,8 @@ function toggleFavorite() {
     </template>
 
     <v-card-text class="d-flex ga-8 flex-column">
-      <MarkdownRenderer :content="workspace.description" />
-      <ItemList v-model="workspace.items" />
+      <MarkdownRenderer :content="collection.description" />
+      <ItemList v-model="collection.items" />
     </v-card-text>
   </v-card>
 </template>

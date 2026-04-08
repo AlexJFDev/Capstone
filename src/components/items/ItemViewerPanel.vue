@@ -1,10 +1,10 @@
-<!-- Right-side drawer panel for viewing an item's details, schedule, color, and workspace memberships in read-only mode. -->
+<!-- Right-side drawer panel for viewing an item's details, schedule, color, and collection memberships in read-only mode. -->
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
+import CollectionChip from '@/components/collections/CollectionChip.vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { constructEmptyItem } from '@/types/items'
 import { computed } from 'vue'
 
@@ -15,16 +15,16 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 
 const item = computed(() =>
   props.itemId ? itemsStore.getItem(props.itemId) : constructEmptyItem(),
 )
 
-const workspaceIds = computed(() =>
+const collectionIds = computed(() =>
   props.itemId
-    ? workspacesStore.workspaceIds.filter((wid) =>
-        workspacesStore.getWorkspace(wid).items.includes(props.itemId!),
+    ? collectionsStore.collectionIds.filter((cid) =>
+        collectionsStore.getCollection(cid).items.includes(props.itemId!),
       )
     : [],
 )
@@ -77,12 +77,12 @@ const workspaceIds = computed(() =>
       </v-row>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
+        <v-card-title class="text-subtitle-2">Collections</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-wrap ga-1">
-          <WorkspaceChip v-for="wid in workspaceIds" :key="wid" :workspace-id="wid" />
-          <span v-if="workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
-            Not in any workspaces
+          <CollectionChip v-for="cid in collectionIds" :key="cid" :collection-id="cid" />
+          <span v-if="collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
+            Not in any collections
           </span>
         </v-card-text>
       </v-card>

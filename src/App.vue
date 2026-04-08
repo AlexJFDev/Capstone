@@ -2,17 +2,17 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
 import { useInterfaceStore } from './stores/interface'
-import { useWorkspacesStore } from './stores/workspaces'
+import { useCollectionsStore } from './stores/collections'
 import ItemEditorPanel from './components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from './components/items/ItemViewerPanel.vue'
-import WorkspaceEditorPanel from './components/workspaces/WorkspaceEditorPanel.vue'
-import WorkspacesPanel from './components/workspaces/WorkspacesPanel.vue'
+import CollectionEditorPanel from './components/collections/CollectionEditorPanel.vue'
+import CollectionsPanel from './components/collections/CollectionsPanel.vue'
 import SpeedbumpDialog from './SpeedbumpDialog.vue'
 import SettingsPanel from './components/roadmap/SettingsPanel.vue'
 
 const router = useRouter()
 const userInterface = useInterfaceStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 </script>
 
 <template>
@@ -33,9 +33,9 @@ const workspacesStore = useWorkspacesStore()
         <v-btn
           prepend-icon="mdi-view-dashboard-outline"
           variant="text"
-          @click="userInterface.toggleWorkspaces(true)"
+          @click="userInterface.toggleCollections(true)"
         >
-          Workspaces
+          Collections
         </v-btn>
         <v-btn
           v-if="router.hasRoute('test')"
@@ -57,13 +57,13 @@ const workspacesStore = useWorkspacesStore()
       v-model="userInterface.itemViewerOpen"
       :item-id="userInterface.viewingItemId"
     />
-    <WorkspaceEditorPanel
-      v-model="userInterface.workspaceEditorOpen"
-      :workspace-id="userInterface.editingWorkspaceId"
+    <CollectionEditorPanel
+      v-model="userInterface.collectionEditorOpen"
+      :collection-id="userInterface.editingCollectionId"
     />
-    <WorkspacesPanel
-      v-model="userInterface.workspacesOpen"
-      :workspace-ids="workspacesStore.workspaceIds"
+    <CollectionsPanel
+      v-model="userInterface.collectionsOpen"
+      :collection-ids="collectionsStore.collectionIds"
     />
     <SettingsPanel v-model="userInterface.settingsOpen" />
     <SpeedbumpDialog />

@@ -1,7 +1,7 @@
-// Defines application routes (home, workspace, items, and dev-only test) and guards against navigating to deleted workspaces.
+// Defines application routes (home, items, and dev-only test) and guards against navigating to deleted collections.
 import { createRouter, createWebHistory } from 'vue-router'
 import WorkspacesView from '../views/WorkspacesView.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,8 +12,8 @@ const router = createRouter({
       component: WorkspacesView,
     },
     {
-      path: '/workspace/:workspaceId',
-      name: 'workspace',
+      path: '/collection/:collectionId',
+      name: 'collection',
       component: WorkspacesView,
     },
     {
@@ -34,10 +34,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.name === 'workspace') {
-    const workspaceId = to.params.workspaceId as string
-    const workspacesStore = useWorkspacesStore()
-    if (!workspacesStore.doesWorkspaceExist(workspaceId)) {
+  if (to.name === 'collection') {
+    const collectionId = to.params.collectionId as string
+    const collectionsStore = useCollectionsStore()
+    if (!collectionsStore.doesCollectionExist(collectionId)) {
       return { name: 'home' }
     }
   }

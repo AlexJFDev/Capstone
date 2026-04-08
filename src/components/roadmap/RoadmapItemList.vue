@@ -11,11 +11,11 @@ import {
   SECTION_BORDER_COLOR,
 } from './constants'
 import { computed, ref } from 'vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { startDragGesture } from './useDragGesture'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId: string
   listWidth: number
   itemIds: string[]
   hoveredItemId: string | null
@@ -28,7 +28,7 @@ const emit = defineEmits<{
 const listWidthPx = computed(() => `${props.listWidth}px`)
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const interfaceStore = useInterfaceStore()
 
 const isDraggable = computed(() => interfaceStore.sortingIsCustom)
@@ -82,12 +82,12 @@ function startDrag(event: MouseEvent, itemId: string) {
       const steps = Math.trunc(accumulatedDelta / ROW_HEIGHT)
       if (steps === 0) return
 
-      const items = workspacesStore.getWorkspace(props.workspaceId).items
+      const items = collectionsStore.getCollection(props.collectionId).items
       const currentIndex = items.indexOf(itemId)
       const newIndex = currentIndex + steps
 
       if (newIndex >= 0 && newIndex < items.length) {
-        workspacesStore.moveItem(props.workspaceId, itemId, steps)
+        collectionsStore.moveItem(props.collectionId, itemId, steps)
         accumulatedDelta -= steps * ROW_HEIGHT
       } else {
         accumulatedDelta = 0

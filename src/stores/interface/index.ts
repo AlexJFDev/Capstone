@@ -7,7 +7,7 @@ import {
   DEFAULT_PIXELS_PER_DAY,
 } from '@/components/roadmap/constants'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { useWorkspacesStore } from '../workspaces'
+import { useCollectionsStore } from '../collections'
 import { useInterfaceInitialization } from './initialization'
 import { useInterfaceRoadmap } from './roadmap'
 import { useInterfaceSorting } from './sorting'
@@ -18,26 +18,26 @@ import { useInterfaceSpeedbump } from './speedbump'
 export type { SortOption, SortDirection } from './sorting'
 
 export const useInterfaceStore = defineStore('interface', () => {
-  const favoriteWorkspaceId = ref<string | null>(null)
-  const defaultWorkspaceId = computed(() => {
-    const workspacesStore = useWorkspacesStore()
+  const favoriteCollectionId = ref<string | null>(null)
+  const defaultCollectionId = computed(() => {
+    const collectionsStore = useCollectionsStore()
 
-    if (!workspacesStore.hasWorkspaces) return
+    if (!collectionsStore.hasCollections) return
     if (
-      favoriteWorkspaceId.value &&
-      workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)
+      favoriteCollectionId.value &&
+      collectionsStore.doesCollectionExist(favoriteCollectionId.value)
     ) {
-      return favoriteWorkspaceId.value
+      return favoriteCollectionId.value
     }
-    return workspacesStore.workspaceIds[0]
+    return collectionsStore.collectionIds[0]
   })
 
   const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)
   const gridInterval = ref<RoadmapInterval>(DEFAULT_INTERVAL)
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
 
-  const { initializeInterface, setFavoriteWorkspace } = useInterfaceInitialization(
-    favoriteWorkspaceId,
+  const { initializeInterface, setFavoriteCollection } = useInterfaceInitialization(
+    favoriteCollectionId,
     pixelsPerDay,
     gridInterval,
     roadmapListWidth,
@@ -50,10 +50,10 @@ export const useInterfaceStore = defineStore('interface', () => {
   const speedbump = useInterfaceSpeedbump()
 
   return {
-    favoriteWorkspaceId,
-    defaultWorkspaceId,
+    favoriteCollectionId,
+    defaultCollectionId,
     initializeInterface,
-    setFavoriteWorkspace,
+    setFavoriteCollection,
     roadmapScale,
     roadmapListWidthPx,
     roadmapListWidth,

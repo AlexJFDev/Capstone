@@ -1,11 +1,11 @@
-<!-- Sortable data table of all items with color, dates, workspace chips, and inline edit/delete actions. -->
+<!-- Sortable data table of all items with color, dates, collection chips, and inline edit/delete actions. -->
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import DateChip from '@/components/DateChip.vue'
-import WorkspaceChip from '@/components/workspaces/WorkspaceChip.vue'
+import CollectionChip from '@/components/collections/CollectionChip.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 const headers = [
@@ -22,15 +22,15 @@ const headers = [
   { key: 'description', title: 'Description', sortable: false },
   { key: 'startDate', title: 'Start', sortable: true },
   { key: 'endDate', title: 'End', sortable: true },
-  { key: 'workspaces', title: 'Workspaces', sortable: false },
+  { key: 'collections', title: 'Collections', sortable: false },
   { key: 'actions', title: '', sortable: false, width: '40px' },
 ]
 
 const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getItem(id) })))
 
-function workspaceIdsFor(itemId: string) {
-  return workspacesStore.workspaceIds.filter((wid) =>
-    workspacesStore.getWorkspace(wid).items.includes(itemId),
+function collectionIdsFor(itemId: string) {
+  return collectionsStore.collectionIds.filter((cid) =>
+    collectionsStore.getCollection(cid).items.includes(itemId),
   )
 }
 
@@ -75,11 +75,11 @@ async function deleteItem(id: string) {
     <template #item.endDate="{ item }">
       <DateChip :date="item.endDate" />
     </template>
-    <template #item.workspaces="{ item }">
-      <WorkspaceChip
-        v-for="wid in workspaceIdsFor(item.id)"
-        :key="wid"
-        :workspace-id="wid"
+    <template #item.collections="{ item }">
+      <CollectionChip
+        v-for="cid in collectionIdsFor(item.id)"
+        :key="cid"
+        :collection-id="cid"
         class="mr-1"
       />
     </template>

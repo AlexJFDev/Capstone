@@ -1,8 +1,8 @@
-// Provides addWorkspaceToSpace, removeWorkspaceFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
+// Provides addCollectionToSpace, removeCollectionFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../workspaces'
+import { useCollectionsStore } from '../collections'
 import { useVisualizationsStore } from '../visualizations'
 
 // oxlint-disable-next-line max-lines-per-function
@@ -11,32 +11,32 @@ export function useSpacesMembership(
   getSpace: (id: string) => Space,
   validateSpaceExists: (id: string) => void,
 ) {
-  function addWorkspaceToSpace(workspaceId: string, spaceId: string) {
-    const workspacesStore = useWorkspacesStore()
+  function addCollectionToSpace(collectionId: string, spaceId: string) {
+    const collectionsStore = useCollectionsStore()
 
-    workspacesStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateCollectionExists(collectionId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
 
-    if (space.workspaceIds.includes(workspaceId)) return
+    if (space.collectionIds.includes(collectionId)) return
 
-    space.workspaceIds.push(workspaceId)
+    space.collectionIds.push(collectionId)
     putSpace(spaceId, getSpace(spaceId))
   }
 
-  function removeWorkspaceFromSpace(workspaceId: string, spaceId: string) {
-    const workspacesStore = useWorkspacesStore()
+  function removeCollectionFromSpace(collectionId: string, spaceId: string) {
+    const collectionsStore = useCollectionsStore()
 
-    workspacesStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateCollectionExists(collectionId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
-    const index = space.workspaceIds.indexOf(workspaceId)
+    const index = space.collectionIds.indexOf(collectionId)
 
     if (index === -1) return
 
-    space.workspaceIds.splice(index, 1)
+    space.collectionIds.splice(index, 1)
     putSpace(spaceId, getSpace(spaceId))
   }
 
@@ -70,8 +70,8 @@ export function useSpacesMembership(
   }
 
   return {
-    addWorkspaceToSpace,
-    removeWorkspaceFromSpace,
+    addCollectionToSpace,
+    removeCollectionFromSpace,
     addVisualizationToSpace,
     removeVisualizationFromSpace,
   }

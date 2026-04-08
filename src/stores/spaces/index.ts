@@ -23,8 +23,8 @@ export const useSpacesStore = defineStore('spaces', () => {
   )
   const { scrubSpace, scrubAllSpaces } = useSpacesScrubbing(spaces, getSpace, validateSpaceExists)
   const {
-    addWorkspaceToSpace,
-    removeWorkspaceFromSpace,
+    addCollectionToSpace,
+    removeCollectionFromSpace,
     addVisualizationToSpace,
     removeVisualizationFromSpace,
   } = useSpacesMembership(spaces, getSpace, validateSpaceExists)
@@ -42,8 +42,8 @@ export const useSpacesStore = defineStore('spaces', () => {
     deleteSpace,
     scrubSpace,
     scrubAllSpaces,
-    addWorkspaceToSpace,
-    removeWorkspaceFromSpace,
+    addCollectionToSpace,
+    removeCollectionFromSpace,
     addVisualizationToSpace,
     removeVisualizationFromSpace,
   }

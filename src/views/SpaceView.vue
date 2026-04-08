@@ -1,16 +1,16 @@
-<!-- Stub page view that displays the active space's raw JSON along with its visualizations and workspaces. -->
+<!-- Stub page view that displays the active space's raw JSON along with its visualizations and collections. -->
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSpacesStore } from '@/stores/spaces'
 import { useVisualizationsStore } from '@/stores/visualizations'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 
 const route = useRoute()
 const router = useRouter()
 const spacesStore = useSpacesStore()
 const visualizationsStore = useVisualizationsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 
 // Handle space being deleted while viewing
 watch(
@@ -35,11 +35,11 @@ const visualizations = computed(() =>
     : [],
 )
 
-const workspaces = computed(() =>
+const collections = computed(() =>
   space.value
-    ? space.value.workspaceIds
-        .filter((id) => workspacesStore.doesWorkspaceExist(id))
-        .map((id) => ({ id, ...workspacesStore.getWorkspace(id) }))
+    ? space.value.collectionIds
+        .filter((id) => collectionsStore.doesCollectionExist(id))
+        .map((id) => ({ id, ...collectionsStore.getCollection(id) }))
     : [],
 )
 </script>
@@ -68,16 +68,18 @@ const workspaces = computed(() =>
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-body-1">Visualizations ({{ visualizations.length }})</v-card-title>
+        <v-card-title class="text-body-1"
+          >Visualizations ({{ visualizations.length }})</v-card-title
+        >
         <v-card-text>
           <pre>{{ JSON.stringify(visualizations, null, 2) }}</pre>
         </v-card-text>
       </v-card>
 
       <v-card variant="outlined">
-        <v-card-title class="text-body-1">Workspaces ({{ workspaces.length }})</v-card-title>
+        <v-card-title class="text-body-1">Collections ({{ collections.length }})</v-card-title>
         <v-card-text>
-          <pre>{{ JSON.stringify(workspaces, null, 2) }}</pre>
+          <pre>{{ JSON.stringify(collections, null, 2) }}</pre>
         </v-card-text>
       </v-card>
     </div>

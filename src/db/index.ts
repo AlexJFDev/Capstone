@@ -1,7 +1,7 @@
-// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, settings, visualizations, and spaces.
+// IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, collections, settings, visualizations, and spaces.
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item } from '@/types/items'
-import type { Workspace } from '@/types/workspaces'
+import type { Collection } from '@/types/collections'
 import type { Visualization } from '@/types/visualizations'
 import type { Space } from '@/types/spaces'
 import { toRaw } from 'vue'
@@ -17,7 +17,7 @@ import {
  * Stored as a single record in the `settings` object store under the key `"app"`.
  */
 export interface AppSettings {
-  favoriteWorkspaceId: string | null
+  favoriteCollectionId: string | null
   pixelsPerDay: number
   gridInterval: RoadmapInterval
   roadmapListWidth: number
@@ -29,7 +29,7 @@ export interface AppSettings {
  */
 interface ChronicleDB extends DBSchema {
   items: { key: string; value: Item }
-  workspaces: { key: string; value: Workspace }
+  collections: { key: string; value: Collection }
   settings: { key: string; value: AppSettings }
   visualizations: { key: string; value: Visualization }
   spaces: { key: string; value: Space }
@@ -42,22 +42,66 @@ interface ChronicleDB extends DBSchema {
 let dbPromise: Promise<IDBPDatabase<ChronicleDB>> | null = null
 
 /**
+ * Runs the v3 schema migration: renames the `workspaces` object store to
+ * `collections` and migrates `favoriteWorkspaceId` → `favoriteCollectionId`
+ * in the settings record.
+ */
+// oxlint-disable-next-line max-lines-per-function
+async function migrateToV3(
+  db: IDBPDatabase<ChronicleDB>,
+  transaction: Parameters<Parameters<typeof openDB>[2]['upgrade']>[3],
+): Promise<void> {
+  if (db.objectStoreNames.contains('workspaces' as never)) {
+    const legacyStore = transaction.objectStore('workspaces' as never)
+    const collectionsStore = db.createObjectStore('collections')
+    const allKeys = await legacyStore.getAllKeys()
+    const allValues = await legacyStore.getAll()
+    for (let i = 0; i < allKeys.length; i++) {
+      await collectionsStore.put(allValues[i], allKeys[i])
+    }
+    db.deleteObjectStore('workspaces' as never)
+  } else if (!db.objectStoreNames.contains('collections')) {
+    db.createObjectStore('collections')
+  }
+
+  const settingsStore = transaction.objectStore('settings')
+  const appSettings = await settingsStore.get('app')
+  if (appSettings) {
+    const legacySettings = appSettings as AppSettings & {
+      favoriteWorkspaceId?: string | null
+    }
+    if ('favoriteWorkspaceId' in legacySettings) {
+      const migratedSettings: AppSettings = {
+        favoriteCollectionId: legacySettings.favoriteWorkspaceId ?? null,
+        pixelsPerDay: legacySettings.pixelsPerDay,
+        gridInterval: legacySettings.gridInterval,
+        roadmapListWidth: legacySettings.roadmapListWidth,
+      }
+      await settingsStore.put(migratedSettings, 'app')
+    }
+  }
+}
+
+/**
  * Returns a promise that resolves to the open database connection.
  * Creates and caches the connection on first call, including running
  * any schema migrations in the `upgrade` callback.
  */
 function getDatabase(): Promise<IDBPDatabase<ChronicleDB>> {
   if (!dbPromise) {
-    dbPromise = openDB<ChronicleDB>('chronicle', 2, {
-      upgrade(db, oldVersion) {
+    dbPromise = openDB<ChronicleDB>('chronicle', 3, {
+      async upgrade(db, oldVersion, _newVersion, transaction) {
         if (oldVersion < 1) {
           db.createObjectStore('items')
-          db.createObjectStore('workspaces')
+          db.createObjectStore('collections')
           db.createObjectStore('settings')
         }
         if (oldVersion < 2) {
           db.createObjectStore('visualizations')
           db.createObjectStore('spaces')
+        }
+        if (oldVersion < 3) {
+          await migrateToV3(db, transaction)
         }
       },
     })
@@ -91,29 +135,29 @@ export async function removeItem(id: string): Promise<void> {
   await db.delete('items', id)
 }
 
-// === Workspaces ===
+// === Collections ===
 
-/** Returns all stored workspaces as a Record keyed by workspace ID. */
-export async function getAllWorkspaces(): Promise<Record<string, Workspace>> {
+/** Returns all stored collections as a Record keyed by collection ID. */
+export async function getAllCollections(): Promise<Record<string, Collection>> {
   const db = await getDatabase()
-  const keys = await db.getAllKeys('workspaces')
-  const values = await db.getAll('workspaces')
+  const keys = await db.getAllKeys('collections')
+  const values = await db.getAll('collections')
   return Object.fromEntries(keys.map((key, i) => [key, values[i]!]))
 }
 
 /**
- * Writes a workspace to the store.
+ * Writes a collection to the store.
  * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
  */
-export async function putWorkspace(id: string, workspace: Workspace): Promise<void> {
+export async function putCollection(id: string, collection: Collection): Promise<void> {
   const db = await getDatabase()
-  await db.put('workspaces', toRaw(workspace), id)
+  await db.put('collections', toRaw(collection), id)
 }
 
-/** Removes a workspace from the store by ID. */
-export async function removeWorkspace(id: string): Promise<void> {
+/** Removes a collection from the store by ID. */
+export async function removeCollection(id: string): Promise<void> {
   const db = await getDatabase()
-  await db.delete('workspaces', id)
+  await db.delete('collections', id)
 }
 
 // === Visualizations ===
@@ -168,11 +212,11 @@ export async function removeSpace(id: string): Promise<void> {
 
 // === Clear ===
 
-/** Clears all items, workspaces, settings, visualizations, and spaces from the database. */
+/** Clears all items, collections, settings, visualizations, and spaces from the database. */
 export async function clearDatabase(): Promise<void> {
   const db = await getDatabase()
   await db.clear('items')
-  await db.clear('workspaces')
+  await db.clear('collections')
   await db.clear('settings')
   await db.clear('visualizations')
   await db.clear('spaces')
@@ -191,7 +235,7 @@ export async function getSettings(): Promise<AppSettings | undefined> {
 
 export function makeDefaultSettings(): AppSettings {
   return {
-    favoriteWorkspaceId: null,
+    favoriteCollectionId: null,
     pixelsPerDay: DEFAULT_PIXELS_PER_DAY,
     gridInterval: DEFAULT_INTERVAL,
     roadmapListWidth: DEFAULT_LIST_WIDTH,

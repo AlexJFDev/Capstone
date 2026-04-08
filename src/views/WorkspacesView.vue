@@ -1,14 +1,14 @@
-<!-- Page view that displays the active workspace's roadmap, or an empty state when no workspaces exist. -->
+<!-- Page view that displays the active collection's roadmap, or an empty state when no collections exist. -->
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore, type SortOption } from '@/stores/interface'
 
 const route = useRoute()
 const router = useRouter()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 const sortOptions: { label: string; value: SortOption }[] = [
@@ -18,41 +18,41 @@ const sortOptions: { label: string; value: SortOption }[] = [
   { label: 'By name', value: 'name' },
 ]
 
-// Handle workspace being deleted while viewing
+// Handle collection being deleted while viewing
 watch(
-  () => workspacesStore.workspaceIds,
+  () => collectionsStore.collectionIds,
   (ids) => {
-    const routeId = route.params.workspaceId as string
+    const routeId = route.params.collectionId as string
     if (routeId && !ids.includes(routeId)) {
       router.push({ name: 'home' })
     }
   },
 )
 
-const workspaceParam = computed(() => route.params.workspaceId as string)
+const collectionParam = computed(() => route.params.collectionId as string)
 
-const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
+const activeCollection = computed(() => collectionParam.value || userInterface.defaultCollectionId)
 
-const workspaceName = computed(() =>
-  activeWorkspace.value ? workspacesStore.getWorkspaceName(activeWorkspace.value) : '',
+const collectionName = computed(() =>
+  activeCollection.value ? collectionsStore.getCollectionName(activeCollection.value) : '',
 )
 </script>
 
 <template>
   <v-main style="height: 100vh; overflow: hidden">
-    <div v-if="!activeWorkspace" class="empty-state">
+    <div v-if="!activeCollection" class="empty-state">
       <v-icon size="48" color="medium-emphasis">mdi-view-dashboard-outline</v-icon>
-      <p class="text-h6 text-medium-emphasis">No workspaces yet</p>
-      <v-btn variant="tonal" prepend-icon="mdi-plus" @click="userInterface.openWorkspaceCreator()">
-        New workspace
+      <p class="text-h6 text-medium-emphasis">No collections yet</p>
+      <v-btn variant="tonal" prepend-icon="mdi-plus" @click="userInterface.openCollectionCreator()">
+        New collection
       </v-btn>
     </div>
 
-    <div v-if="activeWorkspace" class="view">
+    <div v-if="activeCollection" class="view">
       <div class="view-header">
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-chart-gantt</v-icon>
-          <span class="text-h6">{{ workspaceName }}</span>
+          <span class="text-h6">{{ collectionName }}</span>
         </div>
         <div class="d-flex">
           <div class="d-flex align-center ga-2">
@@ -99,7 +99,7 @@ const workspaceName = computed(() =>
       </div>
 
       <div class="roadmap-container">
-        <RoadmapPane :workspace-id="activeWorkspace" />
+        <RoadmapPane :collection-id="activeCollection" />
       </div>
     </div>
   </v-main>

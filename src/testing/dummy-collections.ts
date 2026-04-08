@@ -1,9 +1,9 @@
-// Static fixture data: a set of dummy Workspace records referencing dummy items, used for development and testing.
+// Static fixture data: a set of dummy Collection records referencing dummy items, used for development and testing.
 // oxlint-disable max-lines
-import type { Workspace } from '@/types/workspaces'
+import type { Collection } from '@/types/collections'
 
-export const workspaces: Record<string, Workspace> = {
-  'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890': {
+export const collections: Record<string, Collection> = {
+  'c-1a2b3c4d-5e6f-4890-abcd-ef1234567890': {
     name: 'Frontend Development',
     description:
       'All tasks related to the **frontend UI** and client-side logic.\n\n- Component library and shared UI elements\n- Page layouts, navigation, and routing\n- Accessibility, responsiveness, and dark mode\n- State management and data fetching',
@@ -91,7 +91,7 @@ export const workspaces: Record<string, Workspace> = {
       'i-3333aaaa-bbbb-4ccc-8ddd-eeeeeeeeee60',
     ],
   },
-  'w-2b3c4d5e-6f7a-4901-bcde-f12345678901': {
+  'c-2b3c4d5e-6f7a-4901-bcde-f12345678901': {
     name: 'Backend Development',
     description:
       '**Server-side** development including database and API work.\n\n- Database schema design and migrations\n- REST API implementation and documentation\n- Authentication and session management',
@@ -102,14 +102,14 @@ export const workspaces: Record<string, Workspace> = {
       'i-e5f6a7b8-c9d0-4234-8fab-345678901234',
     ],
   },
-  'w-3c4d5e6f-7a8b-4012-8def-123456789012': {
+  'c-3c4d5e6f-7a8b-4012-8def-123456789012': {
     name: 'DevOps',
     description:
       '**Deployment**, infrastructure, and CI/CD pipeline tasks.\n\n- Staging and production environment provisioning\n- Automated build and deploy pipelines\n- Monitoring and incident response',
     color: '#1ABC9C',
     items: ['i-f6a7b8c9-d0e1-4345-8abc-456789012345'],
   },
-  'w-4d5e6f7a-8b9c-4123-8efa-234567890123': {
+  'c-4d5e6f7a-8b9c-4123-8efa-234567890123': {
     name: 'Quality Assurance',
     description:
       '**Testing**, code review, and documentation tasks.\n\n- Unit and integration test coverage\n- End-to-end test scenarios\n- API documentation and review',

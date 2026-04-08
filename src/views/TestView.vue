@@ -3,10 +3,10 @@
 import { computed, ref } from 'vue'
 import ItemEditorPanel from '@/components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
-import WorkspaceEditorPanel from '@/components/workspaces/WorkspaceEditorPanel.vue'
-import WorkspacesPanel from '@/components/workspaces/WorkspacesPanel.vue'
+import CollectionEditorPanel from '@/components/collections/CollectionEditorPanel.vue'
+import CollectionsPanel from '@/components/collections/CollectionsPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 import BacklogList from '@/components/backlog/BacklogList.vue'
@@ -14,12 +14,12 @@ import { useItemsStore } from '@/stores/items'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useSpacesStore } from '@/stores/spaces'
 import { items as dummyItems } from '@/testing/dummy-items'
-import { workspaces as dummyWorkspaces } from '@/testing/dummy-workspaces'
+import { collections as dummyCollections } from '@/testing/dummy-collections'
 import { visualizations as dummyVisualizations } from '@/testing/dummy-visualizations'
 import { spaces as dummySpaces } from '@/testing/dummy-spaces'
 import { clearDatabase } from '@/db'
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const itemsStore = useItemsStore()
 const visualizationsStore = useVisualizationsStore()
 const spacesStore = useSpacesStore()
@@ -27,18 +27,18 @@ const interfaceStore = useInterfaceStore()
 
 const test_item_id = computed(() => itemsStore.itemIds[0])
 
-const workspaceIds = workspacesStore.workspaceIds
+const collectionIds = collectionsStore.collectionIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
-const workspaceEditorOpen = ref(false)
-const workspacesOpen = ref(false)
+const collectionEditorOpen = ref(false)
+const collectionsOpen = ref(false)
 
-const workspaceIndex = ref(1)
-const workspaceId = computed(() => workspaceIds[workspaceIndex.value]!)
+const collectionIndex = ref(1)
+const collectionId = computed(() => collectionIds[collectionIndex.value]!)
 
 function toggle() {
-  workspaceIndex.value = (workspaceIndex.value + 1) % workspaceIds.length
+  collectionIndex.value = (collectionIndex.value + 1) % collectionIds.length
 }
 
 async function clearAll() {
@@ -52,9 +52,9 @@ function loadDummyData() {
       itemsStore.addItem(id, item)
     }
   }
-  for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
-    if (!workspacesStore.doesWorkspaceExist(id)) {
-      workspacesStore.addWorkspace(id, workspace)
+  for (const [id, collection] of Object.entries(dummyCollections)) {
+    if (!collectionsStore.doesCollectionExist(id)) {
+      collectionsStore.addCollection(id, collection)
     }
   }
   for (const [id, visualization] of Object.entries(dummyVisualizations)) {
@@ -81,13 +81,13 @@ function loadDummyData() {
           <v-btn @click="itemViewerOpen = true">Item Viewer</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="workspaceEditorOpen = true">Workspace Editor</v-btn>
+          <v-btn @click="collectionEditorOpen = true">Collection Editor</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="workspacesOpen = true">Workspaces</v-btn>
+          <v-btn @click="collectionsOpen = true">Collections</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="toggle">Toggle Workspace</v-btn>
+          <v-btn @click="toggle">Toggle Collection</v-btn>
         </v-col>
         <v-col cols="auto">
           <v-btn @click="interfaceStore.revealSpeedBump('Are you sure?')">Speedbump</v-btn>
@@ -102,13 +102,13 @@ function loadDummyData() {
     </v-container>
 
     <div class="pane">
-      <RoadmapPane v-if="workspaceId" :workspace-id="workspaceId" />
+      <RoadmapPane v-if="collectionId" :collection-id="collectionId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
     <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
-    <WorkspaceEditorPanel v-model="workspaceEditorOpen" />
-    <WorkspacesPanel v-model="workspacesOpen" :workspace-ids="workspaceIds" />
+    <CollectionEditorPanel v-model="collectionEditorOpen" />
+    <CollectionsPanel v-model="collectionsOpen" :collection-ids="collectionIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

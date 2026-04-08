@@ -1,4 +1,4 @@
-<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu. -->
+<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu for the active collection. -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
@@ -6,20 +6,20 @@ import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId: string
 }>()
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const collection = computed(() => collectionsStore.getCollection(props.collectionId))
 
 const {
   roadmapListWidth: listWidth,
@@ -29,7 +29,7 @@ const {
 } = storeToRefs(userInterface)
 
 const sortedItemIds = computed(() => {
-  const ids = [...workspace.value.items]
+  const ids = [...collection.value.items]
   if (sortOption.value === 'custom') return ids
 
   return ids.toSorted((a, b) => {
@@ -46,12 +46,12 @@ const sortedItemIds = computed(() => {
 })
 
 function addItem(itemId: string) {
-  workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 async function newItem() {
   const itemId = await userInterface.openItemCreator()
-  if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (itemId) collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 const hoveredItemId = ref<string | null>(null)
@@ -64,7 +64,11 @@ const hoveredItemId = ref<string | null>(null)
       <div class="header">
         <div class="list-header">
           <div class="list-box" />
-          <AddItemMenu :excluded-item-ids="workspace.items" @add-item="addItem" @new-item="newItem">
+          <AddItemMenu
+            :excluded-item-ids="collection.items"
+            @add-item="addItem"
+            @new-item="newItem"
+          >
             <template #default="menuProps">
               <v-btn flat class="add-button" v-bind="menuProps">Add Item</v-btn>
             </template>
@@ -79,7 +83,7 @@ const hoveredItemId = ref<string | null>(null)
         <RoadmapItemList
           v-model:hovered-item-id="hoveredItemId"
           class="item-list"
-          :workspace-id="workspaceId"
+          :collection-id="collectionId"
           :list-width="listWidth"
           :item-ids="sortedItemIds"
         />

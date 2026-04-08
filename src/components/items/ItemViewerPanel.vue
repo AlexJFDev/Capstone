@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import WorkspaceChip from '@/components/collections/CollectionChip.vue'
+import CollectionChip from '@/components/collections/CollectionChip.vue'
 import { useItemsStore } from '@/stores/items'
 import { useCollectionsStore } from '@/stores/collections'
 import { constructEmptyItem } from '@/types/items'
@@ -80,7 +80,7 @@ const collectionIds = computed(() =>
         <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-wrap ga-1">
-          <WorkspaceChip v-for="wid in collectionIds" :key="wid" :collection-id="wid" />
+          <CollectionChip v-for="wid in collectionIds" :key="wid" :collection-id="wid" />
           <span v-if="collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
             Not in any workspaces
           </span>

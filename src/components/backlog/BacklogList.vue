@@ -5,7 +5,7 @@ import { useItemsStore } from '@/stores/items'
 import { useCollectionsStore } from '@/stores/collections'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import DateChip from '@/components/DateChip.vue'
-import WorkspaceChip from '@/components/collections/CollectionChip.vue'
+import CollectionChip from '@/components/collections/CollectionChip.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
@@ -76,7 +76,7 @@ async function deleteItem(id: string) {
       <DateChip :date="item.endDate" />
     </template>
     <template #item.workspaces="{ item }">
-      <WorkspaceChip
+      <CollectionChip
         v-for="wid in workspaceIdsFor(item.id)"
         :key="wid"
         :collection-id="wid"

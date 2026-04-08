@@ -3,16 +3,20 @@
 import { RouterView, useRouter } from 'vue-router'
 import { useInterfaceStore } from './stores/interface'
 import { useWorkspacesStore } from './stores/workspaces'
+import { useSpacesStore } from './stores/spaces'
 import ItemEditorPanel from './components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from './components/items/ItemViewerPanel.vue'
 import WorkspaceEditorPanel from './components/workspaces/WorkspaceEditorPanel.vue'
 import WorkspacesPanel from './components/workspaces/WorkspacesPanel.vue'
+import SpaceEditorPanel from './components/spaces/SpaceEditorPanel.vue'
+import SpacesPanel from './components/spaces/SpacesPanel.vue'
 import SpeedbumpDialog from './SpeedbumpDialog.vue'
 import SettingsPanel from './components/roadmap/SettingsPanel.vue'
 
 const router = useRouter()
 const userInterface = useInterfaceStore()
 const workspacesStore = useWorkspacesStore()
+const spacesStore = useSpacesStore()
 </script>
 
 <template>
@@ -29,6 +33,9 @@ const workspacesStore = useWorkspacesStore()
           @click="router.push({ name: 'items' })"
         >
           Items
+        </v-btn>
+        <v-btn prepend-icon="mdi-tab-plus" variant="text" @click="userInterface.toggleSpaces(true)">
+          Spaces
         </v-btn>
         <v-btn
           prepend-icon="mdi-view-dashboard-outline"
@@ -65,6 +72,11 @@ const workspacesStore = useWorkspacesStore()
       v-model="userInterface.workspacesOpen"
       :workspace-ids="workspacesStore.workspaceIds"
     />
+    <SpaceEditorPanel
+      v-model="userInterface.spaceEditorOpen"
+      :space-id="userInterface.editingSpaceId"
+    />
+    <SpacesPanel v-model="userInterface.spacesOpen" :space-ids="spacesStore.spaceIds" />
     <SettingsPanel v-model="userInterface.settingsOpen" />
     <SpeedbumpDialog />
   </v-app>

@@ -47,6 +47,7 @@ router.beforeEach((to) => {
       return { name: 'home' }
     }
   }
+
   if (to.name === 'space') {
     const spaceId = to.params.spaceId as string
     const spacesStore = useSpacesStore()

@@ -28,8 +28,8 @@ await Promise.all([
   workspacesStore.initializeWorkspaces(),
   useItemsStore().initializeItems(),
   useInterfaceStore().initializeInterface(),
-  useVisualizationsStore().initializeVisualizations(),
   spacesStore.initializeSpaces(),
+  useVisualizationsStore().initializeVisualizations(),
 ])
 
 workspacesStore.scrubAllWorkspaces()

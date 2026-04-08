@@ -7,6 +7,7 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
+import { isLightColor } from '@/utils/colors'
 import ColorInput from '../inputs/ColorPicker.vue'
 
 // External state
@@ -106,14 +107,6 @@ async function deleteSpace() {
   }
 }
 
-function contrastTextColor(hexColor: string): 'black' | 'white' {
-  const r = parseInt(hexColor.slice(1, 3), 16)
-  const g = parseInt(hexColor.slice(3, 5), 16)
-  const b = parseInt(hexColor.slice(5, 7), 16)
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-  return luminance > 0.5 ? 'black' : 'white'
-}
-
 // Validation
 const formRef = useTemplateRef('formRef')
 const nameRules = [required]
@@ -181,7 +174,7 @@ const nameRules = [required]
               v-for="workspaceId in draft.workspaceIds"
               :key="workspaceId"
               :color="workspacesStore.getWorkspace(workspaceId).color"
-              :style="{ color: contrastTextColor(workspacesStore.getWorkspace(workspaceId).color) }"
+              :style="{ color: isLightColor(workspacesStore.getWorkspace(workspaceId).color) ? 'black' : 'white' }"
               closable
               @click:close="removeWorkspace(workspaceId)"
             >

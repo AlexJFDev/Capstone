@@ -47,7 +47,7 @@ function toggleFavorite() {
             icon="mdi-open-in-new"
             density="compact"
             variant="text"
-            @click="router.push({ name: 'workspace', params: { collectionId } })"
+            @click="router.push({ name: 'collection', params: { collectionId } })"
           />
         </div>
         <v-btn

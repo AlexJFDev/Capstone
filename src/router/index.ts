@@ -14,7 +14,11 @@ const router = createRouter({
     },
     {
       path: '/workspace/:collectionId',
-      name: 'workspace',
+      redirect: (to) => ({ name: 'collection', params: to.params }),
+    },
+    {
+      path: '/collection/:collectionId',
+      name: 'collection',
       component: CollectionsView,
     },
     {
@@ -40,7 +44,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  if (to.name === 'workspace') {
+  if (to.name === 'collection') {
     const collectionId = to.params.collectionId as string
     const collectionsStore = useCollectionsStore()
     if (!collectionsStore.doesCollectionExist(collectionId)) {

@@ -22,7 +22,7 @@ const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
-const workspace = computed(() =>
+const collection = computed(() =>
   props.collectionId ? collectionsStore.getCollection(props.collectionId) : null,
 )
 
@@ -35,7 +35,7 @@ const {
 
 const baseItemIds = computed(() => {
   if (props.itemIds) return props.itemIds
-  if (workspace.value) return workspace.value.items
+  if (collection.value) return collection.value.items
   return []
 })
 
@@ -78,8 +78,8 @@ const hoveredItemId = ref<string | null>(null)
         <div class="list-header">
           <div class="list-box" />
           <AddItemMenu
-            v-if="collectionId && workspace"
-            :excluded-item-ids="workspace.items"
+            v-if="collectionId && collection"
+            :excluded-item-ids="collection.items"
             @add-item="addItem"
             @new-item="newItem"
           >

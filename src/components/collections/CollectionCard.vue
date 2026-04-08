@@ -15,7 +15,7 @@ const router = useRouter()
 const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(() => collectionsStore.getCollection(props.collectionId))
+const collection = computed(() => collectionsStore.getCollection(props.collectionId))
 
 const hovered = ref(false)
 
@@ -28,8 +28,8 @@ function toggleFavorite() {
 
 <template>
   <v-card
-    :title="workspace.name"
-    :color="workspace.color"
+    :title="collection.name"
+    :color="collection.color"
     :elevation="hovered ? 8 : 2"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
@@ -63,8 +63,8 @@ function toggleFavorite() {
     </template>
 
     <v-card-text class="d-flex ga-8 flex-column">
-      <MarkdownRenderer :content="workspace.description" />
-      <ItemList v-model="workspace.items" />
+      <MarkdownRenderer :content="collection.description" />
+      <ItemList v-model="collection.items" />
     </v-card-text>
   </v-card>
 </template>

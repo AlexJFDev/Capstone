@@ -1,4 +1,4 @@
-// Removes stale item IDs (referencing deleted items) from workspace item lists and persists the cleaned workspace.
+// Removes stale item IDs (referencing deleted items) from workspace item lists and persists the cleaned collection.
 import { putWorkspace } from '@/db'
 import type { Collection } from '@/types/collections'
 import type { Ref } from 'vue'

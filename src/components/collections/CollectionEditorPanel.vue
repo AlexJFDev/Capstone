@@ -36,9 +36,9 @@ const original = ref<Collection>(constructEmptyCollection())
 const changesMade = computed(() => !areCollectionsEqual(draft.value, original.value))
 
 // Draft management
-function setDraft(workspace: Collection) {
-  original.value = { ...workspace, items: [...workspace.items] }
-  draft.value = { ...workspace, items: [...workspace.items] }
+function setDraft(collection: Collection) {
+  original.value = { ...collection, items: [...collection.items] }
+  draft.value = { ...collection, items: [...collection.items] }
 }
 
 watch(model, async (isOpen) => {

@@ -10,17 +10,17 @@ const props = defineProps<{
 
 const collectionsStore = useCollectionsStore()
 
-const workspace = computed(() => collectionsStore.getCollection(props.collectionId))
-const showBorder = computed(() => isLightColor(workspace.value.color))
+const collection = computed(() => collectionsStore.getCollection(props.collectionId))
+const showBorder = computed(() => isLightColor(collection.value.color))
 </script>
 
 <template>
   <v-chip
-    :color="workspace.color"
+    :color="collection.color"
     size="small"
     variant="flat"
     :style="showBorder ? { border: '1px solid rgba(0,0,0,0.2)' } : {}"
   >
-    {{ workspace.name }}
+    {{ collection.name }}
   </v-chip>
 </template>

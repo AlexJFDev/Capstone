@@ -29,11 +29,11 @@ watch(
   },
 )
 
-const workspaceParam = computed(() => route.params.collectionId as string)
+const collectionParam = computed(() => route.params.collectionId as string)
 
-const activeCollection = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
+const activeCollection = computed(() => collectionParam.value || userInterface.defaultCollectionId)
 
-const workspaceName = computed(() =>
+const collectionName = computed(() =>
   activeCollection.value ? collectionsStore.getCollectionName(activeCollection.value) : '',
 )
 </script>
@@ -52,7 +52,7 @@ const workspaceName = computed(() =>
       <div class="view-header">
         <div class="d-flex align-center ga-2">
           <v-icon>mdi-chart-gantt</v-icon>
-          <span class="text-h6">{{ workspaceName }}</span>
+          <span class="text-h6">{{ collectionName }}</span>
         </div>
         <div class="d-flex">
           <div class="d-flex align-center ga-2">

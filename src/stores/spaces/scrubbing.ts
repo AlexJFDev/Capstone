@@ -24,10 +24,10 @@ export function useSpacesScrubbing(
       visualizationsStore.doesVisualizationExist(visualizationId),
     )
 
-    const workspaceIdsChanged = validWorkspaceIds.length !== space.collectionIds.length
+    const collectionIdsChanged = validWorkspaceIds.length !== space.collectionIds.length
     const visualizationIdsChanged = validVisualizationIds.length !== space.visualizationIds.length
 
-    if (workspaceIdsChanged || visualizationIdsChanged) {
+    if (collectionIdsChanged || visualizationIdsChanged) {
       spaces.value[id]!.collectionIds = validWorkspaceIds
       spaces.value[id]!.visualizationIds = validVisualizationIds
       putSpace(id, getSpace(id))

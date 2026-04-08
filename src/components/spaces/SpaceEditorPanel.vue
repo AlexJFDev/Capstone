@@ -54,7 +54,7 @@ watch(model, async (isOpen) => {
 })
 
 // Collection membership
-const availableWorkspaces = computed(() =>
+const availableCollections = computed(() =>
   collectionsStore.collectionIds
     .filter((id) => !draft.value.collectionIds.includes(id))
     .map((id) => ({ id, name: collectionsStore.getCollectionName(id) })),
@@ -70,11 +70,11 @@ function addCollection(collectionId: string) {
   }
 }
 
-const workspaceToAdd = ref<string | null>(null)
-watch(workspaceToAdd, (id) => {
+const collectionToAdd = ref<string | null>(null)
+watch(collectionToAdd, (id) => {
   if (id) {
     addCollection(id)
-    workspaceToAdd.value = null
+    collectionToAdd.value = null
   }
 })
 
@@ -194,10 +194,10 @@ const nameRules = [required]
             </span>
           </div>
           <v-autocomplete
-            v-if="availableWorkspaces.length > 0"
-            v-model="workspaceToAdd"
+            v-if="availableCollections.length > 0"
+            v-model="collectionToAdd"
             label="Add Collection"
-            :items="availableWorkspaces"
+            :items="availableCollections"
             item-title="name"
             item-value="id"
             variant="outlined"

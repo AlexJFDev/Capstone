@@ -1,4 +1,4 @@
-<!-- Card displaying a space's name and description with hover actions to edit or open it. -->
+<!-- Card displaying a space's name and description with hover actions to edit or open it. Clicking the card navigates to the space and closes the panel. -->
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -17,6 +17,11 @@ const userInterface = useInterfaceStore()
 const space = computed(() => spacesStore.getSpace(props.spaceId))
 
 const hovered = ref(false)
+
+function openSpace() {
+  router.push({ name: 'space', params: { spaceId: props.spaceId } })
+  userInterface.toggleSpaces(false)
+}
 </script>
 
 <template>
@@ -24,6 +29,8 @@ const hovered = ref(false)
     :title="space.name"
     :color="space.color"
     :elevation="hovered ? 8 : 2"
+    style="cursor: pointer"
+    @click="openSpace"
     @mouseenter="hovered = true"
     @mouseleave="hovered = false"
   >
@@ -33,13 +40,7 @@ const hovered = ref(false)
           icon="mdi-pencil"
           density="compact"
           variant="text"
-          @click="userInterface.openSpaceEditor(spaceId)"
-        />
-        <v-btn
-          icon="mdi-open-in-new"
-          density="compact"
-          variant="text"
-          @click="router.push({ name: 'space', params: { spaceId } })"
+          @click.stop="userInterface.openSpaceEditor(spaceId)"
         />
       </div>
     </template>

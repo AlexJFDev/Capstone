@@ -1,8 +1,10 @@
-<!-- Right-side drawer panel for creating or editing a space's name, description, and color. -->
+<!-- Right-side drawer panel for creating or editing a space's name, description, color, collection membership, and visualizations. -->
 <script setup lang="ts">
 import { areSpacesEqual, constructNewSpace, generateSpaceId, type Space } from '@/types/spaces'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useSpacesStore } from '@/stores/spaces'
+import { useWorkspacesStore } from '@/stores/workspaces'
+import { useVisualizationsStore } from '@/stores/visualizations'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
 import ColorInput from '../inputs/ColorPicker.vue'
@@ -14,6 +16,8 @@ const props = defineProps<{
 }>()
 
 const spacesStore = useSpacesStore()
+const workspacesStore = useWorkspacesStore()
+const visualizationsStore = useVisualizationsStore()
 const userInterface = useInterfaceStore()
 
 // Editing state
@@ -48,6 +52,38 @@ watch(model, async (isOpen) => {
     formRef.value?.resetValidation()
   }
 })
+
+// Collection membership
+const availableWorkspaceIds = computed(() =>
+  workspacesStore.workspaceIds.filter((id) => !draft.value.workspaceIds.includes(id)),
+)
+
+function removeWorkspace(workspaceId: string) {
+  const index = draft.value.workspaceIds.indexOf(workspaceId)
+  draft.value.workspaceIds.splice(index, 1)
+}
+
+function addWorkspace(workspaceId: string) {
+  if (!draft.value.workspaceIds.includes(workspaceId)) {
+    draft.value.workspaceIds.push(workspaceId)
+  }
+}
+
+// Visualizations
+const availableVisualizationIds = computed(() =>
+  visualizationsStore.visualizationIds.filter((id) => !draft.value.visualizationIds.includes(id)),
+)
+
+function removeVisualization(visualizationId: string) {
+  const index = draft.value.visualizationIds.indexOf(visualizationId)
+  draft.value.visualizationIds.splice(index, 1)
+}
+
+function addVisualization(visualizationId: string) {
+  if (!draft.value.visualizationIds.includes(visualizationId)) {
+    draft.value.visualizationIds.push(visualizationId)
+  }
+}
 
 // Actions
 async function save() {
@@ -141,6 +177,73 @@ const nameRules = [required]
         <v-divider />
         <v-card-text>
           <ColorInput v-model="draft.color" />
+        </v-card-text>
+      </v-card>
+
+      <v-card variant="outlined">
+        <v-card-title class="text-subtitle-2">Collections</v-card-title>
+        <v-divider />
+        <v-card-text class="d-flex flex-column ga-2">
+          <v-chip
+            v-for="workspaceId in draft.workspaceIds"
+            :key="workspaceId"
+            closable
+            @click:close="removeWorkspace(workspaceId)"
+          >
+            {{ workspacesStore.getWorkspaceName(workspaceId) }}
+          </v-chip>
+          <v-select
+            v-if="availableWorkspaceIds.length > 0"
+            label="Add collection"
+            variant="outlined"
+            density="compact"
+            hide-details
+            :items="
+              availableWorkspaceIds.map((id) => ({
+                title: workspacesStore.getWorkspaceName(id),
+                value: id,
+              }))
+            "
+            @update:model-value="addWorkspace"
+          />
+          <p v-else-if="draft.workspaceIds.length === 0" class="text-medium-emphasis text-body-2">
+            No collections available
+          </p>
+        </v-card-text>
+      </v-card>
+
+      <v-card variant="outlined">
+        <v-card-title class="text-subtitle-2">Visualizations</v-card-title>
+        <v-divider />
+        <v-card-text class="d-flex flex-column ga-2">
+          <v-chip
+            v-for="visualizationId in draft.visualizationIds"
+            :key="visualizationId"
+            closable
+            @click:close="removeVisualization(visualizationId)"
+          >
+            {{ visualizationsStore.getVisualizationName(visualizationId) }}
+          </v-chip>
+          <v-select
+            v-if="availableVisualizationIds.length > 0"
+            label="Add visualization"
+            variant="outlined"
+            density="compact"
+            hide-details
+            :items="
+              availableVisualizationIds.map((id) => ({
+                title: visualizationsStore.getVisualizationName(id),
+                value: id,
+              }))
+            "
+            @update:model-value="addVisualization"
+          />
+          <p
+            v-else-if="draft.visualizationIds.length === 0"
+            class="text-medium-emphasis text-body-2"
+          >
+            No visualizations available
+          </p>
         </v-card-text>
       </v-card>
     </v-form>

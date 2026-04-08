@@ -6,14 +6,14 @@ import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
 export function useCollectionsMutations(
-  workspaces: Ref<Record<string, Workspace>>,
+  collections: Ref<Record<string, Workspace>>,
   getCollection: (id: string) => Workspace,
   validateCollectionExists: (id: string) => void,
 ) {
-  function addCollection(id: string, workspace: Workspace) {
+  function addCollection(id: string, collection: Workspace) {
     validateCollectionId(id)
-    workspaces.value[id] = workspace
-    putWorkspace(id, workspaces.value[id]!)
+    collections.value[id] = collection
+    putWorkspace(id, collections.value[id]!)
   }
 
   function updateCollection(id: string, updates: Partial<Workspace>) {
@@ -27,14 +27,14 @@ export function useCollectionsMutations(
       updates.items.forEach(itemsStore.validateItemExists)
     }
 
-    Object.assign(workspaces.value[id]!, updates)
+    Object.assign(collections.value[id]!, updates)
     putWorkspace(id, getCollection(id))
   }
 
   function deleteCollection(collectionId: string) {
     validateCollectionExists(collectionId)
 
-    delete workspaces.value[collectionId]
+    delete collections.value[collectionId]
     removeWorkspace(collectionId)
   }
 

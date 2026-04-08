@@ -6,7 +6,7 @@ import { useItemsStore } from '../items'
 
 // oxlint-disable-next-line max-lines-per-function
 export function useCollectionsMembership(
-  workspaces: Ref<Record<string, Workspace>>,
+  collections: Ref<Record<string, Workspace>>,
   getCollection: (id: string) => Workspace,
   validateCollectionExists: (id: string) => void,
 ) {
@@ -16,10 +16,10 @@ export function useCollectionsMembership(
     const itemsStore = useItemsStore()
     itemsStore.validateItemExists(itemId)
 
-    const items = workspaces.value[collectionId]!.items
+    const items = collections.value[collectionId]!.items
     const index = items.indexOf(itemId)
     if (index === -1) {
-      throw new Error(`Item "${itemId}" not found in workspace "${collectionId}"`)
+      throw new Error(`Item "${itemId}" not found in collection "${collectionId}"`)
     }
 
     const newIndex = index + amount
@@ -41,11 +41,11 @@ export function useCollectionsMembership(
     itemsStore.validateItemExists(itemId)
     validateCollectionExists(collectionId)
 
-    const workspace = getCollection(collectionId)
+    const collection = getCollection(collectionId)
 
-    if (workspace.items.includes(itemId)) return
+    if (collection.items.includes(itemId)) return
 
-    workspace.items.push(itemId)
+    collection.items.push(itemId)
     putWorkspace(collectionId, getCollection(collectionId))
   }
 
@@ -55,12 +55,12 @@ export function useCollectionsMembership(
     itemsStore.validateItemExists(itemId)
     validateCollectionExists(collectionId)
 
-    const workspace = getCollection(collectionId)
-    const index = workspace.items.indexOf(itemId)
+    const collection = getCollection(collectionId)
+    const index = collection.items.indexOf(itemId)
 
     if (index === -1) return
 
-    workspace.items.splice(index, 1)
+    collection.items.splice(index, 1)
     putWorkspace(collectionId, getCollection(collectionId))
   }
 

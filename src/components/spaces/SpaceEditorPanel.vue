@@ -7,7 +7,6 @@ import { useWorkspacesStore } from '@/stores/workspaces'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
-import { isLightColor } from '@/utils/colors'
 import ColorInput from '../inputs/ColorPicker.vue'
 
 // External state
@@ -55,13 +54,14 @@ watch(model, async (isOpen) => {
 })
 
 // Collection membership
-const availableWorkspaceIds = computed(() =>
-  workspacesStore.workspaceIds.filter((id) => !draft.value.workspaceIds.includes(id)),
+const availableWorkspaces = computed(() =>
+  workspacesStore.workspaceIds
+    .filter((id) => !draft.value.workspaceIds.includes(id))
+    .map((id) => ({ id, name: workspacesStore.getWorkspaceName(id) })),
 )
 
 function removeWorkspace(workspaceId: string) {
-  const index = draft.value.workspaceIds.indexOf(workspaceId)
-  draft.value.workspaceIds.splice(index, 1)
+  draft.value.workspaceIds = draft.value.workspaceIds.filter((id) => id !== workspaceId)
 }
 
 function addWorkspace(workspaceId: string) {
@@ -69,6 +69,14 @@ function addWorkspace(workspaceId: string) {
     draft.value.workspaceIds.push(workspaceId)
   }
 }
+
+const workspaceToAdd = ref<string | null>(null)
+watch(workspaceToAdd, (id) => {
+  if (id) {
+    addWorkspace(id)
+    workspaceToAdd.value = null
+  }
+})
 
 // Actions
 async function save() {
@@ -169,35 +177,34 @@ const nameRules = [required]
         <v-card-title class="text-subtitle-2">Collections</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
-          <div class="d-flex flex-wrap ga-2">
+          <div class="d-flex flex-wrap ga-1">
             <v-chip
               v-for="workspaceId in draft.workspaceIds"
               :key="workspaceId"
               :color="workspacesStore.getWorkspace(workspaceId).color"
-              :style="{ color: isLightColor(workspacesStore.getWorkspace(workspaceId).color) ? 'black' : 'white' }"
+              size="small"
+              variant="flat"
               closable
               @click:close="removeWorkspace(workspaceId)"
             >
               {{ workspacesStore.getWorkspaceName(workspaceId) }}
             </v-chip>
+            <span v-if="draft.workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
+              Not in any collections
+            </span>
           </div>
-          <v-select
-            v-if="availableWorkspaceIds.length > 0"
-            label="Add collection"
+          <v-autocomplete
+            v-if="availableWorkspaces.length > 0"
+            v-model="workspaceToAdd"
+            label="Add Collection"
+            :items="availableWorkspaces"
+            item-title="name"
+            item-value="id"
             variant="outlined"
             density="compact"
             hide-details
-            :items="
-              availableWorkspaceIds.map((id) => ({
-                title: workspacesStore.getWorkspaceName(id),
-                value: id,
-              }))
-            "
-            @update:model-value="addWorkspace"
+            clearable
           />
-          <p v-else-if="draft.workspaceIds.length === 0" class="text-medium-emphasis text-body-2">
-            No collections available
-          </p>
         </v-card-text>
       </v-card>
 

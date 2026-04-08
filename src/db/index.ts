@@ -1,7 +1,7 @@
 // IndexedDB persistence layer: opens and caches the Chronicle database and exposes CRUD helpers for items, workspaces, settings, visualizations, and spaces.
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb'
 import type { Item } from '@/types/items'
-import type { Workspace } from '@/types/collections'
+import type { Collection } from '@/types/collections'
 import type { Visualization } from '@/types/visualizations'
 import type { Space } from '@/types/spaces'
 import { toRaw } from 'vue'
@@ -29,7 +29,7 @@ export interface AppSettings {
  */
 interface ChronicleDB extends DBSchema {
   items: { key: string; value: Item }
-  workspaces: { key: string; value: Workspace }
+  workspaces: { key: string; value: Collection }
   settings: { key: string; value: AppSettings }
   visualizations: { key: string; value: Visualization }
   spaces: { key: string; value: Space }
@@ -94,7 +94,7 @@ export async function removeItem(id: string): Promise<void> {
 // === Workspaces ===
 
 /** Returns all stored workspaces as a Record keyed by workspace ID. */
-export async function getAllWorkspaces(): Promise<Record<string, Workspace>> {
+export async function getAllWorkspaces(): Promise<Record<string, Collection>> {
   const db = await getDatabase()
   const keys = await db.getAllKeys('workspaces')
   const values = await db.getAll('workspaces')
@@ -105,7 +105,7 @@ export async function getAllWorkspaces(): Promise<Record<string, Workspace>> {
  * Writes a workspace to the store.
  * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
  */
-export async function putWorkspace(id: string, workspace: Workspace): Promise<void> {
+export async function putWorkspace(id: string, workspace: Collection): Promise<void> {
   const db = await getDatabase()
   await db.put('workspaces', toRaw(workspace), id)
 }

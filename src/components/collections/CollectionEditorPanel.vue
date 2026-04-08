@@ -4,7 +4,7 @@ import {
   areCollectionsEqual,
   constructEmptyCollection,
   generateCollectionId,
-  type Workspace,
+  type Collection,
 } from '@/types/collections'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
@@ -31,12 +31,12 @@ const editingWorkspace = computed(() =>
 )
 
 // Draft state
-const draft = ref<Workspace>(constructEmptyCollection())
-const original = ref<Workspace>(constructEmptyCollection())
+const draft = ref<Collection>(constructEmptyCollection())
+const original = ref<Collection>(constructEmptyCollection())
 const changesMade = computed(() => !areCollectionsEqual(draft.value, original.value))
 
 // Draft management
-function setDraft(workspace: Workspace) {
+function setDraft(workspace: Collection) {
   original.value = { ...workspace, items: [...workspace.items] }
   draft.value = { ...workspace, items: [...workspace.items] }
 }

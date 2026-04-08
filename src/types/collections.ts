@@ -2,7 +2,7 @@
 
 import { generateRandomColor } from '@/utils/colors'
 
-export interface Workspace {
+export interface Collection {
   name: string
   description: string
   color: string
@@ -10,7 +10,7 @@ export interface Workspace {
   items: string[]
 }
 
-export function constructEmptyCollection(): Workspace {
+export function constructEmptyCollection(): Collection {
   return {
     name: '',
     description: '',
@@ -19,7 +19,7 @@ export function constructEmptyCollection(): Workspace {
   }
 }
 
-export function areCollectionsEqual(w1: Workspace, w2: Workspace): boolean {
+export function areCollectionsEqual(w1: Collection, w2: Collection): boolean {
   if (w1 === w2) return true
 
   return (
@@ -38,7 +38,7 @@ export function isValidCollectionId(id: string): boolean {
 }
 export function validateCollectionId(id: string) {
   if (!isValidCollectionId(id)) {
-    throw new Error(`Invalid workspace id: "${id}"`)
+    throw new Error(`Invalid collection id: "${id}"`)
   }
 }
 

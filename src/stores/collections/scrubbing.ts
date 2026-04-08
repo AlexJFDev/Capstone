@@ -1,12 +1,12 @@
 // Removes stale item IDs (referencing deleted items) from workspace item lists and persists the cleaned workspace.
 import { putWorkspace } from '@/db'
-import type { Workspace } from '@/types/collections'
+import type { Collection } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
 export function useCollectionsScrubbing(
-  collections: Ref<Record<string, Workspace>>,
-  getCollection: (id: string) => Workspace,
+  collections: Ref<Record<string, Collection>>,
+  getCollection: (id: string) => Collection,
   validateCollectionExists: (id: string) => void,
 ) {
   function scrubCollection(id: string) {

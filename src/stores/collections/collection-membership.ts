@@ -1,13 +1,13 @@
 // Provides moveItem, addItemToCollection, and removeItemFromCollection operations for managing workspace item membership.
 import { putWorkspace } from '@/db'
-import type { Workspace } from '@/types/collections'
+import type { Collection } from '@/types/collections'
 import type { Ref } from 'vue'
 import { useItemsStore } from '../items'
 
 // oxlint-disable-next-line max-lines-per-function
 export function useCollectionsMembership(
-  collections: Ref<Record<string, Workspace>>,
-  getCollection: (id: string) => Workspace,
+  collections: Ref<Record<string, Collection>>,
+  getCollection: (id: string) => Collection,
   validateCollectionExists: (id: string) => void,
 ) {
   function moveItem(collectionId: string, itemId: string, amount: number) {

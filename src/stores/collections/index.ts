@@ -1,7 +1,7 @@
 // Pinia store for collections: composes validation, initialization, accessor, mutation, membership, and scrubbing sub-modules.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-import type { Workspace } from '@/types/collections'
+import type { Collection } from '@/types/collections'
 import { useCollectionsInitialization } from './initialization'
 import { useCollectionsValidation } from './validation'
 import { useCollectionsAccessors } from './accessors'
@@ -10,7 +10,7 @@ import { useCollectionsMembership } from './collection-membership'
 import { useCollectionsScrubbing } from './scrubbing'
 
 export const useCollectionsStore = defineStore('collections', () => {
-  const collections = ref<Record<string, Workspace>>({})
+  const collections = ref<Record<string, Collection>>({})
   const collectionIds = computed(() => Object.keys(collections.value))
   const hasCollections = computed(() => collectionIds.value.length > 0)
 

@@ -126,7 +126,8 @@ Supporting files:
 
 | Task | Start here |
 |------|-----------|
-| Add a field to Item or Workspace | `src/types.ts`, then propagate to `src/db/index.ts` and the relevant store |
+| Add a field to Item or Workspace | `src/types/items.ts` or `src/types/workspaces.ts`, then propagate to `src/db/index.ts` and the relevant store |
+| Add a field to Space or Visualization | `src/types/spaces.ts` or `src/types/visualizations.ts`, then propagate to `src/db/index.ts` and the relevant store |
 | Add a new persisted setting | `AppSettings` in `src/db/index.ts`, `stores/interface/initialization.ts`, `stores/interface/roadmap.ts` or a new sub-module, `SettingsPanel.vue` |
 | Change how items are sorted | `src/stores/interface/sorting.ts` |
 | Add a route | `src/router/index.ts` |
@@ -134,8 +135,10 @@ Supporting files:
 | Change date/pixel math | `src/components/roadmap/roadmap-utils.ts` |
 | Add an item action (CRUD) | `src/stores/items/mutations.ts` |
 | Add a workspace action | `src/stores/workspaces/mutations.ts` or `workspace-membership.ts` |
+| Add a space action (CRUD) | `src/stores/spaces/mutations.ts` or `space-membership.ts` |
+| Add a visualization action (CRUD) | `src/stores/visualizations/mutations.ts` |
 | Add a confirmation dialog | `src/stores/interface/speedbump.ts` + `src/SpeedbumpDialog.vue` |
-| Add test fixtures | `src/testing/dummy-items.ts` or `dummy-workspaces.ts` |
+| Add test fixtures | `src/testing/` — `dummy-items.ts`, `dummy-workspaces.ts`, `dummy-spaces.ts`, or `dummy-visualizations.ts` |
 
 ## Validation convention
 

@@ -1,4 +1,4 @@
-// Pinia store for workspaces: composes validation, initialization, accessor, mutation, membership, and scrubbing sub-modules.
+// Pinia store for collections: composes validation, initialization, accessor, mutation, membership, and scrubbing sub-modules.
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { Workspace } from '@/types/collections'
@@ -9,29 +9,29 @@ import { useCollectionsMutations } from './mutations'
 import { useCollectionsMembership } from './collection-membership'
 import { useCollectionsScrubbing } from './scrubbing'
 
-export const useCollectionsStore = defineStore('workspaces', () => {
-  const workspaces = ref<Record<string, Workspace>>({})
-  const collectionIds = computed(() => Object.keys(workspaces.value))
+export const useCollectionsStore = defineStore('collections', () => {
+  const collections = ref<Record<string, Workspace>>({})
+  const collectionIds = computed(() => Object.keys(collections.value))
   const hasCollections = computed(() => collectionIds.value.length > 0)
 
-  const { doesCollectionExist, validateCollectionExists } = useCollectionsValidation(workspaces)
-  const { initializeCollections } = useCollectionsInitialization(workspaces)
+  const { doesCollectionExist, validateCollectionExists } = useCollectionsValidation(collections)
+  const { initializeCollections } = useCollectionsInitialization(collections)
   const { getCollection, getCollectionName } = useCollectionsAccessors(
-    workspaces,
+    collections,
     validateCollectionExists,
   )
   const { addCollection, updateCollection, deleteCollection } = useCollectionsMutations(
-    workspaces,
+    collections,
     getCollection,
     validateCollectionExists,
   )
   const { scrubCollection, scrubAllCollections } = useCollectionsScrubbing(
-    workspaces,
+    collections,
     getCollection,
     validateCollectionExists,
   )
   const { moveItem, addItemToCollection, removeItemFromCollection } = useCollectionsMembership(
-    workspaces,
+    collections,
     getCollection,
     validateCollectionExists,
   )

@@ -1,4 +1,4 @@
-// Provides addCollectionToSpace, removeWorkspaceFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
+// Provides addCollectionToSpace, removeCollectionFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
@@ -25,7 +25,7 @@ export function useSpacesMembership(
     putSpace(spaceId, getSpace(spaceId))
   }
 
-  function removeWorkspaceFromSpace(collectionId: string, spaceId: string) {
+  function removeCollectionFromSpace(collectionId: string, spaceId: string) {
     const collectionsStore = useCollectionsStore()
 
     collectionsStore.validateCollectionExists(collectionId)
@@ -71,7 +71,7 @@ export function useSpacesMembership(
 
   return {
     addCollectionToSpace,
-    removeWorkspaceFromSpace,
+    removeCollectionFromSpace,
     addVisualizationToSpace,
     removeVisualizationFromSpace,
   }

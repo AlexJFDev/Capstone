@@ -4,6 +4,10 @@ This file outlines rules for making commits, branches, issues, and PRs.
 
 Always use American English.
 
+## Tools
+
+To use Git, you should use the GitHub MCP server. If the MCP sever is unavailable, try using `gh`. If neither the MCP server or `gh` are available please stop what you are doing and let me know about the issue. Workarounds, like using CURL to hit the GitHub API manually will not work.
+
 ## Labels
 
 The following labels are available:

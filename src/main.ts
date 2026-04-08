@@ -21,6 +21,9 @@ app.use(vuetify)
 const workspacesStore = useWorkspacesStore()
 const spacesStore = useSpacesStore()
 
+// Every store that persists to IndexedDB must have its initialize function called here.
+// If a new store is added with an initialize* function, it belongs in this Promise.all.
+// Omitting it means the store will always start empty after a page reload (see issue #125).
 await Promise.all([
   workspacesStore.initializeWorkspaces(),
   useItemsStore().initializeItems(),

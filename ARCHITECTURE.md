@@ -152,3 +152,4 @@ Two-function pattern used consistently:
 - The router validates that a workspace ID in the URL actually exists before navigating; invalid IDs redirect to `/`.
 - `WorkspacesView` is used for both `/` (no workspace selected) and `/workspace/:id` (workspace selected).
 - The TestView route is only shown in the nav when `import.meta.env.DEV || import.meta.env.MODE === 'preview'`.
+- Every store that persists to IndexedDB must have its `initialize*` function called in the `Promise.all` in `src/main.ts`. Omitting it means the store will always start empty after a page reload.

@@ -65,7 +65,7 @@ const spaceItemIds = computed(() => {
   const ids: string[] = []
   for (const collectionId of space.value.collectionIds) {
     if (!collectionsStore.doesCollectionExist(collectionId)) continue
-    for (const itemId of collectionsStore.getWorkspace(collectionId).items) {
+    for (const itemId of collectionsStore.getCollection(collectionId).items) {
       if (!seen.has(itemId)) {
         seen.add(itemId)
         ids.push(itemId)

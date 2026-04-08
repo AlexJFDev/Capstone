@@ -43,7 +43,7 @@ export function useItemsMutations(
     const collectionsStore = useCollectionsStore()
 
     for (const collectionId of collectionsStore.collectionIds) {
-      collectionsStore.removeItemFromWorkspace(id, collectionId)
+      collectionsStore.removeItemFromCollection(id, collectionId)
     }
 
     delete items.value[id]

@@ -24,7 +24,7 @@ const item = computed(() =>
 const collectionIds = computed(() =>
   props.itemId
     ? collectionsStore.collectionIds.filter((wid) =>
-        collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
+        collectionsStore.getCollection(wid).items.includes(props.itemId!),
       )
     : [],
 )

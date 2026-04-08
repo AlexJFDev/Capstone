@@ -30,7 +30,7 @@ const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getIt
 
 function workspaceIdsFor(itemId: string) {
   return collectionsStore.collectionIds.filter((wid) =>
-    collectionsStore.getWorkspace(wid).items.includes(itemId),
+    collectionsStore.getCollection(wid).items.includes(itemId),
   )
 }
 

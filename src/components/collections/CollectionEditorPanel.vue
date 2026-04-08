@@ -25,7 +25,9 @@ const userInterface = useInterfaceStore()
 // Editing state
 const isEditing = computed(() => !!props.collectionId)
 const editingWorkspace = computed(() =>
-  isEditing.value ? collectionsStore.getWorkspace(props.collectionId!) : constructEmptyCollection(),
+  isEditing.value
+    ? collectionsStore.getCollection(props.collectionId!)
+    : constructEmptyCollection(),
 )
 
 // Draft state
@@ -53,11 +55,11 @@ async function save() {
   if (!valid) return
 
   if (isEditing.value) {
-    collectionsStore.updateWorkspace(props.collectionId!, draft.value)
+    collectionsStore.updateCollection(props.collectionId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
     const id = generateCollectionId()
-    collectionsStore.addWorkspace(id, draft.value)
+    collectionsStore.addCollection(id, draft.value)
     userInterface.closeWorkspaceEditor()
   }
 }
@@ -73,13 +75,13 @@ async function cancel() {
   }
 }
 
-async function deleteWorkspace() {
+async function deleteCollection() {
   if (
     await userInterface.revealSpeedBump(
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {
-    collectionsStore.deleteWorkspace(props.collectionId!)
+    collectionsStore.deleteCollection(props.collectionId!)
     userInterface.closeWorkspaceEditor()
   }
 }
@@ -175,7 +177,7 @@ const nameRules = [required]
     <template #append>
       <v-divider />
       <div class="pa-2 d-flex flex-column ga-2">
-        <v-btn v-if="isEditing" block color="red" @click="deleteWorkspace">Delete</v-btn>
+        <v-btn v-if="isEditing" block color="red" @click="deleteCollection">Delete</v-btn>
         <v-btn block variant="text" @click="cancel">Cancel</v-btn>
       </div>
     </template>

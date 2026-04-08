@@ -1,19 +1,19 @@
-// Provides getWorkspace and getWorkspaceName read-only accessors for the workspaces store.
+// Provides getCollection and getCollectionName read-only accessors for the workspaces store.
 import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
 export function useCollectionsAccessors(
   workspaces: Ref<Record<string, Workspace>>,
-  validateWorkspaceExists: (id: string) => void,
+  validateCollectionExists: (id: string) => void,
 ) {
-  function getWorkspace(id: string): Workspace {
-    validateWorkspaceExists(id)
+  function getCollection(id: string): Workspace {
+    validateCollectionExists(id)
     return workspaces.value[id]!
   }
 
-  function getWorkspaceName(id: string): string {
-    return getWorkspace(id).name
+  function getCollectionName(id: string): string {
+    return getCollection(id).name
   }
 
-  return { getWorkspace, getWorkspaceName }
+  return { getCollection, getCollectionName }
 }

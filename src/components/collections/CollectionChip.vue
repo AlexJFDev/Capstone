@@ -10,7 +10,7 @@ const props = defineProps<{
 
 const collectionsStore = useCollectionsStore()
 
-const workspace = computed(() => collectionsStore.getWorkspace(props.collectionId))
+const workspace = computed(() => collectionsStore.getCollection(props.collectionId))
 const showBorder = computed(() => isLightColor(workspace.value.color))
 </script>
 

@@ -23,7 +23,7 @@ const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
 const workspace = computed(() =>
-  props.collectionId ? collectionsStore.getWorkspace(props.collectionId) : null,
+  props.collectionId ? collectionsStore.getCollection(props.collectionId) : null,
 )
 
 const {
@@ -58,13 +58,13 @@ const sortedItemIds = computed(() => {
 
 function addItem(itemId: string) {
   if (!props.collectionId) return
-  collectionsStore.addItemToWorkspace(itemId, props.collectionId)
+  collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 async function newItem() {
   if (!props.collectionId) return
   const itemId = await userInterface.openItemCreator()
-  if (itemId) collectionsStore.addItemToWorkspace(itemId, props.collectionId)
+  if (itemId) collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 const hoveredItemId = ref<string | null>(null)

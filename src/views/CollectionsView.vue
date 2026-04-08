@@ -34,7 +34,7 @@ const workspaceParam = computed(() => route.params.collectionId as string)
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultCollectionId)
 
 const workspaceName = computed(() =>
-  activeWorkspace.value ? collectionsStore.getWorkspaceName(activeWorkspace.value) : '',
+  activeWorkspace.value ? collectionsStore.getCollectionName(activeWorkspace.value) : '',
 )
 </script>
 

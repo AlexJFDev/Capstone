@@ -1,4 +1,4 @@
-// Provides addWorkspace, updateWorkspace, and deleteWorkspace mutations for the workspaces store, with validation and DB persistence.
+// Provides addCollection, updateCollection, and deleteCollection mutations for the workspaces store, with validation and DB persistence.
 import { putWorkspace, removeWorkspace } from '@/db'
 import { validateCollectionId, type Workspace } from '@/types/collections'
 import { validateColor } from '@/utils/colors'
@@ -7,17 +7,17 @@ import { useItemsStore } from '../items'
 
 export function useCollectionsMutations(
   workspaces: Ref<Record<string, Workspace>>,
-  getWorkspace: (id: string) => Workspace,
-  validateWorkspaceExists: (id: string) => void,
+  getCollection: (id: string) => Workspace,
+  validateCollectionExists: (id: string) => void,
 ) {
-  function addWorkspace(id: string, workspace: Workspace) {
+  function addCollection(id: string, workspace: Workspace) {
     validateCollectionId(id)
     workspaces.value[id] = workspace
     putWorkspace(id, workspaces.value[id]!)
   }
 
-  function updateWorkspace(id: string, updates: Partial<Workspace>) {
-    validateWorkspaceExists(id)
+  function updateCollection(id: string, updates: Partial<Workspace>) {
+    validateCollectionExists(id)
 
     if (updates.color) {
       validateColor(updates.color)
@@ -28,15 +28,15 @@ export function useCollectionsMutations(
     }
 
     Object.assign(workspaces.value[id]!, updates)
-    putWorkspace(id, getWorkspace(id))
+    putWorkspace(id, getCollection(id))
   }
 
-  function deleteWorkspace(collectionId: string) {
-    validateWorkspaceExists(collectionId)
+  function deleteCollection(collectionId: string) {
+    validateCollectionExists(collectionId)
 
     delete workspaces.value[collectionId]
     removeWorkspace(collectionId)
   }
 
-  return { addWorkspace, updateWorkspace, deleteWorkspace }
+  return { addCollection, updateCollection, deleteCollection }
 }

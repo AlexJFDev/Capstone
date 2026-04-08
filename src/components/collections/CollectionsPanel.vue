@@ -18,7 +18,7 @@ const sortedWorkspaceIds = computed(() => {
   return [favorite, ...props.collectionIds.filter((id) => id !== favorite)]
 })
 
-function addWorkspace() {
+function addCollection() {
   userInterface.openCollectionCreator()
 }
 </script>
@@ -39,7 +39,7 @@ function addWorkspace() {
         :collection-id="collectionId"
       />
 
-      <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">
+      <v-card class="add-workspace-card" variant="outlined" @click="addCollection">
         <v-card-title class="d-flex align-center ga-2 text-medium-emphasis">
           <v-icon>mdi-plus</v-icon>
           New workspace

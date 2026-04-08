@@ -14,26 +14,26 @@ export const useCollectionsStore = defineStore('workspaces', () => {
   const collectionIds = computed(() => Object.keys(workspaces.value))
   const hasCollections = computed(() => collectionIds.value.length > 0)
 
-  const { doesCollectionExist, validateWorkspaceExists } = useCollectionsValidation(workspaces)
+  const { doesCollectionExist, validateCollectionExists } = useCollectionsValidation(workspaces)
   const { initializeCollections } = useCollectionsInitialization(workspaces)
-  const { getWorkspace, getWorkspaceName } = useCollectionsAccessors(
+  const { getCollection, getCollectionName } = useCollectionsAccessors(
     workspaces,
-    validateWorkspaceExists,
+    validateCollectionExists,
   )
-  const { addWorkspace, updateWorkspace, deleteWorkspace } = useCollectionsMutations(
+  const { addCollection, updateCollection, deleteCollection } = useCollectionsMutations(
     workspaces,
-    getWorkspace,
-    validateWorkspaceExists,
+    getCollection,
+    validateCollectionExists,
   )
-  const { scrubWorkspace, scrubAllCollections } = useCollectionsScrubbing(
+  const { scrubCollection, scrubAllCollections } = useCollectionsScrubbing(
     workspaces,
-    getWorkspace,
-    validateWorkspaceExists,
+    getCollection,
+    validateCollectionExists,
   )
-  const { moveItem, addItemToWorkspace, removeItemFromWorkspace } = useCollectionsMembership(
+  const { moveItem, addItemToCollection, removeItemFromCollection } = useCollectionsMembership(
     workspaces,
-    getWorkspace,
-    validateWorkspaceExists,
+    getCollection,
+    validateCollectionExists,
   )
 
   return {
@@ -41,16 +41,16 @@ export const useCollectionsStore = defineStore('workspaces', () => {
     hasCollections,
     initializeCollections,
     doesCollectionExist,
-    validateWorkspaceExists,
-    getWorkspace,
-    getWorkspaceName,
-    addWorkspace,
-    updateWorkspace,
-    deleteWorkspace,
-    scrubWorkspace,
+    validateCollectionExists,
+    getCollection,
+    getCollectionName,
+    addCollection,
+    updateCollection,
+    deleteCollection,
+    scrubCollection,
     scrubAllCollections,
-    addItemToWorkspace,
+    addItemToCollection,
     moveItem,
-    removeItemFromWorkspace,
+    removeItemFromCollection,
   }
 })

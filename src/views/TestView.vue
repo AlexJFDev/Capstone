@@ -56,7 +56,7 @@ function loadDummyData() {
   }
   for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
     if (!collectionsStore.doesCollectionExist(id)) {
-      collectionsStore.addWorkspace(id, workspace)
+      collectionsStore.addCollection(id, workspace)
     }
   }
   for (const [id, visualization] of Object.entries(dummyVisualizations)) {

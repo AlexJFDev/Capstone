@@ -1,4 +1,4 @@
-// Provides moveItem, addItemToWorkspace, and removeItemFromWorkspace operations for managing workspace item membership.
+// Provides moveItem, addItemToCollection, and removeItemFromCollection operations for managing workspace item membership.
 import { putWorkspace } from '@/db'
 import type { Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
@@ -7,11 +7,11 @@ import { useItemsStore } from '../items'
 // oxlint-disable-next-line max-lines-per-function
 export function useCollectionsMembership(
   workspaces: Ref<Record<string, Workspace>>,
-  getWorkspace: (id: string) => Workspace,
-  validateWorkspaceExists: (id: string) => void,
+  getCollection: (id: string) => Workspace,
+  validateCollectionExists: (id: string) => void,
 ) {
   function moveItem(collectionId: string, itemId: string, amount: number) {
-    validateWorkspaceExists(collectionId)
+    validateCollectionExists(collectionId)
 
     const itemsStore = useItemsStore()
     itemsStore.validateItemExists(itemId)
@@ -32,37 +32,37 @@ export function useCollectionsMembership(
 
     items.splice(index, 1)
     items.splice(newIndex, 0, itemId)
-    putWorkspace(collectionId, getWorkspace(collectionId))
+    putWorkspace(collectionId, getCollection(collectionId))
   }
 
-  function addItemToWorkspace(itemId: string, collectionId: string) {
+  function addItemToCollection(itemId: string, collectionId: string) {
     const itemsStore = useItemsStore()
 
     itemsStore.validateItemExists(itemId)
-    validateWorkspaceExists(collectionId)
+    validateCollectionExists(collectionId)
 
-    const workspace = getWorkspace(collectionId)
+    const workspace = getCollection(collectionId)
 
     if (workspace.items.includes(itemId)) return
 
     workspace.items.push(itemId)
-    putWorkspace(collectionId, getWorkspace(collectionId))
+    putWorkspace(collectionId, getCollection(collectionId))
   }
 
-  function removeItemFromWorkspace(itemId: string, collectionId: string) {
+  function removeItemFromCollection(itemId: string, collectionId: string) {
     const itemsStore = useItemsStore()
 
     itemsStore.validateItemExists(itemId)
-    validateWorkspaceExists(collectionId)
+    validateCollectionExists(collectionId)
 
-    const workspace = getWorkspace(collectionId)
+    const workspace = getCollection(collectionId)
     const index = workspace.items.indexOf(itemId)
 
     if (index === -1) return
 
     workspace.items.splice(index, 1)
-    putWorkspace(collectionId, getWorkspace(collectionId))
+    putWorkspace(collectionId, getCollection(collectionId))
   }
 
-  return { moveItem, addItemToWorkspace, removeItemFromWorkspace }
+  return { moveItem, addItemToCollection, removeItemFromCollection }
 }

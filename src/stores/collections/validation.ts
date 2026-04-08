@@ -1,4 +1,4 @@
-// Provides doesCollectionExist and validateWorkspaceExists helpers for the workspaces store.
+// Provides doesCollectionExist and validateCollectionExists helpers for the workspaces store.
 import { isValidCollectionId, type Workspace } from '@/types/collections'
 import type { Ref } from 'vue'
 
@@ -8,11 +8,11 @@ export function useCollectionsValidation(workspaces: Ref<Record<string, Workspac
     return id in workspaces.value
   }
 
-  function validateWorkspaceExists(id: string) {
+  function validateCollectionExists(id: string) {
     if (!doesCollectionExist(id)) {
       throw new Error(`Unknown workspace id: "${id}"`)
     }
   }
 
-  return { doesCollectionExist, validateWorkspaceExists }
+  return { doesCollectionExist, validateCollectionExists }
 }

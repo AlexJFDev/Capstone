@@ -83,7 +83,7 @@ function startDrag(event: MouseEvent, itemId: string) {
       if (steps === 0) return
 
       if (!props.collectionId) return
-      const items = collectionsStore.getWorkspace(props.collectionId).items
+      const items = collectionsStore.getCollection(props.collectionId).items
       const currentIndex = items.indexOf(itemId)
       const newIndex = currentIndex + steps
 

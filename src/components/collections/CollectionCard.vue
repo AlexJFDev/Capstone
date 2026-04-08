@@ -15,7 +15,7 @@ const router = useRouter()
 const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(() => collectionsStore.getWorkspace(props.collectionId))
+const workspace = computed(() => collectionsStore.getCollection(props.collectionId))
 
 const hovered = ref(false)
 

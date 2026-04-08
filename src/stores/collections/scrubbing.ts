@@ -6,25 +6,25 @@ import { useItemsStore } from '../items'
 
 export function useCollectionsScrubbing(
   workspaces: Ref<Record<string, Workspace>>,
-  getWorkspace: (id: string) => Workspace,
-  validateWorkspaceExists: (id: string) => void,
+  getCollection: (id: string) => Workspace,
+  validateCollectionExists: (id: string) => void,
 ) {
-  function scrubWorkspace(id: string) {
-    validateWorkspaceExists(id)
+  function scrubCollection(id: string) {
+    validateCollectionExists(id)
     const itemsStore = useItemsStore()
-    const workspace = getWorkspace(id)
+    const workspace = getCollection(id)
     const validItems = workspace.items.filter((itemId) => itemsStore.doesItemExist(itemId))
     if (validItems.length !== workspace.items.length) {
       workspaces.value[id]!.items = validItems
-      putWorkspace(id, getWorkspace(id))
+      putWorkspace(id, getCollection(id))
     }
   }
 
   function scrubAllCollections() {
     for (const id of Object.keys(workspaces.value)) {
-      scrubWorkspace(id)
+      scrubCollection(id)
     }
   }
 
-  return { scrubWorkspace, scrubAllCollections }
+  return { scrubCollection, scrubAllCollections }
 }

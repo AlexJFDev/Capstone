@@ -44,10 +44,10 @@ const changesMade = computed(
 const availableWorkspaces = computed(() =>
   collectionsStore.collectionIds
     .filter((wid) => !workspaceDraft.value.includes(wid))
-    .map((wid) => ({ id: wid, name: collectionsStore.getWorkspaceName(wid) })),
+    .map((wid) => ({ id: wid, name: collectionsStore.getCollectionName(wid) })),
 )
 
-function addWorkspace(wid: string) {
+function addCollection(wid: string) {
   if (!workspaceDraft.value.includes(wid)) {
     workspaceDraft.value.push(wid)
   }
@@ -68,7 +68,7 @@ function setDraft(item: Item) {
 
   const currentWorkspaceIds = props.itemId
     ? collectionsStore.collectionIds.filter((wid) =>
-        collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
+        collectionsStore.getCollection(wid).items.includes(props.itemId!),
       )
     : []
   workspaceDraft.value = [...currentWorkspaceIds]
@@ -108,12 +108,12 @@ async function save() {
   // Apply workspace membership changes
   for (const wid of workspaceDraft.value) {
     if (!originalWorkspaceIds.value.includes(wid)) {
-      collectionsStore.addItemToWorkspace(savedItemId, wid)
+      collectionsStore.addItemToCollection(savedItemId, wid)
     }
   }
   for (const wid of originalWorkspaceIds.value) {
     if (!workspaceDraft.value.includes(wid)) {
-      collectionsStore.removeItemFromWorkspace(savedItemId, wid)
+      collectionsStore.removeItemFromCollection(savedItemId, wid)
     }
   }
 
@@ -146,7 +146,7 @@ async function deleteItem() {
 const workspaceToAdd = ref<string | null>(null)
 watch(workspaceToAdd, (wid) => {
   if (wid) {
-    addWorkspace(wid)
+    addCollection(wid)
     workspaceToAdd.value = null
   }
 })
@@ -233,13 +233,13 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
             <v-chip
               v-for="wid in workspaceDraft"
               :key="wid"
-              :color="collectionsStore.getWorkspace(wid).color"
+              :color="collectionsStore.getCollection(wid).color"
               size="small"
               variant="flat"
               closable
               @click:close="removeWorkspace(wid)"
             >
-              {{ collectionsStore.getWorkspaceName(wid) }}
+              {{ collectionsStore.getCollectionName(wid) }}
             </v-chip>
             <span v-if="workspaceDraft.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any workspaces

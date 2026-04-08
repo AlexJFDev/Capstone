@@ -57,14 +57,14 @@ watch(model, async (isOpen) => {
 const availableWorkspaces = computed(() =>
   collectionsStore.collectionIds
     .filter((id) => !draft.value.collectionIds.includes(id))
-    .map((id) => ({ id, name: collectionsStore.getWorkspaceName(id) })),
+    .map((id) => ({ id, name: collectionsStore.getCollectionName(id) })),
 )
 
 function removeWorkspace(collectionId: string) {
   draft.value.collectionIds = draft.value.collectionIds.filter((id) => id !== collectionId)
 }
 
-function addWorkspace(collectionId: string) {
+function addCollection(collectionId: string) {
   if (!draft.value.collectionIds.includes(collectionId)) {
     draft.value.collectionIds.push(collectionId)
   }
@@ -73,7 +73,7 @@ function addWorkspace(collectionId: string) {
 const workspaceToAdd = ref<string | null>(null)
 watch(workspaceToAdd, (id) => {
   if (id) {
-    addWorkspace(id)
+    addCollection(id)
     workspaceToAdd.value = null
   }
 })
@@ -181,13 +181,13 @@ const nameRules = [required]
             <v-chip
               v-for="collectionId in draft.collectionIds"
               :key="collectionId"
-              :color="collectionsStore.getWorkspace(collectionId).color"
+              :color="collectionsStore.getCollection(collectionId).color"
               size="small"
               variant="flat"
               closable
               @click:close="removeWorkspace(collectionId)"
             >
-              {{ collectionsStore.getWorkspaceName(collectionId) }}
+              {{ collectionsStore.getCollectionName(collectionId) }}
             </v-chip>
             <span v-if="draft.collectionIds.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any collections

@@ -97,7 +97,6 @@ const hoveredItemId = ref<string | null>(null)
         <!-- Item List -->
         <RoadmapItemList
           v-model:hovered-item-id="hoveredItemId"
-          class="item-list"
           :workspace-id="workspaceId"
           :list-width="listWidth"
           :item-ids="sortedItemIds"
@@ -162,10 +161,6 @@ const hoveredItemId = ref<string | null>(null)
       display: flex;
       width: fit-content;
       min-width: 100%;
-
-      .item-list {
-        border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-      }
     }
   }
 }

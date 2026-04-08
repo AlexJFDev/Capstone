@@ -2,7 +2,7 @@
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../collections'
+import { useCollectionsStore } from '../collections'
 import { useVisualizationsStore } from '../visualizations'
 
 export function useSpacesScrubbing(
@@ -13,12 +13,12 @@ export function useSpacesScrubbing(
   function scrubSpace(id: string) {
     validateSpaceExists(id)
 
-    const workspacesStore = useWorkspacesStore()
+    const collectionsStore = useCollectionsStore()
     const visualizationsStore = useVisualizationsStore()
     const space = getSpace(id)
 
     const validWorkspaceIds = space.workspaceIds.filter((workspaceId) =>
-      workspacesStore.doesWorkspaceExist(workspaceId),
+      collectionsStore.doesWorkspaceExist(workspaceId),
     )
     const validVisualizationIds = space.visualizationIds.filter((visualizationId) =>
       visualizationsStore.doesVisualizationExist(visualizationId),

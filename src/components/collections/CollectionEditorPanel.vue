@@ -8,7 +8,7 @@ import {
 } from '@/types/collections'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
 import ColorInput from '../inputs/ColorPicker.vue'
@@ -19,13 +19,13 @@ const props = defineProps<{
   workspaceId?: string
 }>()
 
-const workspaceStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Editing state
 const isEditing = computed(() => !!props.workspaceId)
 const editingWorkspace = computed(() =>
-  isEditing.value ? workspaceStore.getWorkspace(props.workspaceId!) : constructEmptyWorkspace(),
+  isEditing.value ? collectionsStore.getWorkspace(props.workspaceId!) : constructEmptyWorkspace(),
 )
 
 // Draft state
@@ -53,11 +53,11 @@ async function save() {
   if (!valid) return
 
   if (isEditing.value) {
-    workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
+    collectionsStore.updateWorkspace(props.workspaceId!, draft.value)
     userInterface.closeWorkspaceEditor()
   } else {
     const id = generateWorkspaceId()
-    workspaceStore.addWorkspace(id, draft.value)
+    collectionsStore.addWorkspace(id, draft.value)
     userInterface.closeWorkspaceEditor()
   }
 }
@@ -79,7 +79,7 @@ async function deleteWorkspace() {
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {
-    workspaceStore.deleteWorkspace(props.workspaceId!)
+    collectionsStore.deleteWorkspace(props.workspaceId!)
     userInterface.closeWorkspaceEditor()
   }
 }

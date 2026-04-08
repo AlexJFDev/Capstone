@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import ColorSwatch from '@/components/ColorSwatch.vue'
 import DateChip from '@/components/DateChip.vue'
 import WorkspaceChip from '@/components/collections/CollectionChip.vue'
@@ -13,7 +13,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 const headers = [
@@ -29,8 +29,8 @@ const headers = [
 const rows = computed(() => props.itemIds.map((id) => ({ id, ...itemsStore.getItem(id) })))
 
 function workspaceIdsFor(itemId: string) {
-  return workspacesStore.workspaceIds.filter((wid) =>
-    workspacesStore.getWorkspace(wid).items.includes(itemId),
+  return collectionsStore.workspaceIds.filter((wid) =>
+    collectionsStore.getWorkspace(wid).items.includes(itemId),
   )
 }
 

@@ -9,7 +9,7 @@ import { useWorkspacesMutations } from './mutations'
 import { useWorkspacesMembership } from './collection-membership'
 import { useWorkspacesScrubbing } from './scrubbing'
 
-export const useWorkspacesStore = defineStore('workspaces', () => {
+export const useCollectionsStore = defineStore('workspaces', () => {
   const workspaces = ref<Record<string, Workspace>>({})
   const workspaceIds = computed(() => Object.keys(workspaces.value))
   const hasWorkspaces = computed(() => workspaceIds.value.length > 0)

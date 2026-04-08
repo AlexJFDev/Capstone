@@ -4,7 +4,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ItemList from '../items/ItemList.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
@@ -12,10 +12,10 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const workspace = computed(() => collectionsStore.getWorkspace(props.workspaceId))
 
 const hovered = ref(false)
 

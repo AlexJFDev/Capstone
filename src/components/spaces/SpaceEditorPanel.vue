@@ -3,7 +3,7 @@
 import { areSpacesEqual, constructNewSpace, generateSpaceId, type Space } from '@/types/spaces'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useSpacesStore } from '@/stores/spaces'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useVisualizationsStore } from '@/stores/visualizations'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>()
 
 const spacesStore = useSpacesStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const visualizationsStore = useVisualizationsStore()
 const userInterface = useInterfaceStore()
 
@@ -55,9 +55,9 @@ watch(model, async (isOpen) => {
 
 // Collection membership
 const availableWorkspaces = computed(() =>
-  workspacesStore.workspaceIds
+  collectionsStore.workspaceIds
     .filter((id) => !draft.value.workspaceIds.includes(id))
-    .map((id) => ({ id, name: workspacesStore.getWorkspaceName(id) })),
+    .map((id) => ({ id, name: collectionsStore.getWorkspaceName(id) })),
 )
 
 function removeWorkspace(workspaceId: string) {
@@ -181,13 +181,13 @@ const nameRules = [required]
             <v-chip
               v-for="workspaceId in draft.workspaceIds"
               :key="workspaceId"
-              :color="workspacesStore.getWorkspace(workspaceId).color"
+              :color="collectionsStore.getWorkspace(workspaceId).color"
               size="small"
               variant="flat"
               closable
               @click:close="removeWorkspace(workspaceId)"
             >
-              {{ workspacesStore.getWorkspaceName(workspaceId) }}
+              {{ collectionsStore.getWorkspaceName(workspaceId) }}
             </v-chip>
             <span v-if="draft.workspaceIds.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any collections

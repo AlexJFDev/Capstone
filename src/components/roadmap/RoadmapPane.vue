@@ -8,7 +8,7 @@ import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
@@ -18,12 +18,12 @@ const props = defineProps<{
   itemIds?: string[]
 }>()
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
 const workspace = computed(() =>
-  props.workspaceId ? workspacesStore.getWorkspace(props.workspaceId) : null,
+  props.workspaceId ? collectionsStore.getWorkspace(props.workspaceId) : null,
 )
 
 const {
@@ -58,13 +58,13 @@ const sortedItemIds = computed(() => {
 
 function addItem(itemId: string) {
   if (!props.workspaceId) return
-  workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  collectionsStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
 async function newItem() {
   if (!props.workspaceId) return
   const itemId = await userInterface.openItemCreator()
-  if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (itemId) collectionsStore.addItemToWorkspace(itemId, props.workspaceId)
 }
 
 const hoveredItemId = ref<string | null>(null)

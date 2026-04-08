@@ -4,7 +4,7 @@ import { validateItemId, type Item } from '@/types/items'
 import { validateColor } from '@/utils/colors'
 import { validateRange } from '@/utils/dates'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../collections'
+import { useCollectionsStore } from '../collections'
 
 export function useItemsMutations(
   items: Ref<Record<string, Item>>,
@@ -40,10 +40,10 @@ export function useItemsMutations(
   function deleteItem(id: string) {
     validateItemExists(id)
 
-    const workspacesStore = useWorkspacesStore()
+    const collectionsStore = useCollectionsStore()
 
-    for (const workspaceId of workspacesStore.workspaceIds) {
-      workspacesStore.removeItemFromWorkspace(id, workspaceId)
+    for (const workspaceId of collectionsStore.workspaceIds) {
+      collectionsStore.removeItemFromWorkspace(id, workspaceId)
     }
 
     delete items.value[id]

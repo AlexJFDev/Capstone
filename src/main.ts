@@ -7,7 +7,7 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 import vuetify from './plugins/vuetify'
-import { useWorkspacesStore } from './stores/collections'
+import { useCollectionsStore } from './stores/collections'
 import { useItemsStore } from './stores/items'
 import { useInterfaceStore } from './stores/interface'
 import { useSpacesStore } from './stores/spaces'
@@ -18,21 +18,21 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(vuetify)
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const spacesStore = useSpacesStore()
 
 // Every store that persists to IndexedDB must have its initialize function called here.
 // If a new store is added with an initialize* function, it belongs in this Promise.all.
 // Omitting it means the store will always start empty after a page reload (see issue #125).
 await Promise.all([
-  workspacesStore.initializeWorkspaces(),
+  collectionsStore.initializeWorkspaces(),
   useItemsStore().initializeItems(),
   useInterfaceStore().initializeInterface(),
   spacesStore.initializeSpaces(),
   useVisualizationsStore().initializeVisualizations(),
 ])
 
-workspacesStore.scrubAllWorkspaces()
+collectionsStore.scrubAllWorkspaces()
 spacesStore.scrubAllSpaces()
 
 app.use(router)

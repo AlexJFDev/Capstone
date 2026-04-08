@@ -3,12 +3,12 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore, type SortOption } from '@/stores/interface'
 
 const route = useRoute()
 const router = useRouter()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 const sortOptions: { label: string; value: SortOption }[] = [
@@ -20,7 +20,7 @@ const sortOptions: { label: string; value: SortOption }[] = [
 
 // Handle workspace being deleted while viewing
 watch(
-  () => workspacesStore.workspaceIds,
+  () => collectionsStore.workspaceIds,
   (ids) => {
     const routeId = route.params.workspaceId as string
     if (routeId && !ids.includes(routeId)) {
@@ -34,7 +34,7 @@ const workspaceParam = computed(() => route.params.workspaceId as string)
 const activeWorkspace = computed(() => workspaceParam.value || userInterface.defaultWorkspaceId)
 
 const workspaceName = computed(() =>
-  activeWorkspace.value ? workspacesStore.getWorkspaceName(activeWorkspace.value) : '',
+  activeWorkspace.value ? collectionsStore.getWorkspaceName(activeWorkspace.value) : '',
 )
 </script>
 

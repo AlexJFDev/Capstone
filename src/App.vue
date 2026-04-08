@@ -2,7 +2,7 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from 'vue-router'
 import { useInterfaceStore } from './stores/interface'
-import { useWorkspacesStore } from './stores/collections'
+import { useCollectionsStore } from './stores/collections'
 import { useSpacesStore } from './stores/spaces'
 import ItemEditorPanel from './components/items/ItemEditorPanel.vue'
 import ItemViewerPanel from './components/items/ItemViewerPanel.vue'
@@ -15,7 +15,7 @@ import SettingsPanel from './components/roadmap/SettingsPanel.vue'
 
 const router = useRouter()
 const userInterface = useInterfaceStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const spacesStore = useSpacesStore()
 </script>
 
@@ -70,7 +70,7 @@ const spacesStore = useSpacesStore()
     />
     <CollectionsPanel
       v-model="userInterface.workspacesOpen"
-      :workspace-ids="workspacesStore.workspaceIds"
+      :workspace-ids="collectionsStore.workspaceIds"
     />
     <SpaceEditorPanel
       v-model="userInterface.spaceEditorOpen"

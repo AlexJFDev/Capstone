@@ -4,7 +4,7 @@ import DateChip from '@/components/DateChip.vue'
 import MarkdownRenderer from '@/components/MarkdownRenderer.vue'
 import WorkspaceChip from '@/components/collections/CollectionChip.vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { constructEmptyItem } from '@/types/items'
 import { computed } from 'vue'
 
@@ -15,7 +15,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 
 const item = computed(() =>
   props.itemId ? itemsStore.getItem(props.itemId) : constructEmptyItem(),
@@ -23,8 +23,8 @@ const item = computed(() =>
 
 const workspaceIds = computed(() =>
   props.itemId
-    ? workspacesStore.workspaceIds.filter((wid) =>
-        workspacesStore.getWorkspace(wid).items.includes(props.itemId!),
+    ? collectionsStore.workspaceIds.filter((wid) =>
+        collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
       )
     : [],
 )

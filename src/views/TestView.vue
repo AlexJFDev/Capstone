@@ -6,7 +6,7 @@ import ItemViewerPanel from '@/components/items/ItemViewerPanel.vue'
 import CollectionEditorPanel from '@/components/collections/CollectionEditorPanel.vue'
 import CollectionsPanel from '@/components/collections/CollectionsPanel.vue'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import SpeedbumpDialog from '@/SpeedbumpDialog.vue'
 import BacklogList from '@/components/backlog/BacklogList.vue'
@@ -20,7 +20,7 @@ import { visualizations as dummyVisualizations } from '@/testing/dummy-visualiza
 import { spaces as dummySpaces } from '@/testing/dummy-spaces'
 import { clearDatabase } from '@/db'
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const itemsStore = useItemsStore()
 const visualizationsStore = useVisualizationsStore()
 const spacesStore = useSpacesStore()
@@ -29,7 +29,7 @@ const router = useRouter()
 
 const test_item_id = computed(() => itemsStore.itemIds[0])
 
-const workspaceIds = workspacesStore.workspaceIds
+const workspaceIds = collectionsStore.workspaceIds
 
 const itemEditorOpen = ref(false)
 const itemViewerOpen = ref(false)
@@ -55,8 +55,8 @@ function loadDummyData() {
     }
   }
   for (const [id, workspace] of Object.entries(dummyWorkspaces)) {
-    if (!workspacesStore.doesWorkspaceExist(id)) {
-      workspacesStore.addWorkspace(id, workspace)
+    if (!collectionsStore.doesWorkspaceExist(id)) {
+      collectionsStore.addWorkspace(id, workspace)
     }
   }
   for (const [id, visualization] of Object.entries(dummyVisualizations)) {

@@ -3,7 +3,7 @@
 import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types/items'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
@@ -17,7 +17,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Editing State
@@ -42,9 +42,9 @@ const changesMade = computed(
 
 // Workspace options for the autocomplete (workspaces not already in the draft)
 const availableWorkspaces = computed(() =>
-  workspacesStore.workspaceIds
+  collectionsStore.workspaceIds
     .filter((wid) => !workspaceDraft.value.includes(wid))
-    .map((wid) => ({ id: wid, name: workspacesStore.getWorkspaceName(wid) })),
+    .map((wid) => ({ id: wid, name: collectionsStore.getWorkspaceName(wid) })),
 )
 
 function addWorkspace(wid: string) {
@@ -67,8 +67,8 @@ function setDraft(item: Item) {
   }
 
   const currentWorkspaceIds = props.itemId
-    ? workspacesStore.workspaceIds.filter((wid) =>
-        workspacesStore.getWorkspace(wid).items.includes(props.itemId!),
+    ? collectionsStore.workspaceIds.filter((wid) =>
+        collectionsStore.getWorkspace(wid).items.includes(props.itemId!),
       )
     : []
   workspaceDraft.value = [...currentWorkspaceIds]
@@ -108,12 +108,12 @@ async function save() {
   // Apply workspace membership changes
   for (const wid of workspaceDraft.value) {
     if (!originalWorkspaceIds.value.includes(wid)) {
-      workspacesStore.addItemToWorkspace(savedItemId, wid)
+      collectionsStore.addItemToWorkspace(savedItemId, wid)
     }
   }
   for (const wid of originalWorkspaceIds.value) {
     if (!workspaceDraft.value.includes(wid)) {
-      workspacesStore.removeItemFromWorkspace(savedItemId, wid)
+      collectionsStore.removeItemFromWorkspace(savedItemId, wid)
     }
   }
 
@@ -233,13 +233,13 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
             <v-chip
               v-for="wid in workspaceDraft"
               :key="wid"
-              :color="workspacesStore.getWorkspace(wid).color"
+              :color="collectionsStore.getWorkspace(wid).color"
               size="small"
               variant="flat"
               closable
               @click:close="removeWorkspace(wid)"
             >
-              {{ workspacesStore.getWorkspaceName(wid) }}
+              {{ collectionsStore.getWorkspaceName(wid) }}
             </v-chip>
             <span v-if="workspaceDraft.length === 0" class="text-body-2 text-medium-emphasis">
               Not in any workspaces

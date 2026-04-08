@@ -4,7 +4,7 @@ import { computed, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useSpacesStore } from '@/stores/spaces'
 import { useVisualizationsStore } from '@/stores/visualizations'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { constructNewVisualization, generateVisualizationId } from '@/types/visualizations'
 import RoadmapPane from '@/components/roadmap/RoadmapPane.vue'
@@ -14,7 +14,7 @@ const route = useRoute()
 const router = useRouter()
 const spacesStore = useSpacesStore()
 const visualizationsStore = useVisualizationsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Handle space being deleted while viewing
@@ -64,8 +64,8 @@ const spaceItemIds = computed(() => {
   const seen = new Set<string>()
   const ids: string[] = []
   for (const workspaceId of space.value.workspaceIds) {
-    if (!workspacesStore.doesWorkspaceExist(workspaceId)) continue
-    for (const itemId of workspacesStore.getWorkspace(workspaceId).items) {
+    if (!collectionsStore.doesWorkspaceExist(workspaceId)) continue
+    for (const itemId of collectionsStore.getWorkspace(workspaceId).items) {
       if (!seen.has(itemId)) {
         seen.add(itemId)
         ids.push(itemId)

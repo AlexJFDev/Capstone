@@ -7,7 +7,7 @@ import {
   DEFAULT_PIXELS_PER_DAY,
 } from '@/components/roadmap/constants'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { useWorkspacesStore } from '../collections'
+import { useCollectionsStore } from '../collections'
 import { useInterfaceInitialization } from './initialization'
 import { useInterfaceRoadmap } from './roadmap'
 import { useInterfaceSorting } from './sorting'
@@ -23,16 +23,16 @@ export type { SortOption, SortDirection } from './sorting'
 export const useInterfaceStore = defineStore('interface', () => {
   const favoriteWorkspaceId = ref<string | null>(null)
   const defaultWorkspaceId = computed(() => {
-    const workspacesStore = useWorkspacesStore()
+    const collectionsStore = useCollectionsStore()
 
-    if (!workspacesStore.hasWorkspaces) return
+    if (!collectionsStore.hasWorkspaces) return
     if (
       favoriteWorkspaceId.value &&
-      workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)
+      collectionsStore.doesWorkspaceExist(favoriteWorkspaceId.value)
     ) {
       return favoriteWorkspaceId.value
     }
-    return workspacesStore.workspaceIds[0]
+    return collectionsStore.workspaceIds[0]
   })
 
   const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)

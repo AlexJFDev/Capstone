@@ -1,16 +1,16 @@
 <!-- Renders a small colored chip for a workspace, adding a subtle border when the workspace color is very light. -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useWorkspacesStore } from '@/stores/collections'
+import { useCollectionsStore } from '@/stores/collections'
 import { isLightColor } from '@/utils/colors'
 
 const props = defineProps<{
   workspaceId: string
 }>()
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const workspace = computed(() => collectionsStore.getWorkspace(props.workspaceId))
 const showBorder = computed(() => isLightColor(workspace.value.color))
 </script>
 

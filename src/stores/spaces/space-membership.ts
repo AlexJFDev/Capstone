@@ -2,7 +2,7 @@
 import { putSpace } from '@/db'
 import type { Space } from '@/types/spaces'
 import type { Ref } from 'vue'
-import { useWorkspacesStore } from '../collections'
+import { useCollectionsStore } from '../collections'
 import { useVisualizationsStore } from '../visualizations'
 
 // oxlint-disable-next-line max-lines-per-function
@@ -12,9 +12,9 @@ export function useSpacesMembership(
   validateSpaceExists: (id: string) => void,
 ) {
   function addWorkspaceToSpace(workspaceId: string, spaceId: string) {
-    const workspacesStore = useWorkspacesStore()
+    const collectionsStore = useCollectionsStore()
 
-    workspacesStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateWorkspaceExists(workspaceId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)
@@ -26,9 +26,9 @@ export function useSpacesMembership(
   }
 
   function removeWorkspaceFromSpace(workspaceId: string, spaceId: string) {
-    const workspacesStore = useWorkspacesStore()
+    const collectionsStore = useCollectionsStore()
 
-    workspacesStore.validateWorkspaceExists(workspaceId)
+    collectionsStore.validateWorkspaceExists(workspaceId)
     validateSpaceExists(spaceId)
 
     const space = getSpace(spaceId)

@@ -106,9 +106,9 @@ export async function getAllCollections(): Promise<Record<string, Collection>> {
  * Writes a collection to the store.
  * `toRaw` strips any Vue reactive proxy before storage. See `putItem` for details.
  */
-export async function putCollection(id: string, workspace: Collection): Promise<void> {
+export async function putCollection(id: string, collection: Collection): Promise<void> {
   const db = await getDatabase()
-  await db.put('workspaces', toRaw(workspace), id)
+  await db.put('workspaces', toRaw(collection), id)
 }
 
 /** Removes a collection from the store by ID. */

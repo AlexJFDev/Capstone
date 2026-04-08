@@ -36,7 +36,7 @@ function addWorkspace() {
       <WorkspaceCard
         v-for="collectionId in sortedWorkspaceIds"
         :key="collectionId"
-        :collectionId="collectionId"
+        :collection-id="collectionId"
       />
 
       <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">

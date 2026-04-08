@@ -97,7 +97,7 @@ const hoveredItemId = ref<string | null>(null)
         <!-- Item List -->
         <RoadmapItemList
           v-model:hovered-item-id="hoveredItemId"
-          :collectionId="collectionId"
+          :collection-id="collectionId"
           :list-width="listWidth"
           :item-ids="sortedItemIds"
         />

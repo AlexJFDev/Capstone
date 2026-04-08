@@ -95,7 +95,10 @@ function loadDummyData() {
           <v-btn @click="interfaceStore.revealSpeedBump('Are you sure?')">Speedbump</v-btn>
         </v-col>
         <v-col cols="auto">
-          <v-btn @click="router.push({ name: 'space', params: { spaceId: spacesStore.spaceIds[0] } })">First Space</v-btn>
+          <v-btn
+            @click="router.push({ name: 'space', params: { spaceId: spacesStore.spaceIds[0] } })"
+            >First Space</v-btn
+          >
         </v-col>
         <v-col cols="auto">
           <v-btn @click="loadDummyData">Load Dummy Data</v-btn>
@@ -107,13 +110,13 @@ function loadDummyData() {
     </v-container>
 
     <div class="pane">
-      <RoadmapPane v-if="collectionId" :collectionId="collectionId" />
+      <RoadmapPane v-if="collectionId" :collection-id="collectionId" />
     </div>
 
     <ItemEditorPanel v-model="itemEditorOpen" />
     <ItemViewerPanel v-if="test_item_id" v-model="itemViewerOpen" :item-id="test_item_id" />
     <CollectionEditorPanel v-model="collectionEditorOpen" />
-    <CollectionsPanel v-model="collectionsOpen" :collectionIds="collectionIds" />
+    <CollectionsPanel v-model="collectionsOpen" :collection-ids="collectionIds" />
     <SpeedbumpDialog />
 
     <BacklogList :item-ids="itemsStore.itemIds" />

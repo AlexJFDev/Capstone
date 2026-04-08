@@ -66,11 +66,11 @@ const spacesStore = useSpacesStore()
     />
     <CollectionEditorPanel
       v-model="userInterface.collectionEditorOpen"
-      :collectionId="userInterface.editingCollectionId"
+      :collection-id="userInterface.editingCollectionId"
     />
     <CollectionsPanel
       v-model="userInterface.collectionsOpen"
-      :collectionIds="collectionsStore.collectionIds"
+      :collection-ids="collectionsStore.collectionIds"
     />
     <SpaceEditorPanel
       v-model="userInterface.spaceEditorOpen"

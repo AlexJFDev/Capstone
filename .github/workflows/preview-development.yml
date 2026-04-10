@@ -1,0 +1,39 @@
+name: Deploy Development Preview
+
+on:
+  push:
+    branches:
+      - development
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preview-development
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build:preview -- --base /Chronicle/previews/development/
+
+      - name: Deploy Preview
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          target-folder: previews/development
+          clean: true

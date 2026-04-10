@@ -1,0 +1,78 @@
+// Provides addCollectionToSpace, removeCollectionFromSpace, addVisualizationToSpace, and removeVisualizationFromSpace operations for managing space membership.
+import { putSpace } from '@/db'
+import type { Space } from '@/types/spaces'
+import type { Ref } from 'vue'
+import { useCollectionsStore } from '../collections'
+import { useVisualizationsStore } from '../visualizations'
+
+// oxlint-disable-next-line max-lines-per-function
+export function useSpacesMembership(
+  spaces: Ref<Record<string, Space>>,
+  getSpace: (id: string) => Space,
+  validateSpaceExists: (id: string) => void,
+) {
+  function addCollectionToSpace(collectionId: string, spaceId: string) {
+    const collectionsStore = useCollectionsStore()
+
+    collectionsStore.validateCollectionExists(collectionId)
+    validateSpaceExists(spaceId)
+
+    const space = getSpace(spaceId)
+
+    if (space.collectionIds.includes(collectionId)) return
+
+    space.collectionIds.push(collectionId)
+    putSpace(spaceId, getSpace(spaceId))
+  }
+
+  function removeCollectionFromSpace(collectionId: string, spaceId: string) {
+    const collectionsStore = useCollectionsStore()
+
+    collectionsStore.validateCollectionExists(collectionId)
+    validateSpaceExists(spaceId)
+
+    const space = getSpace(spaceId)
+    const index = space.collectionIds.indexOf(collectionId)
+
+    if (index === -1) return
+
+    space.collectionIds.splice(index, 1)
+    putSpace(spaceId, getSpace(spaceId))
+  }
+
+  function addVisualizationToSpace(visualizationId: string, spaceId: string) {
+    const visualizationsStore = useVisualizationsStore()
+
+    visualizationsStore.validateVisualizationExists(visualizationId)
+    validateSpaceExists(spaceId)
+
+    const space = getSpace(spaceId)
+
+    if (space.visualizationIds.includes(visualizationId)) return
+
+    space.visualizationIds.push(visualizationId)
+    putSpace(spaceId, getSpace(spaceId))
+  }
+
+  function removeVisualizationFromSpace(visualizationId: string, spaceId: string) {
+    const visualizationsStore = useVisualizationsStore()
+
+    visualizationsStore.validateVisualizationExists(visualizationId)
+    validateSpaceExists(spaceId)
+
+    const space = getSpace(spaceId)
+    const index = space.visualizationIds.indexOf(visualizationId)
+
+    if (index === -1) return
+
+    space.visualizationIds.splice(index, 1)
+    putSpace(spaceId, getSpace(spaceId))
+  }
+
+  return {
+    addCollectionToSpace,
+    removeCollectionFromSpace,
+    addVisualizationToSpace,
+    removeVisualizationFromSpace,
+  }
+}

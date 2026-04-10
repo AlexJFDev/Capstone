@@ -1,5 +1,5 @@
 // Provides doesItemExist and validateItemExists helpers for the items store.
-import { isValidItemId, type Item } from '@/types'
+import { isValidItemId, type Item } from '@/types/items'
 import type { Ref } from 'vue'
 
 export function useItemsValidation(items: Ref<Record<string, Item>>) {

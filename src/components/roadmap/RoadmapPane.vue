@@ -1,4 +1,6 @@
-<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu. -->
+<!-- Top-level roadmap layout: sticky header with timeline, scrollable item list and chart body, and an add-item menu.
+     Accepts either collectionId (collection context, enables add-item and drag-to-reorder) or itemIds (read-only,
+     used when rendering inside a SpaceView where items come from multiple collections). -->
 <script setup lang="ts">
 import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
@@ -6,20 +8,23 @@ import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
 
 const props = defineProps<{
-  workspaceId: string
+  collectionId?: string
+  itemIds?: string[]
 }>()
 
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 const itemsStore = useItemsStore()
 
-const workspace = computed(() => workspacesStore.getWorkspace(props.workspaceId))
+const collection = computed(() =>
+  props.collectionId ? collectionsStore.getCollection(props.collectionId) : null,
+)
 
 const {
   roadmapListWidth: listWidth,
@@ -28,8 +33,14 @@ const {
   sortDirection,
 } = storeToRefs(userInterface)
 
+const baseItemIds = computed(() => {
+  if (props.itemIds) return props.itemIds
+  if (collection.value) return collection.value.items
+  return []
+})
+
 const sortedItemIds = computed(() => {
-  const ids = [...workspace.value.items]
+  const ids = [...baseItemIds.value]
   if (sortOption.value === 'custom') return ids
 
   return ids.toSorted((a, b) => {
@@ -46,12 +57,14 @@ const sortedItemIds = computed(() => {
 })
 
 function addItem(itemId: string) {
-  workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (!props.collectionId) return
+  collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 async function newItem() {
+  if (!props.collectionId) return
   const itemId = await userInterface.openItemCreator()
-  if (itemId) workspacesStore.addItemToWorkspace(itemId, props.workspaceId)
+  if (itemId) collectionsStore.addItemToCollection(itemId, props.collectionId)
 }
 
 const hoveredItemId = ref<string | null>(null)
@@ -64,11 +77,17 @@ const hoveredItemId = ref<string | null>(null)
       <div class="header">
         <div class="list-header">
           <div class="list-box" />
-          <AddItemMenu :excluded-item-ids="workspace.items" @add-item="addItem" @new-item="newItem">
+          <AddItemMenu
+            v-if="collectionId && collection"
+            :excluded-item-ids="collection.items"
+            @add-item="addItem"
+            @new-item="newItem"
+          >
             <template #default="menuProps">
               <v-btn flat class="add-button" v-bind="menuProps">Add Item</v-btn>
             </template>
           </AddItemMenu>
+          <div v-else class="add-button" />
         </div>
         <RoadmapHeader :item-ids="sortedItemIds" />
       </div>
@@ -78,8 +97,7 @@ const hoveredItemId = ref<string | null>(null)
         <!-- Item List -->
         <RoadmapItemList
           v-model:hovered-item-id="hoveredItemId"
-          class="item-list"
-          :workspace-id="workspaceId"
+          :collection-id="collectionId"
           :list-width="listWidth"
           :item-ids="sortedItemIds"
         />
@@ -143,10 +161,6 @@ const hoveredItemId = ref<string | null>(null)
       display: flex;
       width: fit-content;
       min-width: 100%;
-
-      .item-list {
-        border-right: 1px solid v-bind(SECTION_BORDER_COLOR);
-      }
     }
   }
 }

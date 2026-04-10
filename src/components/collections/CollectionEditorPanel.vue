@@ -1,14 +1,14 @@
-<!-- Right-side drawer panel for creating or editing a workspace's name, description, color, and item list. -->
+<!-- Right-side drawer panel for creating or editing a collection's name, description, color, and item list. -->
 <script setup lang="ts">
 import {
-  areWorkspacesEqual,
-  constructEmptyWorkspace,
-  generateWorkspaceId,
-  type Workspace,
-} from '@/types'
+  areCollectionsEqual,
+  constructEmptyCollection,
+  generateCollectionId,
+  type Collection,
+} from '@/types/collections'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import ItemList from '../items/ItemList.vue'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { required } from '@/utils/validation'
 import ColorInput from '../inputs/ColorPicker.vue'
@@ -16,32 +16,34 @@ import ColorInput from '../inputs/ColorPicker.vue'
 // External state
 const model = defineModel<boolean>()
 const props = defineProps<{
-  workspaceId?: string
+  collectionId?: string
 }>()
 
-const workspaceStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Editing state
-const isEditing = computed(() => !!props.workspaceId)
-const editingWorkspace = computed(() =>
-  isEditing.value ? workspaceStore.getWorkspace(props.workspaceId!) : constructEmptyWorkspace(),
+const isEditing = computed(() => !!props.collectionId)
+const editingCollection = computed(() =>
+  isEditing.value
+    ? collectionsStore.getCollection(props.collectionId!)
+    : constructEmptyCollection(),
 )
 
 // Draft state
-const draft = ref<Workspace>(constructEmptyWorkspace())
-const original = ref<Workspace>(constructEmptyWorkspace())
-const changesMade = computed(() => !areWorkspacesEqual(draft.value, original.value))
+const draft = ref<Collection>(constructEmptyCollection())
+const original = ref<Collection>(constructEmptyCollection())
+const changesMade = computed(() => !areCollectionsEqual(draft.value, original.value))
 
 // Draft management
-function setDraft(workspace: Workspace) {
-  original.value = { ...workspace, items: [...workspace.items] }
-  draft.value = { ...workspace, items: [...workspace.items] }
+function setDraft(collection: Collection) {
+  original.value = { ...collection, items: [...collection.items] }
+  draft.value = { ...collection, items: [...collection.items] }
 }
 
 watch(model, async (isOpen) => {
   if (isOpen) {
-    setDraft(isEditing.value ? editingWorkspace.value : constructEmptyWorkspace())
+    setDraft(isEditing.value ? editingCollection.value : constructEmptyCollection())
     await nextTick()
     formRef.value?.resetValidation()
   }
@@ -53,12 +55,12 @@ async function save() {
   if (!valid) return
 
   if (isEditing.value) {
-    workspaceStore.updateWorkspace(props.workspaceId!, draft.value)
-    userInterface.closeWorkspaceEditor()
+    collectionsStore.updateCollection(props.collectionId!, draft.value)
+    userInterface.closeCollectionEditor()
   } else {
-    const id = generateWorkspaceId()
-    workspaceStore.addWorkspace(id, draft.value)
-    userInterface.closeWorkspaceEditor()
+    const id = generateCollectionId()
+    collectionsStore.addCollection(id, draft.value)
+    userInterface.closeCollectionEditor()
   }
 }
 
@@ -69,18 +71,18 @@ async function cancel() {
       'You have unsaved changes. Are you sure you would like to discard them?',
     ))
   ) {
-    userInterface.closeWorkspaceEditor()
+    userInterface.closeCollectionEditor()
   }
 }
 
-async function deleteWorkspace() {
+async function deleteCollection() {
   if (
     await userInterface.revealSpeedBump(
       `Are you sure you want to delete "${draft.value.name}"? This cannot be undone.`,
     )
   ) {
-    workspaceStore.deleteWorkspace(props.workspaceId!)
-    userInterface.closeWorkspaceEditor()
+    collectionsStore.deleteCollection(props.collectionId!)
+    userInterface.closeCollectionEditor()
   }
 }
 
@@ -118,7 +120,7 @@ const nameRules = [required]
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="cancel" />
-      <v-toolbar-title>{{ isEditing ? 'Edit workspace' : 'New workspace' }}</v-toolbar-title>
+      <v-toolbar-title>{{ isEditing ? 'Edit collection' : 'New collection' }}</v-toolbar-title>
       <v-spacer />
       <v-btn variant="text" @click="save">Save</v-btn>
     </v-toolbar>
@@ -175,7 +177,7 @@ const nameRules = [required]
     <template #append>
       <v-divider />
       <div class="pa-2 d-flex flex-column ga-2">
-        <v-btn v-if="isEditing" block color="red" @click="deleteWorkspace">Delete</v-btn>
+        <v-btn v-if="isEditing" block color="red" @click="deleteCollection">Delete</v-btn>
         <v-btn block variant="text" @click="cancel">Cancel</v-btn>
       </div>
     </template>

@@ -1,9 +1,9 @@
-<!-- Right-side drawer panel for creating or editing an item's details, schedule, color, and workspace memberships. -->
+<!-- Right-side drawer panel for creating or editing an item's details, schedule, color, and collection memberships. -->
 <script setup lang="ts">
-import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types'
+import { areItemsEqual, constructEmptyItem, generateItemId, type Item } from '@/types/items'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import { useItemsStore } from '@/stores/items'
-import { useWorkspacesStore } from '@/stores/workspaces'
+import { useCollectionsStore } from '@/stores/collections'
 import { makeDateRange, type DateRange } from '@/utils/dates'
 import { useInterfaceStore } from '@/stores/interface'
 import { endDateAfterStart, rangeDatesValid, required } from '@/utils/validation'
@@ -17,7 +17,7 @@ const props = defineProps<{
 }>()
 
 const itemsStore = useItemsStore()
-const workspacesStore = useWorkspacesStore()
+const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
 
 // Editing State
@@ -30,31 +30,31 @@ const editingItem = computed(() =>
 const draft = ref<Item>(constructEmptyItem())
 const original = ref<Item>(constructEmptyItem())
 const dateRangeDraft = ref<DateRange>(makeDateRange())
-const workspaceDraft = ref<string[]>([])
-const originalWorkspaceIds = ref<string[]>([])
+const collectionDraft = ref<string[]>([])
+const originalCollectionIds = ref<string[]>([])
 
 const changesMade = computed(
   () =>
     !areItemsEqual(draft.value, original.value) ||
-    workspaceDraft.value.length !== originalWorkspaceIds.value.length ||
-    workspaceDraft.value.some((wid) => !originalWorkspaceIds.value.includes(wid)),
+    collectionDraft.value.length !== originalCollectionIds.value.length ||
+    collectionDraft.value.some((wid) => !originalCollectionIds.value.includes(wid)),
 )
 
-// Workspace options for the autocomplete (workspaces not already in the draft)
-const availableWorkspaces = computed(() =>
-  workspacesStore.workspaceIds
-    .filter((wid) => !workspaceDraft.value.includes(wid))
-    .map((wid) => ({ id: wid, name: workspacesStore.getWorkspaceName(wid) })),
+// collection options for the autocomplete (collections not already in the draft)
+const availableCollections = computed(() =>
+  collectionsStore.collectionIds
+    .filter((wid) => !collectionDraft.value.includes(wid))
+    .map((wid) => ({ id: wid, name: collectionsStore.getCollectionName(wid) })),
 )
 
-function addWorkspace(wid: string) {
-  if (!workspaceDraft.value.includes(wid)) {
-    workspaceDraft.value.push(wid)
+function addCollection(wid: string) {
+  if (!collectionDraft.value.includes(wid)) {
+    collectionDraft.value.push(wid)
   }
 }
 
-function removeWorkspace(wid: string) {
-  workspaceDraft.value = workspaceDraft.value.filter((w) => w !== wid)
+function removeCollection(wid: string) {
+  collectionDraft.value = collectionDraft.value.filter((w) => w !== wid)
 }
 
 // Draft Management
@@ -66,13 +66,13 @@ function setDraft(item: Item) {
     end: item.endDate,
   }
 
-  const currentWorkspaceIds = props.itemId
-    ? workspacesStore.workspaceIds.filter((wid) =>
-        workspacesStore.getWorkspace(wid).items.includes(props.itemId!),
+  const currentCollectionIds = props.itemId
+    ? collectionsStore.collectionIds.filter((wid) =>
+        collectionsStore.getCollection(wid).items.includes(props.itemId!),
       )
     : []
-  workspaceDraft.value = [...currentWorkspaceIds]
-  originalWorkspaceIds.value = [...currentWorkspaceIds]
+  collectionDraft.value = [...currentCollectionIds]
+  originalCollectionIds.value = [...currentCollectionIds]
 }
 
 watch(model, async (isOpen) => {
@@ -105,15 +105,15 @@ async function save() {
     userInterface.resolveItemCreator(id)
   }
 
-  // Apply workspace membership changes
-  for (const wid of workspaceDraft.value) {
-    if (!originalWorkspaceIds.value.includes(wid)) {
-      workspacesStore.addItemToWorkspace(savedItemId, wid)
+  // Apply collection membership changes
+  for (const wid of collectionDraft.value) {
+    if (!originalCollectionIds.value.includes(wid)) {
+      collectionsStore.addItemToCollection(savedItemId, wid)
     }
   }
-  for (const wid of originalWorkspaceIds.value) {
-    if (!workspaceDraft.value.includes(wid)) {
-      workspacesStore.removeItemFromWorkspace(savedItemId, wid)
+  for (const wid of originalCollectionIds.value) {
+    if (!collectionDraft.value.includes(wid)) {
+      collectionsStore.removeItemFromCollection(savedItemId, wid)
     }
   }
 
@@ -142,12 +142,12 @@ async function deleteItem() {
   }
 }
 
-// Workspace autocomplete
-const workspaceToAdd = ref<string | null>(null)
-watch(workspaceToAdd, (wid) => {
+// Collection autocomplete
+const collectionToAdd = ref<string | null>(null)
+watch(collectionToAdd, (wid) => {
   if (wid) {
-    addWorkspace(wid)
-    workspaceToAdd.value = null
+    addCollection(wid)
+    collectionToAdd.value = null
   }
 })
 
@@ -226,30 +226,30 @@ const dateRangeRules = [endDateAfterStart, rangeDatesValid]
       </v-row>
 
       <v-card variant="outlined">
-        <v-card-title class="text-subtitle-2">Workspaces</v-card-title>
+        <v-card-title class="text-subtitle-2">Collections</v-card-title>
         <v-divider />
         <v-card-text class="d-flex flex-column ga-2">
           <div class="d-flex flex-wrap ga-1">
             <v-chip
-              v-for="wid in workspaceDraft"
+              v-for="wid in collectionDraft"
               :key="wid"
-              :color="workspacesStore.getWorkspace(wid).color"
+              :color="collectionsStore.getCollection(wid).color"
               size="small"
               variant="flat"
               closable
-              @click:close="removeWorkspace(wid)"
+              @click:close="removeCollection(wid)"
             >
-              {{ workspacesStore.getWorkspaceName(wid) }}
+              {{ collectionsStore.getCollectionName(wid) }}
             </v-chip>
-            <span v-if="workspaceDraft.length === 0" class="text-body-2 text-medium-emphasis">
-              Not in any workspaces
+            <span v-if="collectionDraft.length === 0" class="text-body-2 text-medium-emphasis">
+              Not in any collections
             </span>
           </div>
           <v-autocomplete
-            v-if="availableWorkspaces.length > 0"
-            v-model="workspaceToAdd"
-            label="Add Workspace"
-            :items="availableWorkspaces"
+            v-if="availableCollections.length > 0"
+            v-model="collectionToAdd"
+            label="Add Collection"
+            :items="availableCollections"
             item-title="name"
             item-value="id"
             variant="outlined"

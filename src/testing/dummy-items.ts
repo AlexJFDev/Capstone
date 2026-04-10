@@ -1,6 +1,6 @@
 // Static fixture data: a large set of dummy Item records used for development and testing.
 // oxlint-disable max-lines
-import type { Item } from '@/types'
+import type { Item } from '@/types/items'
 
 export const items: Record<string, Item> = {
   'i-a1b2c3d4-e5f6-4890-abcd-ef1234567890': {

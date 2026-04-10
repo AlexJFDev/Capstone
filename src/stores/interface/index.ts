@@ -7,53 +7,64 @@ import {
   DEFAULT_PIXELS_PER_DAY,
 } from '@/components/roadmap/constants'
 import type { RoadmapInterval } from '@/components/roadmap/roadmap-utils'
-import { useWorkspacesStore } from '../workspaces'
+import { useCollectionsStore } from '../collections'
 import { useInterfaceInitialization } from './initialization'
 import { useInterfaceRoadmap } from './roadmap'
 import { useInterfaceSorting } from './sorting'
 import { useInterfacePanels } from './panels'
 import { useInterfaceItemPanels } from './item-panels'
 import { useInterfaceSpeedbump } from './speedbump'
+import { useInterfaceSpacePanels } from './space-panels'
+import { useInterfaceActiveVisualization } from './active-visualization'
 
 export type { SortOption, SortDirection } from './sorting'
 
+// oxlint-disable-next-line max-lines-per-function
 export const useInterfaceStore = defineStore('interface', () => {
-  const favoriteWorkspaceId = ref<string | null>(null)
-  const defaultWorkspaceId = computed(() => {
-    const workspacesStore = useWorkspacesStore()
+  const favoriteCollectionId = ref<string | null>(null)
+  const defaultCollectionId = computed(() => {
+    const collectionsStore = useCollectionsStore()
 
-    if (!workspacesStore.hasWorkspaces) return
+    if (!collectionsStore.hasCollections) return
     if (
-      favoriteWorkspaceId.value &&
-      workspacesStore.doesWorkspaceExist(favoriteWorkspaceId.value)
+      favoriteCollectionId.value &&
+      collectionsStore.doesCollectionExist(favoriteCollectionId.value)
     ) {
-      return favoriteWorkspaceId.value
+      return favoriteCollectionId.value
     }
-    return workspacesStore.workspaceIds[0]
+    return collectionsStore.collectionIds[0]
   })
 
   const pixelsPerDay = ref<number>(DEFAULT_PIXELS_PER_DAY)
   const gridInterval = ref<RoadmapInterval>(DEFAULT_INTERVAL)
   const roadmapListWidth = ref<number>(DEFAULT_LIST_WIDTH)
 
-  const { initializeInterface, setFavoriteWorkspace } = useInterfaceInitialization(
-    favoriteWorkspaceId,
+  const { activeVisualizationId, setActiveVisualization } = useInterfaceActiveVisualization(
+    pixelsPerDay,
+    gridInterval,
+    roadmapListWidth,
+  )
+  const { initializeInterface, setFavoriteCollection } = useInterfaceInitialization(
+    favoriteCollectionId,
     pixelsPerDay,
     gridInterval,
     roadmapListWidth,
   )
   const { roadmapScale, roadmapListWidthPx, updateRoadmapScale, updateRoadmapListWidth } =
-    useInterfaceRoadmap(pixelsPerDay, gridInterval, roadmapListWidth)
+    useInterfaceRoadmap(pixelsPerDay, gridInterval, roadmapListWidth, activeVisualizationId)
   const sorting = useInterfaceSorting()
   const panels = useInterfacePanels()
   const itemPanels = useInterfaceItemPanels()
   const speedbump = useInterfaceSpeedbump()
+  const spacePanels = useInterfaceSpacePanels()
 
   return {
-    favoriteWorkspaceId,
-    defaultWorkspaceId,
+    favoriteCollectionId,
+    defaultCollectionId,
     initializeInterface,
-    setFavoriteWorkspace,
+    setFavoriteCollection,
+    activeVisualizationId,
+    setActiveVisualization,
     roadmapScale,
     roadmapListWidthPx,
     roadmapListWidth,
@@ -63,5 +74,6 @@ export const useInterfaceStore = defineStore('interface', () => {
     ...panels,
     ...itemPanels,
     ...speedbump,
+    ...spacePanels,
   }
 })

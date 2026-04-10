@@ -1,25 +1,25 @@
-<!-- Right-side drawer listing all workspace cards sorted with the favorite first, plus a button to create a new workspace. -->
+<!-- Right-side drawer listing all collection cards sorted with the favorite first, plus a button to create a new collection. -->
 <script setup lang="ts">
 import { computed } from 'vue'
-import WorkspaceCard from './WorkspaceCard.vue'
+import CollectionCard from './CollectionCard.vue'
 import { useInterfaceStore } from '@/stores/interface'
 
 const props = defineProps<{
-  workspaceIds: Array<string>
+  collectionIds: Array<string>
 }>()
 
 const model = defineModel<boolean>()
 
 const userInterface = useInterfaceStore()
 
-const sortedWorkspaceIds = computed(() => {
-  const favorite = userInterface.favoriteWorkspaceId
-  if (!favorite || !props.workspaceIds.includes(favorite)) return props.workspaceIds
-  return [favorite, ...props.workspaceIds.filter((id) => id !== favorite)]
+const sortedCollectionIds = computed(() => {
+  const favorite = userInterface.favoriteCollectionId
+  if (!favorite || !props.collectionIds.includes(favorite)) return props.collectionIds
+  return [favorite, ...props.collectionIds.filter((id) => id !== favorite)]
 })
 
-function addWorkspace() {
-  userInterface.openWorkspaceCreator()
+function addCollection() {
+  userInterface.openCollectionCreator()
 }
 </script>
 
@@ -28,21 +28,21 @@ function addWorkspace() {
     <!-- HEADER -->
     <v-toolbar class="header" density="compact">
       <v-btn icon="mdi-close" @click="model = false" />
-      <v-toolbar-title>Workspaces</v-toolbar-title>
+      <v-toolbar-title>Collections</v-toolbar-title>
     </v-toolbar>
 
     <!-- BODY -->
     <div class="pa-3 d-flex flex-column ga-3">
-      <WorkspaceCard
-        v-for="workspaceId in sortedWorkspaceIds"
-        :key="workspaceId"
-        :workspace-id="workspaceId"
+      <CollectionCard
+        v-for="collectionId in sortedCollectionIds"
+        :key="collectionId"
+        :collection-id="collectionId"
       />
 
-      <v-card class="add-workspace-card" variant="outlined" @click="addWorkspace">
+      <v-card class="add-collection-card" variant="outlined" @click="addCollection">
         <v-card-title class="d-flex align-center ga-2 text-medium-emphasis">
           <v-icon>mdi-plus</v-icon>
-          New workspace
+          New collection
         </v-card-title>
       </v-card>
     </div>
@@ -50,7 +50,7 @@ function addWorkspace() {
 </template>
 
 <style scoped>
-.add-workspace-card {
+.add-collection-card {
   cursor: pointer;
   border-style: dashed !important;
 }

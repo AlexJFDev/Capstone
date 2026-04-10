@@ -1,8 +1,8 @@
-// Static fixture data: a set of dummy Workspace records referencing dummy items, used for development and testing.
+// Static fixture data: a set of dummy Collection records referencing dummy items, used for development and testing.
 // oxlint-disable max-lines
-import type { Workspace } from '@/types'
+import type { Collection } from '@/types/collections'
 
-export const workspaces: Record<string, Workspace> = {
+export const collections: Record<string, Collection> = {
   'w-1a2b3c4d-5e6f-4890-abcd-ef1234567890': {
     name: 'Frontend Development',
     description:

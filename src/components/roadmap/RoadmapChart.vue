@@ -38,6 +38,7 @@ import { useItemsStore } from '@/stores/items'
 import { useInterfaceStore } from '@/stores/interface'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
 import RoadmapBar from './RoadmapBar.vue'
+import RoadmapChartRow from './RoadmapChartRow.vue'
 
 const props = defineProps<{
   /** Ordered list of roadmap item IDs to render, one row per item. */
@@ -93,7 +94,16 @@ const showTodayLine = computed(() => todayX.value >= 0 && todayX.value <= svgWid
 
 <template>
   <div ref="root" class="roadmap-chart">
-    <svg :width="svgWidth" :height="svgHeight" xmlns="http://www.w3.org/2000/svg">
+    <RoadmapChartRow
+      v-for="itemId in itemIds"
+      :key="itemId"
+      :label-width="300"
+      :timeline-width="svgWidth"
+      :item-id="itemId"
+      :date-range="dateRange"
+      :scale="scale"
+    />
+    <svg v-if="false" :width="svgWidth" :height="svgHeight" xmlns="http://www.w3.org/2000/svg">
       <!-- Vertical grid lines at each interval boundary -->
       <SvgVerticalGridLines
         :interval-starts="intervalStarts"

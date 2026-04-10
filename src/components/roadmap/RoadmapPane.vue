@@ -2,7 +2,6 @@
      Accepts either collectionId (collection context, enables add-item and drag-to-reorder) or itemIds (read-only,
      used when rendering inside a SpaceView where items come from multiple collections). -->
 <script setup lang="ts">
-import RoadmapItemList from './RoadmapItemList.vue'
 import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './constants'
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
@@ -92,17 +91,8 @@ const hoveredItemId = ref<string | null>(null)
         <RoadmapHeader :item-ids="sortedItemIds" />
       </div>
 
-      <!-- Body: Items List & Roadmap Render -->
+      <!-- Body: RoadmapChart -->
       <div class="body">
-        <!-- Item List -->
-        <RoadmapItemList
-          v-model:hovered-item-id="hoveredItemId"
-          :collection-id="collectionId"
-          :list-width="listWidth"
-          :item-ids="sortedItemIds"
-        />
-
-        <!-- Roadmap Chart -->
         <RoadmapChart
           v-model:hovered-item-id="hoveredItemId"
           class="chart"

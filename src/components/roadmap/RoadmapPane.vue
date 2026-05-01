@@ -11,6 +11,7 @@ import { useCollectionsStore } from '@/stores/collections'
 import { useInterfaceStore } from '@/stores/interface'
 import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
+import type { RoadmapSettings } from '@/types/settings/roadmap'
 
 const props = defineProps<{
   collectionId?: string
@@ -31,6 +32,9 @@ const {
   sortOption,
   sortDirection,
 } = storeToRefs(userInterface)
+
+// Temporary settings before store update
+const settings = computed<RoadmapSettings>(() => { 'a' : 1})
 
 const baseItemIds = computed(() => {
   if (props.itemIds) return props.itemIds

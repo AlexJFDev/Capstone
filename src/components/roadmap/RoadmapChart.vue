@@ -30,34 +30,37 @@
  */
 
 import { computed, toRef, useTemplateRef } from 'vue'
-import { storeToRefs } from 'pinia'
 import { CHART_BORDER_COLOR_PRIMARY, ROW_HEIGHT, TODAY_LINE_COLOR } from './constants'
 import { xForDate } from './roadmap-utils'
 import SvgVerticalGridLines from './SvgVerticalGridLines.vue'
 import { useItemsStore } from '@/stores/items'
-import { useInterfaceStore } from '@/stores/interface'
 import { useRoadmapTimeline } from './useRoadmapTimeline'
 import RoadmapBar from './RoadmapBar.vue'
 import RoadmapChartRow from './RoadmapChartRow.vue'
+import { constructDefaultRoadmapSettings } from '@/types/settings/roadmap'
+import type { RoadmapSettings } from '@/types/settings/roadmap'
 
-const props = defineProps<{
-  /** Ordered list of roadmap item IDs to render, one row per item. */
-  itemIds: string[]
-  hoveredItemId: string | null
-}>()
+const props = withDefaults(
+  defineProps<{
+    /** Ordered list of roadmap item IDs to render, one row per item. */
+    itemIds: string[]
+    hoveredItemId: string | null
+    settings?: RoadmapSettings
+  }>(),
+  { settings: constructDefaultRoadmapSettings },
+)
 
 const emit = defineEmits<{
   'update:hoveredItemId': [id: string | null]
 }>()
 
 const itemsStore = useItemsStore()
-const interfaceStore = useInterfaceStore()
-const { roadmapScale: scale } = storeToRefs(interfaceStore)
 
 const rootRef = useTemplateRef('root')
-const { dateRange, svgWidth, intervalStarts } = useRoadmapTimeline(
+const { dateRange, svgWidth, intervalStarts, scale } = useRoadmapTimeline(
   toRef(() => props.itemIds),
   rootRef,
+  toRef(() => props.settings),
 )
 
 /** Number of rows to display — at least 1 when empty so the chart isn't invisible. */

@@ -114,6 +114,7 @@ const hoveredItemId = ref<string | null>(null)
           v-model:hovered-item-id="hoveredItemId"
           class="chart"
           :item-ids="sortedItemIds"
+          :settings="settings"
         />
       </div>
     </div>

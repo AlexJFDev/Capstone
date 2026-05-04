@@ -6,17 +6,25 @@ import { PANE_COLOR_PRIMARY, ROW_HEIGHT_PX, SECTION_BORDER_COLOR } from './const
 import RoadmapChart from './RoadmapChart.vue'
 import RoadmapHeader from './RoadmapHeader.vue'
 import { computed, ref } from 'vue'
-import { storeToRefs } from 'pinia'
 import { useCollectionsStore } from '@/stores/collections'
-import { useInterfaceStore } from '@/stores/interface'
+import { useInterfaceStore, type SortDirection, type SortOption } from '@/stores/interface'
 import { useItemsStore } from '@/stores/items'
 import AddItemMenu from '@/components/items/AddItemMenu.vue'
+import { constructDefaultRoadmapSettings } from '@/types/settings/roadmap'
 import type { RoadmapSettings } from '@/types/settings/roadmap'
 
-const props = defineProps<{
-  collectionId?: string
-  itemIds?: string[]
-}>()
+const props = withDefaults(
+  defineProps<{
+    collectionId?: string
+    itemIds?: string[]
+    settings?: RoadmapSettings
+  }>(),
+  { 
+    collectionId: () => '',
+    itemIds: () => [],
+    settings: constructDefaultRoadmapSettings 
+  },
+)
 
 const collectionsStore = useCollectionsStore()
 const userInterface = useInterfaceStore()
@@ -28,13 +36,18 @@ const collection = computed(() =>
 
 const {
   roadmapListWidth: listWidth,
-  roadmapListWidthPx: listWidthPx,
-  sortOption,
-  sortDirection,
-} = storeToRefs(userInterface)
+  sortField,
+  sortIsAscending
+} = props.settings
 
-// Temporary settings before store update
-const settings = computed<RoadmapSettings>(() => { 'a' : 1})
+const listWidthPx = computed(() => `${listWidth}px`)
+const sortOption = computed<SortOption>(() => {
+  if (sortField === 'name') return 'name'
+  if (sortField === 'startDate') return 'startDate'
+  if (sortField === 'endDate') return 'endDate'
+  return 'custom'
+})
+const sortDirection = computed<SortDirection>(() => sortIsAscending ? 'asc' : 'desc')
 
 const baseItemIds = computed(() => {
   if (props.itemIds) return props.itemIds
